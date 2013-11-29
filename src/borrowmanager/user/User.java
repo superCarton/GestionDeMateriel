@@ -31,24 +31,10 @@ public class User {
 	}
 
 	/**
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**
@@ -57,13 +43,4 @@ public class User {
 	public UserType getUserType() {
 		return userType;
 	}
-
-	/**
-	 * @param userType the userType to set
-	 */
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
-	
-	
 }
