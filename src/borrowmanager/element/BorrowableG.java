@@ -6,14 +6,15 @@ public class BorrowableG {
 	private Integer id;
 	private String name;
 	private Map<String, String> data;
-	public HardwareType elementType;
-
+	public HardwareType elementType;	
+	
 	public BorrowableG(Integer id, String name) {
-		throw new UnsupportedOperationException();
+		this.id = id;
+		this.name = name;
 	}
 
 	public HardwareType getType() {
-		throw new UnsupportedOperationException();
+		return elementType;
 	}
 
 	public Map<String, String> getData() {
@@ -21,6 +22,29 @@ public class BorrowableG {
 	}
 
 	public Boolean hasFeature(String feature) {
-		throw new UnsupportedOperationException();
+		return data.containsKey(feature);
 	}
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+
+	/**
+	 * @return the elementType
+	 */
+	public HardwareType getElementType() {
+		return elementType;
+	}
+	
 }
