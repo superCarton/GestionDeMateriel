@@ -47,4 +47,11 @@ public class DateInterval {
 	public Boolean overlaps(DateInterval interval) {
 		return !(interval.start.after(this.end) || interval.end.before(this.start));
 	}
+	
+	/**
+	 * Returns the length of the interval in days
+	 */
+	public Integer getLength(){
+		return (int) (end.getTime() - start.getTime() / 86400000);
+	}
 }

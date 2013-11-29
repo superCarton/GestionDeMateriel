@@ -48,7 +48,7 @@ public class BookingCalendar {
 			// Return false if the two interval overlaps
 			//
 			if(b.overlaps(w)){
-				
+				return false;
 			}
 		}
 		// No overlaps, interval is available
@@ -56,7 +56,15 @@ public class BookingCalendar {
 		return true;
 	}
 
-	public Boolean book(Integer borrowerId, Date start, Date end) {
+	/**
+	 * Book a new interval in the calendar.
+	 * @param borrowerId	The id of the user borrowing the item
+	 * @param borrowableId	The id of the borrowed item
+	 * @param start	The start of the booking
+	 * @param end	The end of the booking
+	 * @return	Is the booking possible?
+	 */
+	public Boolean book(Integer borrowerId, Integer borrowableId, Date start, Date end) {
 		throw new UnsupportedOperationException();
 	}
 }
