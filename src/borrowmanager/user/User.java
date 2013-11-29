@@ -6,14 +6,14 @@ public class User {
 	public UserType userType;
 
 	public Boolean canValidateBookings() {
-		throw new UnsupportedOperationException();
+		return userType == UserType.STOCK_MANAGER; 
 	}
 
 	public Integer getMaxBookingLength() {
-		throw new UnsupportedOperationException();
+		return UserType.getBookingLength(userType); 
 	}
 
 	public Integer getMaxReservationLength() {
-		throw new UnsupportedOperationException();
+		return UserType.getMaxReservationLength(userType);
 	}
 }
