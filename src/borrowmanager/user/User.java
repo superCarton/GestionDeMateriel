@@ -5,6 +5,12 @@ public class User {
 	private String name;
 	public UserType userType;
 
+	public User(int id, String name, UserType u) {
+		this.id = id ;
+		this.name = name;
+		this.userType = u;
+	}
+	
 	public Boolean canValidateBookings() {
 		return userType == UserType.STOCK_MANAGER; 
 	}
