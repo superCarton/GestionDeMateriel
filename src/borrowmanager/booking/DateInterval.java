@@ -1,5 +1,7 @@
 package borrowmanager.booking;
 
+import java.util.Date;
+
 public class DateInterval {
 	private Date start;
 	private Date end;

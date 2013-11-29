@@ -1,5 +1,7 @@
 package borrowmanager.element;
 
+import java.util.Map;
+
 public class BorrowableG {
 	private Integer id;
 	private String name;

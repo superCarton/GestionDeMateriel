@@ -1,5 +1,9 @@
 package borrowmanager;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import borrowmanager.booking.BookingCalendar;
 import borrowmanager.user.User;
 import borrowmanager.element.BorrowableG;

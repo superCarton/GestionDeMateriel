@@ -1,5 +1,8 @@
 package borrowmanager.booking;
 
+import java.util.Date;
+import java.util.List;
+
 public class BookingCalendar {
 	/**
 	 * Integer: borrower id
