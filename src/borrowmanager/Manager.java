@@ -54,27 +54,45 @@ public class Manager {
 		return false;
 	}
 
+	/**
+	 * Returns true if a borrowable is available for a given date interval
+	 * @param borrowableId The ID of the borrowable
+	 * @param start The start date of the interval
+	 * @param end The end date of the interval
+	 * @return True if the borrowable is available, false otherwise.
+	 */
 	public Boolean isAvailable(Integer borrowableId, Date start, Date end) {
 		BookingCalendar calendar = bookings.get(borrowableId);
 		return calendar.isAvailable(start, end);
 	}
 
+	/**
+	 * Give back a borrowable.
+	 * @param borrowableId The ID of the borrowable to give back.
+	 * @return True if the borrowable was given back too late.
+	 */
 	public Boolean giveBack(Integer borrowableId) {
+		// Check that the ID matches some borrowable.
 		BookingCalendar calendar = bookings.get(borrowableId);
 		if (calendar == null) {
 			return false;
 		}
 		
-		Booking b = calendar.getCurrentBooking(); 
+		// Get the current booking
+		Booking b = calendar.getCurrentBooking();
 		if (b == null) {
 			return false;
 		}
 		
 		// TODO : end() returns false if the borrowable was given back too late.
 		return b.end();
-		
+
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Booking> getNotYetValidatedBookings() {
 		List<Booking> notValidatedBookings = new LinkedList<Booking>();
 		for (BookingCalendar calendar : bookings.values()) {

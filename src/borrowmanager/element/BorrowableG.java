@@ -4,25 +4,35 @@ import java.util.Map;
 
 public class BorrowableG {
 	private Integer id;
-	private String name;
-	private Map<String, String> data;
-	public HardwareType elementType;	
+	private BorrowableModel model;
+	private State state;
+	private Integer quantity;
 	
-	public BorrowableG(Integer id, String name) {
+	public BorrowableG(Integer id, BorrowableModel model) {
+		this(id, model, State.NEW);
+	}
+	
+	public BorrowableG(Integer id, BorrowableModel model, State state) {
 		this.id = id;
-		this.name = name;
+		this.model = model;
+		this.state = state;
 	}
 
 	public HardwareType getType() {
-		return elementType;
+		return model.getType();
 	}
 
 	public Map<String, String> getData() {
-		return this.data;
+		return model.getData();
 	}
 
+	/**
+	 * Returns true if the borrowable has a feature.
+	 * @param feature The name of the feature.
+	 * @return True if the borrowable has the feature.
+	 */
 	public Boolean hasFeature(String feature) {
-		return data.containsKey(feature);
+		return model.hasFeature(feature);
 	}
 
 	/**
@@ -36,15 +46,10 @@ public class BorrowableG {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
-	}
-
-
-	/**
-	 * @return the elementType
-	 */
-	public HardwareType getElementType() {
-		return elementType;
+		return model.getName();
 	}
 	
+	public BorrowableModel getModel() {
+		return model;
+	}
 }
