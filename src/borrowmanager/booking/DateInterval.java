@@ -61,7 +61,7 @@ public class DateInterval implements Comparable<DateInterval> {
 	 * @return	Does the interval end before the date?
 	 */
 	public Boolean isLate(Date date) {
-		return end.after(date);
+		return end.before(date);
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class DateInterval implements Comparable<DateInterval> {
 	 * @return	Is the date in the interval?
 	 */
 	public Boolean contains(Date date){
-		return this.start.after(date) && end.before(date);
+		return this.start.before(date) && end.after(date);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class DateInterval implements Comparable<DateInterval> {
 	}
 	
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	protected Object clone(){
 		return new DateInterval(start, end);
 	}
 
