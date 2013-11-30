@@ -52,7 +52,7 @@ public class DateInterval implements Comparable<DateInterval> {
 	 * Returns the length of the interval in days
 	 */
 	public Integer getLength(){
-		return (int) (end.getTime() - start.getTime() / 86400000);
+		return (int) ((end.getTime() - start.getTime()) / 86400000);
 	}
 
 	/**
