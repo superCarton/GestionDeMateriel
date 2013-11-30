@@ -60,11 +60,50 @@ public class BookingCalendar {
 	 * Book a new interval in the calendar.
 	 * @param borrowerId	The id of the user borrowing the item
 	 * @param borrowableId	The id of the borrowed item
-	 * @param start	The start of the booking
-	 * @param end	The end of the booking
+	 * @param interval	The booking interval
 	 * @return	Is the booking possible?
 	 */
-	public Boolean book(Integer borrowerId, Integer borrowableId, Date start, Date end) {
-		throw new UnsupportedOperationException();
+	public Boolean book(Integer borrowerId, Integer borrowableId, DateInterval interval, String reason) {
+		try{
+			Booking b = new Booking(borrowerId, borrowableId, interval, reason);
+			bookings.add(b);
+			return true;
+		} catch(IllegalArgumentException e){
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns the current booking for that item (and the associated BookingCalendar)
+	 * @return	The current booking
+	 */
+	public Booking getCurrentBooking(){
+		// Go through the Booking list
+		//
+		for(Booking b : bookings){
+			// Return the interval if it's current
+			//
+			if(b.isCurrent()){
+				return b;
+			}
+		}
+		
+		// No booking found
+		//
+		return null;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return bookings.equals(((BookingCalendar) obj).getBookings());
+	}
+	
+	@Override
+	public String toString() {
+		String s = "Booking calendar (" + bookings.size() + " items):\n";
+		for(Booking b : bookings){
+			s+=b.toString();
+		}
+		return s;
 	}
 }

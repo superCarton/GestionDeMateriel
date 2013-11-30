@@ -9,7 +9,7 @@ import borrowmanager.util.StringConfig;
  * @author Franck Dechavanne
  *
  */
-public class DateInterval {
+public class DateInterval implements Comparable<DateInterval> {
 	/**
 	 * Start of the Interval
 	 */
@@ -53,5 +53,51 @@ public class DateInterval {
 	 */
 	public Integer getLength(){
 		return (int) (end.getTime() - start.getTime() / 86400000);
+	}
+
+	/**
+	 * Checks if the interval ends before a certain date
+	 * @param date	The date to compare to
+	 * @return	Does the interval end before the date?
+	 */
+	public Boolean isLate(Date date) {
+		return end.after(date);
+	}
+	
+	/**
+	 * Checks whether a date is contained in the interval
+	 * @param date	The date to check
+	 * @return	Is the date in the interval?
+	 */
+	public Boolean contains(Date date){
+		return this.start.after(date) && end.before(date);
+	}
+
+	/**
+	 * End the current interval at the current moment
+	 */
+	public void end() {
+		this.end = new Date();
+	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new DateInterval(start, end);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		DateInterval w = (DateInterval) obj;
+		return this.start.equals(w.start) && this.end.equals(w.end);
+	}
+	
+	@Override
+	public String toString() {
+		return "Interval from " + this.start.toString() + " to " + this.end.toString();
+	}
+
+	@Override
+	public int compareTo(DateInterval interval) {
+		return (int) (start.getTime() - interval.start.getTime());
 	}
 }
