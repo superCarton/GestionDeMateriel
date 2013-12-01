@@ -98,6 +98,6 @@ public class DateInterval implements Comparable<DateInterval> {
 
 	@Override
 	public int compareTo(DateInterval interval) {
-		return (int) (start.getTime() - interval.start.getTime());
+		return (int) ((start.getTime() - interval.start.getTime()) / 3600000);
 	}
 }
