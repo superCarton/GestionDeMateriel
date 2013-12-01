@@ -1,5 +1,6 @@
 package borrowmanager.booking;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class BookingCalendar {
 		try{
 			Booking b = new Booking(borrowerId, borrowableId, interval, reason);
 			bookings.add(b);
+			Collections.sort(bookings);
 			return true;
 		} catch(IllegalArgumentException e){
 			return false;

@@ -77,6 +77,13 @@ public class Booking implements Comparable<Booking> {
 	}
 	
 	/**
+	 * Validate the booking
+	 */
+	public void validate(){
+		isValidated = true;
+	}
+	
+	/**
 	 * Checks the end date of the booking against today's date and returns true<br/>
 	 * if the booking reached its end
 	 * @return	Is the booking late?
