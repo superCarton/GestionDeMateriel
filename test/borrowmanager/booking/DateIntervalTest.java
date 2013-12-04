@@ -8,6 +8,12 @@ import java.util.Date;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Test module for the DateInterval class
+ * 
+ * @author Franck Dechavanne
+ *
+ */
 public class DateIntervalTest {
 	private static Date start, end, start2, end2;
 	

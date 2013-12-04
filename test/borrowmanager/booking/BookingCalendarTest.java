@@ -6,8 +6,15 @@ import java.util.Date;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import borrowmanager.element.BorrowableStack;
 import static org.junit.Assert.*;
 
+/**
+ * Test module for the BookingCalendar class
+ * 
+ * @author Franck Dechavanne
+ *
+ */
 public class BookingCalendarTest {
 	
 	public static Date start, start2, startold, end, end2, endold;
@@ -40,7 +47,7 @@ public class BookingCalendarTest {
 		
 		assertTrue(bc.getBookings().isEmpty());
 		
-		assertTrue(bc.book(0, 0, new DateInterval(start, end), "test"));
+		assertTrue(bc.book(0, new BorrowableStack(0, null), new DateInterval(start, end), "test"));
 		
 		assertEquals(1, bc.getBookings().size());
 		
@@ -52,9 +59,9 @@ public class BookingCalendarTest {
 	@Test
 	public void getCurrentBooking(){
 		BookingCalendar bc = new BookingCalendar();	
-		assertTrue(bc.book(0, 0, new DateInterval(end2, end), "test"));
+		assertTrue(bc.book(0, new BorrowableStack(0, null), new DateInterval(end2, end), "test"));
 		assertNull(bc.getCurrentBooking());
-		assertTrue(bc.book(0, 0, new DateInterval(startold, start2), "test"));
+		assertTrue(bc.book(0, new BorrowableStack(0, null), new DateInterval(startold, start2), "test"));
 		assertNotNull(bc.getCurrentBooking());
 		
 	}

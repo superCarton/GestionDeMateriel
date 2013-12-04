@@ -12,6 +12,12 @@ import org.junit.Test;
 
 import borrowmanager.element.BorrowableStack;
 
+/**
+ * Test module for the Booking class
+ * 
+ * @author Franck Dechavanne
+ *
+ */
 public class BookingTest {
 
 	private static Date start, end, start2, end2, startold, endold;

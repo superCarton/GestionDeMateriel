@@ -17,5 +17,6 @@ issues
 .classpath
 .project
 .settings/
+.sonar/
 bin/
 
