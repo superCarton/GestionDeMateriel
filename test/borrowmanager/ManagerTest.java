@@ -24,6 +24,14 @@ public class ManagerTest {
 	}
 	
 	@Test
+	public void book(){
+		Manager m = new Manager();
+		m.setUser(new User(0, "student", UserType.STUDENT));
+		
+		// TODO (i'm too tired and bored right now but it'll be done tomorrow morning)
+	}
+	
+	@Test
 	public void getNotYetValidatedBookings(){
 		Manager m = new Manager();
 		m.setUser(new User(0, "manager", UserType.STOCK_MANAGER));
@@ -40,6 +48,9 @@ public class ManagerTest {
 		m.setUser(new User(2, "manager", UserType.STOCK_MANAGER));
 		
 		assertEquals((Integer)1, (Integer)m.getNotYetValidatedBookings().size());
+		m.getNotYetValidatedBookings().get(0).validate();
+		
+		assertEquals((Integer)0, (Integer)m.getNotYetValidatedBookings().size());
 	}
 	
 	@Test
