@@ -31,6 +31,11 @@ public class Booking implements Comparable<Booking> {
 	private Boolean isValidated;
 	
 	/**
+	 * Is the booking finished (item was returned)
+	 */
+	private Boolean isFinished;
+	
+	/**
 	 * Boundaries of the booking
 	 */
 	public DateInterval interval;
@@ -55,6 +60,7 @@ public class Booking implements Comparable<Booking> {
 		this.borrowableId = borrowable;
 		this.reason = reason;
 		this.interval = interval;
+		this.isFinished = false;
 		
 		this.isValidated = false;
 	}
@@ -90,7 +96,7 @@ public class Booking implements Comparable<Booking> {
 	 */
 	public boolean isLate(){
 		Date now = new Date();
-		return interval.isLate(now);
+		return !isFinished && interval.isLate(now);
 	}
 	
 	/**
@@ -108,10 +114,18 @@ public class Booking implements Comparable<Booking> {
 	 */
 	public boolean end(){
 		if(!isLate()){
-			interval.end();
+			this.interval.end();
+			this.isFinished = true;
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Is the booking over (item was returned)
+	 */
+	public boolean isFinished(){
+		return this.isFinished();
 	}
 
 	/**
