@@ -2,6 +2,7 @@ package borrowmanager.booking;
 
 import java.util.Date;
 
+import borrowmanager.element.BorrowableStack;
 import borrowmanager.util.StringConfig;
 
 /**
@@ -16,9 +17,9 @@ public class Booking implements Comparable<Booking> {
 	private Integer borrowerId;
 	
 	/**
-	 * ID of the borrowed item
+	 * Items borrowed
 	 */
-	private Integer borrowableId;
+	private BorrowableStack borrowables;
 	
 	/**
 	 * Why is the item booked? (typically a class name)
@@ -47,7 +48,7 @@ public class Booking implements Comparable<Booking> {
 	 * @param interval	The interval (boundaries) of the booking
 	 * @param reason	Why is the booking made
 	 */
-	public Booking(Integer borrower, Integer borrowable, DateInterval interval, String reason){
+	public Booking(Integer borrower, BorrowableStack borrowable, DateInterval interval, String reason){
 		// Check the validity of the IDs
 		//
 		if(borrower == null || borrowable == null || interval == null){
@@ -57,7 +58,7 @@ public class Booking implements Comparable<Booking> {
 		// Store the properties
 		//
 		this.borrowerId = borrower;
-		this.borrowableId = borrowable;
+		this.borrowables = borrowable;
 		this.reason = reason;
 		this.interval = interval;
 		this.isFinished = false;
@@ -140,8 +141,8 @@ public class Booking implements Comparable<Booking> {
 	 * Returns the ID of the borrowed item
 	 * @return	The ID of the borrowed item
 	 */
-	public Integer getBorrowableId() {
-		return borrowableId;
+	public BorrowableStack getBorrowableStack() {
+		return borrowables;
 	}
 
 	/**
@@ -162,7 +163,7 @@ public class Booking implements Comparable<Booking> {
 	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		return new Booking(borrowerId, borrowableId, interval, reason);
+		return new Booking(borrowerId, borrowables, interval, reason);
 	}
 	
 	@Override
@@ -173,7 +174,7 @@ public class Booking implements Comparable<Booking> {
 	
 	@Override
 	public String toString() {
-		return "Booking for item n°" + borrowableId 
+		return "Booking for item n°" + borrowables 
 				+ "\nThis item has been booked by user n°" + borrowerId
 				+ "\nFor: " + reason + "\nThis booking has " + ((isValidated)?"":"not ")
 				+ "been validated by a manager\n" + interval.toString();

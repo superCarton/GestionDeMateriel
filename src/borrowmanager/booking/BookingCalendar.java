@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import borrowmanager.element.BorrowableStack;
+
 /**
  * The BookingCalendar holds the list of all the Bookings.
  * 
@@ -64,7 +66,7 @@ public class BookingCalendar {
 	 * @param interval	The booking interval
 	 * @return	Is the booking possible?
 	 */
-	public Boolean book(Integer borrowerId, Integer borrowableId, DateInterval interval, String reason) {
+	public Boolean book(Integer borrowerId, BorrowableStack borrowableId, DateInterval interval, String reason) {
 		try{
 			Booking b = new Booking(borrowerId, borrowableId, interval, reason);
 			bookings.add(b);

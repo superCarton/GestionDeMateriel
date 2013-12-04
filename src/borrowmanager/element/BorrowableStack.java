@@ -2,17 +2,17 @@ package borrowmanager.element;
 
 import java.util.Map;
 
-public class BorrowableG {
+public class BorrowableStack {
 	private Integer id;
 	private BorrowableModel model;
 	private State state;
 	private Integer quantity;
 	
-	public BorrowableG(Integer id, BorrowableModel model) {
+	public BorrowableStack(Integer id, BorrowableModel model) {
 		this(id, model, State.NEW);
 	}
 	
-	public BorrowableG(Integer id, BorrowableModel model, State state) {
+	public BorrowableStack(Integer id, BorrowableModel model, State state) {
 		this.id = id;
 		this.model = model;
 		this.state = state;

@@ -9,13 +9,13 @@ import java.util.Map;
 import borrowmanager.booking.BookingCalendar;
 import borrowmanager.booking.DateInterval;
 import borrowmanager.user.User;
-import borrowmanager.element.BorrowableG;
+import borrowmanager.element.BorrowableStack;
 import borrowmanager.booking.Booking;
 
 public class Manager {
 	private Map<Integer, BookingCalendar> bookings;
 	private User currentUser;
-	private List<BorrowableG> stock;
+	private List<BorrowableStack> stock;
 
 	public Manager(User user) {
 		this.currentUser = user;
@@ -42,11 +42,12 @@ public class Manager {
 			return false;
 		}
 		
-		return calendar.book(borrowerId, currentUser.getId(), bookingInterval, reason);
+		// TODO: BorrowableStack instead of null
+		return calendar.book(borrowerId, null, bookingInterval, reason);
 	}
 
 	public Boolean isAvailable(Integer borrowableId) {
-		BorrowableG b = getBorrowableById(borrowableId);
+		BorrowableStack b = getBorrowableById(borrowableId);
 		if (b != null) {
 			Date now = new Date();
 			return isAvailable(borrowableId, now, now);
@@ -108,7 +109,7 @@ public class Manager {
 
 	public Map<Integer, String> getStockDescriptionForFeature(String feature) {
 		Map<Integer, String> descriptions = new HashMap<Integer, String>();
-		for (BorrowableG borrowable : stock) {
+		for (BorrowableStack borrowable : stock) {
 			if (borrowable.hasFeature(feature)) {
 				descriptions.put(borrowable.getId(), borrowable.getName());
 			}
@@ -116,8 +117,8 @@ public class Manager {
 		return descriptions;
 	}
 
-	public BorrowableG getBorrowableById(Integer id) {
-		for (BorrowableG borrowable : stock) {
+	public BorrowableStack getBorrowableById(Integer id) {
+		for (BorrowableStack borrowable : stock) {
 			if (borrowable.getId() == id) {
 				return borrowable;
 			}
@@ -126,7 +127,7 @@ public class Manager {
 	}
 	
 	public String getFullDescription(Integer id) {
-		BorrowableG borrowable = getBorrowableById(id);
+		BorrowableStack borrowable = getBorrowableById(id);
 		// TODO : more data
 		return borrowable.getName();
 	}
