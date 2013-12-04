@@ -1,26 +1,34 @@
 package borrowmanager;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import borrowmanager.booking.Booking;
 import borrowmanager.booking.BookingCalendar;
 import borrowmanager.booking.DateInterval;
-import borrowmanager.user.User;
+import borrowmanager.element.BorrowableModel;
 import borrowmanager.element.BorrowableStack;
-import borrowmanager.booking.Booking;
+import borrowmanager.user.User;
 
 public class Manager {
 	private Map<Integer, BookingCalendar> bookings;
 	private User currentUser;
 	private List<BorrowableStack> stock;
 
-	public Manager(User user) {
-		this.currentUser = user;
+	public Manager() {
+		this.currentUser = null;
+		this.bookings = new HashMap<Integer, BookingCalendar>();
+		this.stock = new ArrayList<BorrowableStack>();
 	}
-
+	
+	public void setUser(User u){
+		this.currentUser = u;
+	}
+	
 	public Boolean book(Integer borrowableId, Integer borrowerId, Date start, Date end, String reason) {
 		// Date verifications
 		
@@ -42,8 +50,7 @@ public class Manager {
 			return false;
 		}
 		
-		// TODO: BorrowableStack instead of null
-		return calendar.book(borrowerId, null, bookingInterval, reason);
+		return calendar.book(borrowerId, stock.get(borrowableId), bookingInterval, reason);
 	}
 
 	public Boolean isAvailable(Integer borrowableId) {
@@ -95,6 +102,7 @@ public class Manager {
 	 * @return
 	 */
 	public List<Booking> getNotYetValidatedBookings() {
+		if(!currentUser.canValidateBookings()){return null;}
 		List<Booking> notValidatedBookings = new LinkedList<Booking>();
 		for (BookingCalendar calendar : bookings.values()) {
 			for(Booking booking : calendar.getBookings()) {
@@ -130,5 +138,14 @@ public class Manager {
 		BorrowableStack borrowable = getBorrowableById(id);
 		// TODO : more data
 		return borrowable.getName();
+	}
+	
+	// method to fill the stock with dummy elements for testing
+	void fillTemporaryStock(){
+		stock.add(new BorrowableStack(0, new BorrowableModel(0, "item0")));
+		bookings.put(0, new BookingCalendar());
+		
+		stock.add(new BorrowableStack(1, new BorrowableModel(1, "item1")));
+		bookings.put(1,  new BookingCalendar());
 	}
 }

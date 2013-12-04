@@ -28,7 +28,9 @@ public class DateInterval implements Comparable<DateInterval> {
 	public DateInterval(Date start, Date end) throws IllegalArgumentException {
 		// Check the validity of the interval
 		//
-		if (start.after(end)) {
+		if (start.after(end) && !start.equals(end)) {
+			System.out.println(start);
+			System.out.println(end);
 			throw new IllegalArgumentException(
 					StringConfig.ERROR_INTERVAL_INVALID);
 		}
