@@ -24,11 +24,47 @@ public class ManagerTest {
 	}
 	
 	@Test
-	public void book(){
+	public void setUser(){
 		Manager m = new Manager();
+		
 		m.setUser(new User(0, "student", UserType.STUDENT));
 		
-		// TODO (i'm too tired and bored right now but it'll be done tomorrow morning)
+		try{
+			m.setUser(new User(0, "student", UserType.STUDENT));
+			
+			m.setUser(new User(0, "test", UserType.STUDENT));
+			
+			fail("Runtime exception should have been thrown");
+		} catch(RuntimeException e){
+			
+		}
+	}
+	
+	@Test
+	public void book(){
+		Manager m = new Manager();
+		m.fillTemporaryStock();
+		m.setUser(new User(0, "student", UserType.STUDENT));
+		
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, 5);
+		Date plus5 = c.getTime();
+		assertTrue(m.book(0, 0, new Date(), plus5, "test"));
+		assertFalse(m.book(0, 0, new Date(), plus5, "test2"));
+		
+		c.add(Calendar.DAY_OF_MONTH, 6);
+		Date plus11 = c.getTime();
+		assertFalse(m.book(1, 0, new Date(), plus11, "test3"));
+		
+		c.add(Calendar.DAY_OF_MONTH, 4);
+		Date plus15 = c.getTime();
+		assertFalse(m.book(1, 0, new Date(), plus15, "test4"));
+		
+		m.setUser(new User(1, "manager", UserType.STOCK_MANAGER));
+		assertFalse(m.book(1, 1, new Date(), plus5, "test5"));
+		
+		m.setUser(new User(2, "teacher", UserType.TEACHER));
+		assertTrue(m.book(1, 2, plus11, plus15, "test6"));		
 	}
 	
 	@Test

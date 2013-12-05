@@ -1,6 +1,7 @@
 package borrowmanager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,15 +19,36 @@ public class Manager {
 	private Map<Integer, BookingCalendar> bookings;
 	private User currentUser;
 	private List<BorrowableStack> stock;
+	/**
+	 * Users of the Manager
+	 */
+	private List<User> users;
 
 	public Manager() {
 		this.currentUser = null;
 		this.bookings = new HashMap<Integer, BookingCalendar>();
 		this.stock = new ArrayList<BorrowableStack>();
+		this.users = new LinkedList<User>();
 	}
 	
 	public void setUser(User u){
+		if(users.contains(u) && this.getUser(u.getId()) != u){
+			throw new RuntimeException("This userid is already taken !");
+		}
+		if(!users.contains(u)){
+			users.add(u);
+			Collections.sort(users);
+		}
 		this.currentUser = u;
+	}
+	
+	public User getUser(Integer id){
+		for(User u : users){
+			if(u.getId() == id){
+				return u;
+			}
+		}
+		return null;
 	}
 	
 	public Boolean book(Integer borrowableId, Integer borrowerId, Date start, Date end, String reason) {
@@ -44,9 +66,13 @@ public class Manager {
 			return false;
 		}
 		
-		BookingCalendar calendar = bookings.get(borrowerId);
+		BookingCalendar calendar = bookings.get(borrowableId);
 		
 		if (calendar == null) {
+			return false;
+		}
+		
+		if(!isAvailable(borrowableId, start, end)){
 			return false;
 		}
 		
