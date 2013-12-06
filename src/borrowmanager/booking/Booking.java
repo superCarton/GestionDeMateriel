@@ -1,5 +1,6 @@
 package borrowmanager.booking;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import borrowmanager.element.BorrowableModel;
@@ -112,9 +113,10 @@ public class Booking implements Comparable<Booking> {
 	 * @return	Is the booking late?
 	 */
 	public boolean end(){
+		this.interval.end();
+		this.isFinished = true;
+		
 		if(!isLate()){
-			this.interval.end();
-			this.isFinished = true;
 			return false;
 		}
 		return true;
@@ -185,6 +187,14 @@ public class Booking implements Comparable<Booking> {
 				+ "\nThis item has been booked by user n�" + borrowerId
 				+ "\nFor: " + reason + "\nThis booking has " + ((isValidated)?"":"not ")
 				+ "been validated by a manager\n" + interval.toString();
+	}
+	
+	public String toListString(SimpleDateFormat format) {
+		String startString = format.format(getInterval().getStart());
+		String endString = format.format(getInterval().getEnd());
+		String notValidatedStr = !isValidated ? "[NOT VALIDATED] " : "";
+		String late = isLate() ? "[LATE !] ":"";
+		return notValidatedStr+late+borrowableStack.getName()+" x"+getQuantity()+" ["+startString+" - "+endString+"] | Details: "+getReason();
 	}
 
 	@Override

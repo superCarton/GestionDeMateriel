@@ -126,11 +126,14 @@ public class TextInterface {
 		Boolean valid = false;
 		
 		while (!valid) {
+			System.out.println("");
+			System.out.println("===========================");
 			System.out.println("What do you want to do ?");
 			System.out.println("   1. Borrow something");
 			System.out.println("   2. Give back something");
 			System.out.println("   3. Log out");
-			System.out.println("Type 1, 2 or 3 :");
+			System.out.println("   4. Save to file");
+			System.out.println("Type 1, 2, 3 or 4 :");
 			
 			try {
 				input = br.readLine();
@@ -142,10 +145,18 @@ public class TextInterface {
 			
 			if (input.equals("1")) {
 				borrowMenu();
+				return;
 			} else if (input.equals("2")) {
 				giveBackMenu();
+				return;
 			} else if (input.equals("3")) {
 				logout();
+				return;
+			} else if (input.equals("4")) {
+				manager.save();
+				System.out.println("Données sauvegardées.");
+				mainMenu();
+				return;
 			} else {
 				valid = false;
 			}
@@ -190,7 +201,7 @@ public class TextInterface {
 		
 		
 		//List<BorrowableStack> userStock = manager.getUserStock(user.getId());
-		List<Booking> userBookings = manager.getUserBookings(user.getId());
+		List<Booking> userBookings = manager.getUserActiveBookings(user.getId());
 		if (userBookings.size() == 0) {
 			System.out.println("But you don't have any item to return! Nice job!");
 			mainMenu();
@@ -350,12 +361,15 @@ public class TextInterface {
 			System.out.println("Select an item in the following list :");
 			Integer i = 1;
 			for (Booking b : list) {
+				System.out.println("   "+(i++)+" "+b.toListString(simpleDateFormat));
+				/*
 				String borrowableName = b.getBorrowableStack().getName();
 				Date start = b.getInterval().getStart();
 				Date end = b.getInterval().getEnd();
 				String startString = simpleDateFormat.format(start);
 				String endString = simpleDateFormat.format(end);
 				System.out.println("   "+(i++)+" "+borrowableName+" x"+b.getQuantity()+" ["+startString+" - "+endString+"] | Details: "+b.getReason());
+				*/
 			}
 			System.out.println("   b. Go back");
 			
@@ -398,12 +412,75 @@ public class TextInterface {
 		return -1;
 	}
 	
-	private BorrowableStack pickItemInUserInventory() {
-		return null;
+	private void mainMenuStockManager() {
+		String input = null;
+		while (true) {
+			System.out.println("You are in stock management interface !");
+			System.out.println("What do you want to do ?");
+			
+			System.out.println("   1. Review not yet validated bookings");
+			System.out.println("   2. View all bookings");
+			System.out.println("   3. View late bookings");
+			System.out.println("   4. Logout");
+			
+			try {
+				input = br.readLine();
+			} catch (IOException e) {
+				// do nothing
+			}
+			
+			if (input.equals("1")) {
+				reviewNotYetValidatedMenu();
+				return;
+			}
+			else if (input.equals("2")) {
+				viewAllBookings();
+				return;
+			}
+			else if (input.equals("3")) {
+				viewAllLateBookings();
+				return;
+			}
+			else if (input.equals("4")) {
+				logout();
+				return;
+			}
+		}
+		
+	}
+
+	private void viewAllBookings() {
+		System.out.println("Here are all the booking in the reservation system :");
+		List<Booking> bookings = manager.getBookings();
+		for(Booking b : bookings) {
+			System.out.println(b.toListString(simpleDateFormat));
+		}
+		System.out.println("__________");
+		mainMenu();
 	}
 	
-	private void mainMenuStockManager() {
+	private void viewAllLateBookings() {
+		List<Booking> bookings = manager.getBookings();
+		for(Booking b : bookings) {
+			if (b.isLate()) {
+				System.out.println(b.toListString(simpleDateFormat));
+			}
+		}
+		System.out.println("__________");
+		mainMenu();
+	}
+
+	private void reviewNotYetValidatedMenu() {
+		System.out.println("List of the bookings that are not validated yet.");
+		System.out.println("Pick the one you want to validate :");
 		
+		List<Booking> bookings = manager.getNotYetValidatedBookings();
+		Integer listIndex = pickBookingInList(bookings);
+		listIndex--;
+		
+		bookings.get(listIndex).validate();
+		System.out.println("Booking validated successfuly !");
+		mainMenu();
 	}
 	
 }

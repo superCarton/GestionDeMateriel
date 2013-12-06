@@ -78,13 +78,16 @@ public class BorrowableStock {
 		long endTime = end.getTime();
 		long dayLength = 24*60*60*1000;
 		
+		System.out.println("START");
 		for(long i = startTime ; i <= endTime ; i+= dayLength) {
 			Date d = new Date(i);
 			System.out.println("Checking availability for date : "+d.toLocaleString());
 			if (!isAvailable(quantity, d)) {
+				System.out.println("END");
 				return false;
 			}
 		}
+		System.out.println("END");
 		return true;
 	}
 	
@@ -96,7 +99,7 @@ public class BorrowableStock {
 	 */
 	public boolean isAvailable(Integer quantity, Date date) {
 		int available = getAvailableNumber(date);
-		return available > 0;
+		return available >= quantity;
 	}
 	
 	/**
@@ -118,12 +121,11 @@ public class BorrowableStock {
 		for(Booking b : calendar.getBookings()) {
 			if (b.getInterval().contains(date)) {
 				//System.out.println(b.getInterval().toString()+" contains "+date.toLocaleString());
-				//System.out.println("   ==> quantity = "+b.getQuantity());
+				//System.out.println("   ==> existing booking quantity = "+b.getQuantity());
 				availableNumber -= b.getQuantity();
 			}
 		}
-		System.out.println("Available number @ "+date.toLocaleString()+" : "+availableNumber);
-		//System.out.println("Returning availableNumbers = "+availableNumber);
+		//System.out.println("Available number @ "+date.toLocaleString()+" : "+availableNumber);
 		return availableNumber;
 	}
 }

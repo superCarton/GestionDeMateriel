@@ -99,7 +99,6 @@ public class Manager {
 	 * @return True if the borrowable is available, false otherwise.
 	 */
 	public Boolean isAvailable(Integer borrowableId, Integer quantity, Date start, Date end) {
-		System.out.println("Manager: isAvailable ?");
 		BorrowableStock stock = this.stock.get(borrowableId);
 		if (stock != null) {
 			return stock.isAvailable(quantity, start, end);
@@ -123,6 +122,10 @@ public class Manager {
 	 */
 	public Boolean giveBack(Booking booking) {
 		return booking.end();
+	}
+	
+	public void save() {
+		
 	}
 	
 	/**
@@ -196,36 +199,27 @@ public class Manager {
 		stock.put(stockB.getId(), stockB);
 	}
 	
-	/**
-	 * Returns the list of the items borrowed by a user.
-	 * @param userId The ID of the user.
-	 * @return The list of borrowed items.
-	 */
-	public List<BorrowableStack> getUserBorrowedItems(Integer userId) {
-		List<BorrowableStack> list = new LinkedList<BorrowableStack>();
-		for(BorrowableStock stock : this.stock.values()) {	
-			BookingCalendar calendar = stock.getCalendar(); //bookings.get(borrowableID);
-			for(Booking b : calendar.getBookings()) {
-				if (b.getBorrowerId() == userId) {
-					BorrowableStack stack = new BorrowableStack(stock.getModel(), b.getQuantity());
-					list.add(stack);
-				}
-			}
+	public List<Booking> getBookings() {
+		List<Booking> list = new LinkedList<Booking>();
+		for(Integer borrowableID : this.stock.keySet()) {
+			BorrowableStock stock = this.stock.get(borrowableID);
+			list.addAll(stock.getCalendar().getBookings());
 		}
 		return list;
 	}
+	
 	
 	/**
 	 * Returns the list of the bookings of a user.
 	 * @param userId
 	 * @return
 	 */
-	public List<Booking> getUserBookings(Integer userId) {
+	public List<Booking> getUserActiveBookings(Integer userId) {
 		List<Booking> list = new LinkedList<Booking>();
 		for(Integer borrowableID : this.stock.keySet()) {
 			BorrowableStock stock = this.stock.get(borrowableID);
 			for(Booking b : stock.getCalendar().getBookings()) {
-				if (b.getBorrowerId() == userId) {
+				if (b.getBorrowerId() == userId && !b.isFinished()) {
 					list.add(b);
 				}
 			}
