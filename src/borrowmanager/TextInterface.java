@@ -3,17 +3,14 @@ package borrowmanager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import borrowmanager.booking.Booking;
 import borrowmanager.booking.DateInterval;
-import borrowmanager.element.BorrowableStack;
 import borrowmanager.element.BorrowableStock;
 import borrowmanager.user.User;
 import borrowmanager.user.UserType;
@@ -40,8 +37,31 @@ public class TextInterface {
 	}
 	
 	public void welcome() {
+		System.out.println();
 		System.out.println("Welcome to the borrowing manager.");
-		createAccount();		
+		System.out.println();
+		System.out.println("Do you want to login or create a new account ?");
+		
+		String input = null;
+		while (true) {
+			System.out.println("   1. Login");
+			System.out.println("   2. Create account");
+			try {
+				input = br.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (input.equals("1")) {
+				login();
+				return;
+			}
+			else if (input.equals("2")) {
+				createAccount();
+				return;
+			}
+		}
 	}
 	
 	private void login() {
@@ -56,14 +76,18 @@ public class TextInterface {
 			} catch (IOException e) {
 				// nothing
 			}
-		    user = new User(1, s, UserType.STUDENT);
-		    manager.setUser(user);
-		    System.out.println("Hello "+user.getName()+" !");
+		    
+		    manager.getUserByName(s);
+		    if (user != null) {
+		    	manager.setUser(user);
+			    System.out.println("Hello "+user.getName()+" !");
+			    mainMenu();
+		    }
 		 }
 	}
 	
 	private void logout() {
-		manager.setUser(null);
+		//manager.setUser(null);
 		welcome();
 	}
 	

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import borrowmanager.booking.Booking;
 import borrowmanager.booking.BookingCalendar;
-import borrowmanager.booking.DateInterval;
 
 public class BorrowableStock {
 	private BorrowableModel model;
@@ -53,14 +52,26 @@ public class BorrowableStock {
 		return model.getName();
 	}
 	
+	/**
+	 * Returns the model of the borrowable
+	 * @return
+	 */
 	public BorrowableModel getModel() {
 		return model;
 	}
 	
+	/**
+	 * Returns the initial value of the stock. 
+	 * @return
+	 */
 	public Integer getInitialStock() {
 		return initialStock;
 	}
 	
+	/**
+	 * Returns the booking calendar of the stock.
+	 * @return
+	 */
 	public BookingCalendar getCalendar() {
 		return calendar;
 	}
@@ -78,16 +89,12 @@ public class BorrowableStock {
 		long endTime = end.getTime();
 		long dayLength = 24*60*60*1000;
 		
-		System.out.println("START");
 		for(long i = startTime ; i <= endTime ; i+= dayLength) {
 			Date d = new Date(i);
-			System.out.println("Checking availability for date : "+d.toLocaleString());
 			if (!isAvailable(quantity, d)) {
-				System.out.println("END");
 				return false;
 			}
 		}
-		System.out.println("END");
 		return true;
 	}
 	

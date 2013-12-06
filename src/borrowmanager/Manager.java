@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import borrowmanager.booking.Booking;
-import borrowmanager.booking.BookingCalendar;
 import borrowmanager.booking.DateInterval;
 import borrowmanager.element.BorrowableModel;
-import borrowmanager.element.BorrowableStack;
 import borrowmanager.element.BorrowableStock;
 import borrowmanager.user.User;
 
@@ -36,10 +34,12 @@ public class Manager {
 		if(users.contains(u) && this.getUser(u.getId()) != u){
 			throw new RuntimeException("This userid is already taken !");
 		}
+		
 		if(!users.contains(u)){
 			users.add(u);
 			Collections.sort(users);
 		}
+		
 		this.currentUser = u;
 	}
 	
@@ -52,7 +52,8 @@ public class Manager {
 		return null;
 	}
 	
-	public Boolean book(Integer borrowableId, Integer quantity, Integer borrowerId, Date start, Date end, String reason) {
+	public Boolean book(Integer borrowableId, Integer quantity,
+			Integer borrowerId, Date start, Date end, String reason) {
 		// Date verifications
 		
 		// Time before the beggining of the booking (reservation)
@@ -77,8 +78,6 @@ public class Manager {
 			return false;
 		}
 		
-		//BorrowableStack bookedStack = stock.get(borrowableId).extract(quantity);
-		
 		return stock.getCalendar().book(borrowerId, quantity, bookingInterval, reason);
 	}
 
@@ -100,6 +99,7 @@ public class Manager {
 	 */
 	public Boolean isAvailable(Integer borrowableId, Integer quantity, Date start, Date end) {
 		BorrowableStock stock = this.stock.get(borrowableId);
+		System.out.println("stock.isAvailable (from Manager.isAvailable long signature)");
 		if (stock != null) {
 			return stock.isAvailable(quantity, start, end);
 		}
@@ -225,6 +225,15 @@ public class Manager {
 			}
 		}
 		return list;
+	}
+
+	public User getUserByName(String s) {
+		for(User u : users) {
+			if (u.getName().toLowerCase().equals(s.toLowerCase())) {
+				return u;
+			}
+		}
+		return null;
 	}
 	
 	
