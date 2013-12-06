@@ -48,17 +48,17 @@ public class Booking implements Comparable<Booking> {
 	 * @param interval	The interval (boundaries) of the booking
 	 * @param reason	Why is the booking made
 	 */
-	public Booking(Integer borrower, BorrowableStack borrowable, DateInterval interval, String reason){
+	public Booking(Integer borrower, BorrowableStack borrowableStack, DateInterval interval, String reason){
 		// Check the validity of the IDs
 		//
-		if(borrower == null || borrowable == null || interval == null){
+		if(borrower == null || borrowableStack == null || interval == null){
 			throw new IllegalArgumentException(StringConfig.ERROR_BOOKING_INVALID);
 		}
 		
 		// Store the properties
 		//
 		this.borrowerId = borrower;
-		this.borrowables = borrowable;
+		this.borrowables = borrowableStack;
 		this.reason = reason;
 		this.interval = interval;
 		this.isFinished = false;
@@ -126,7 +126,7 @@ public class Booking implements Comparable<Booking> {
 	 * Is the booking over (item was returned)
 	 */
 	public boolean isFinished(){
-		return this.isFinished();
+		return isFinished;
 	}
 
 	/**
@@ -174,8 +174,8 @@ public class Booking implements Comparable<Booking> {
 	
 	@Override
 	public String toString() {
-		return "Booking for item n°" + borrowables 
-				+ "\nThis item has been booked by user n°" + borrowerId
+		return "Booking for item nï¿½" + borrowables 
+				+ "\nThis item has been booked by user nï¿½" + borrowerId
 				+ "\nFor: " + reason + "\nThis booking has " + ((isValidated)?"":"not ")
 				+ "been validated by a manager\n" + interval.toString();
 	}

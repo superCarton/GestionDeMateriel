@@ -9,13 +9,18 @@ public class BorrowableStack {
 	private Integer quantity;
 	
 	public BorrowableStack(Integer id, BorrowableModel model) {
-		this(id, model, State.NEW);
+		this(id, model, 1);
 	}
 	
-	public BorrowableStack(Integer id, BorrowableModel model, State state) {
+	public BorrowableStack(Integer id, BorrowableModel model, Integer quantity) {
+		this(id, model, quantity, State.NEW);
+	}
+	
+	public BorrowableStack(Integer id, BorrowableModel model, Integer quantity, State state) {
 		this.id = id;
 		this.model = model;
 		this.state = state;
+		this.quantity = quantity;
 	}
 
 	public HardwareType getType() {
@@ -51,5 +56,27 @@ public class BorrowableStack {
 	
 	public BorrowableModel getModel() {
 		return model;
+	}
+	
+	public Integer getQuantity() {
+		return quantity;
+	}
+	
+	/**
+	 * Extract a substack of the stack.
+	 * Returns the extracted stack.
+	 * Returns null if it is impossible to extract a stack of this size.
+	 * @param n The size of the substack to extract.
+	 * @return The extracted stack.
+	 */
+	public BorrowableStack extract(Integer n) {
+		if (n >= quantity) {
+			BorrowableStack newStack = new BorrowableStack(-1, model, quantity);
+			quantity -= n;
+			return newStack;
+		}
+		else {
+			return null;
+		}
 	}
 }

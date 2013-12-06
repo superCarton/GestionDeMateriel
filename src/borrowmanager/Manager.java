@@ -51,7 +51,7 @@ public class Manager {
 		return null;
 	}
 	
-	public Boolean book(Integer borrowableId, Integer borrowerId, Date start, Date end, String reason) {
+	public Boolean book(Integer borrowableId, Integer quantity, Integer borrowerId, Date start, Date end, String reason) {
 		// Date verifications
 		
 		// Time before the beggining of the booking (reservation)
@@ -72,18 +72,20 @@ public class Manager {
 			return false;
 		}
 		
-		if(!isAvailable(borrowableId, start, end)){
+		if(!isAvailableInQuantity(borrowableId, quantity, start, end)){
 			return false;
 		}
 		
-		return calendar.book(borrowerId, stock.get(borrowableId), bookingInterval, reason);
+		BorrowableStack bookedStack = stock.get(borrowableId).extract(quantity);
+		
+		return calendar.book(borrowerId, bookedStack, bookingInterval, reason);
 	}
 
-	public Boolean isAvailable(Integer borrowableId) {
+	public Boolean isAvailable(Integer borrowableId, Integer quantity) {
 		BorrowableStack b = getBorrowableById(borrowableId);
 		if (b != null) {
 			Date now = new Date();
-			return isAvailable(borrowableId, now, now);
+			return isAvailable(borrowableId, quantity, now, now);
 		}
 		return false;
 	}
@@ -95,9 +97,16 @@ public class Manager {
 	 * @param end The end date of the interval
 	 * @return True if the borrowable is available, false otherwise.
 	 */
-	public Boolean isAvailable(Integer borrowableId, Date start, Date end) {
+	public Boolean isAvailable(Integer borrowableId, Integer quantity, Date start, Date end) {
 		BookingCalendar calendar = bookings.get(borrowableId);
-		return calendar.isAvailable(start, end);
+		return calendar.isAvailable(quantity, start, end);
+	}
+	
+	// TODO : check
+	public Boolean isAvailableInQuantity(Integer borrowableId, Integer quantity, Date start, Date end) {
+		BookingCalendar calendar = bookings.get(borrowableId);
+		BorrowableStack borrowableStack = getBorrowableById(borrowableId);
+		return calendar.isAvailableInQuantity(borrowableStack.getQuantity(), quantity, start, end);
 	}
 
 	/**
@@ -105,8 +114,12 @@ public class Manager {
 	 * @param borrowableId The ID of the borrowable to give back.
 	 * @return True if the borrowable was given back too late.
 	 */
-	public Boolean giveBack(Integer borrowableId) {
+	public Boolean giveBack(Booking booking) {
+		BorrowableStack stack = booking.getBorrowableStack();
+		return booking.end();
+		/*
 		// Check that the ID matches some borrowable.
+		
 		BookingCalendar calendar = bookings.get(borrowableId);
 		if (calendar == null) {
 			return false;
@@ -120,7 +133,7 @@ public class Manager {
 		
 		// TODO : end() returns false if the borrowable was given back too late.
 		return b.end();
-
+		*/
 	}
 
 	/**
@@ -166,6 +179,24 @@ public class Manager {
 		return borrowable.getName();
 	}
 	
+	/**
+	 * @deprecated
+	 * Returns the data representing the stock. The Integer is the ID of the BorrowableModel
+	 * and the String is its name.
+	 * @return The data representing the stock.
+	 */
+	public Map<Integer, String> getAvailableStockData() {
+		Map<Integer, String> res = new HashMap<Integer, String>();
+		for (BorrowableStack b : stock) {
+			res.put(b.getId(), b.getName());
+		}
+		return res;
+	}
+	
+	public List<BorrowableStack> getStock() {
+		return stock;
+	}
+	
 	// method to fill the stock with dummy elements for testing
 	void fillTemporaryStock(){
 		stock.add(new BorrowableStack(0, new BorrowableModel(0, "item0")));
@@ -173,5 +204,39 @@ public class Manager {
 		
 		stock.add(new BorrowableStack(1, new BorrowableModel(1, "item1")));
 		bookings.put(1,  new BookingCalendar());
+	}
+
+	/**
+	 * Returns the list of the items borrowed by a user.
+	 * @param userId The ID of the user.
+	 * @return The list of borrowed items.
+	 */
+	public List<BorrowableStack> getUserBorrowedItems(Integer userId) {
+		List<Booking> bookings = getUserBookings(userId);
+		List<BorrowableStack> list = new LinkedList<BorrowableStack>();
+		for(Booking b : bookings) {
+			if (!b.isFinished()) {
+				list.add(b.getBorrowableStack());
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * Returns the list of the bookings of a user.
+	 * @param userId
+	 * @return
+	 */
+	public List<Booking> getUserBookings(Integer userId) {
+		List<Booking> list = new LinkedList<Booking>();
+		for(Integer borrowableID : bookings.keySet()) {
+			BookingCalendar calendar = bookings.get(borrowableID);
+			for(Booking b : calendar.getBookings()) {
+				if (b.getBorrowerId() == userId) {
+					list.add(b);
+				}
+			}
+		}
+		return list;
 	}
 }
