@@ -14,7 +14,11 @@ import borrowmanager.booking.DateInterval;
 import borrowmanager.element.BorrowableStock;
 import borrowmanager.user.User;
 import borrowmanager.user.UserType;
-
+/**
+ * Text UI for the borrowmanager project
+ * @author Tom Guillermin
+ *
+ */
 public class TextInterface {
 	
 	private Integer idAutoIncrement = 1;

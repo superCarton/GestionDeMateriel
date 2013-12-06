@@ -6,6 +6,11 @@ import java.util.Map;
 import borrowmanager.booking.Booking;
 import borrowmanager.booking.BookingCalendar;
 
+/**
+ * BorrowableStock, representing the stock of models
+ * @author  Tom Guillermin
+ *
+ */
 public class BorrowableStock {
 	private BorrowableModel model;
 	private BookingCalendar calendar;

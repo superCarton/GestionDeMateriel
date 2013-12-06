@@ -2,6 +2,11 @@ package borrowmanager.element;
 
 import java.util.Map;
 
+/**
+ * BorrowableStack, representing a list of borrowables for the stock
+ * @author  Tom Guillermin
+ *
+ */
 public class BorrowableStack {
 	private BorrowableModel model;
 	private State state;

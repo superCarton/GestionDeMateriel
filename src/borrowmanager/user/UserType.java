@@ -1,5 +1,10 @@
 package borrowmanager.user;
 
+/**
+ * UserType enum, listing all the possible user types
+ * @author Tom Guillermin
+ *
+ */
 public enum UserType {
 	STUDENT,
 	TEACHER,

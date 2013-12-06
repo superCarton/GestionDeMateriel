@@ -1,5 +1,10 @@
 package borrowmanager.user;
 
+/**
+ * User class, represents an user in the software
+ * @author Tom Guillermin
+ *
+ */
 public class User implements Comparable<User> {
 	private Integer id;
 	private String name;

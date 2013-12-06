@@ -2,6 +2,11 @@ package borrowmanager.element;
 
 import java.util.Map;
 
+/**
+ * Class containing the data defining a borrowable
+ * @author Tom Guillermin
+ *
+ */
 public class BorrowableModel {
 	private String name;
 	private Integer id;
