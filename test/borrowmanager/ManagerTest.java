@@ -10,6 +10,11 @@ import org.junit.Test;
 import borrowmanager.user.User;
 import borrowmanager.user.UserType;
 
+/**
+ * JUnit test module for Manager
+ * @author Franck Dechavanne
+ *
+ */
 public class ManagerTest {
 	@Test
 	public void testPermissions(){
