@@ -106,6 +106,10 @@ public class BookingCalendar {
 	public Boolean book(Integer borrowerId, Integer quantity,
 			DateInterval interval, String reason) {
 		BorrowableStack stack = new BorrowableStack(borrowableModel, quantity);
+		Date now = new Date();
+		if (interval.getStart().compareTo(now) < 0 || interval.getEnd().compareTo(now) < 0) {
+			return false;
+		}
 		try {
 			Booking b = new Booking(borrowerId, stack, interval,
 					reason);

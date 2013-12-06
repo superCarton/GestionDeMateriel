@@ -47,9 +47,9 @@ public class BookingTest {
 	@Test
 	public void constructorErrors(){
 		try{
-			new Booking(0, new BorrowableStack(0, null), null, "test");
+			new Booking(0, new BorrowableStack(null, 0), null, "test");
 			fail("IllegalArgumentException should have been thrown on interval");
-			new Booking(null, new BorrowableStack(0, null), new DateInterval(start, end), "test");
+			new Booking(null, new BorrowableStack(null, 0), new DateInterval(start, end), "test");
 			fail("IllegalArgumentException should have been thrown on borrowerid");
 			new Booking(0, null, new DateInterval(start, end), "test");
 			fail("IllegalArgumentException should have been thrown on borrowableid");
@@ -60,17 +60,17 @@ public class BookingTest {
 	
 	@Test
 	public void overlaps(){
-		Booking b = new Booking(0, new BorrowableStack(0, null), new DateInterval(start, end), "test");
+		Booking b = new Booking(0, new BorrowableStack(null, 0), new DateInterval(start, end), "test");
 		
 		assertTrue(b.overlaps(new DateInterval(start2, end2)));
 		
-		b = new Booking(0, new BorrowableStack(0, null), new DateInterval(end2, end), "test");
+		b = new Booking(0, new BorrowableStack(null, 0), new DateInterval(end2, end), "test");
 		assertFalse(b.overlaps(new DateInterval(start, start2)));
 	}
 	
 	@Test
 	public void validate(){
-		Booking b = new Booking(0, new BorrowableStack(0, null), new DateInterval(start, end), "test");
+		Booking b = new Booking(0, new BorrowableStack(null, 0), new DateInterval(start, end), "test");
 		
 		assertFalse(b.isValidated());
 		
@@ -81,12 +81,12 @@ public class BookingTest {
 	
 	@Test
 	public void isLateAndIsCurrent(){
-		Booking b = new Booking(0, new BorrowableStack(0, null), new DateInterval(start, end), "test");
+		Booking b = new Booking(0, new BorrowableStack(null, 0), new DateInterval(start, end), "test");
 		
 		assertFalse(b.isLate());
 		assertTrue(b.isCurrent());
 		
-		b = new Booking(0, new BorrowableStack(0, null), new DateInterval(startold, endold), "test");
+		b = new Booking(0, new BorrowableStack(null, 0), new DateInterval(startold, endold), "test");
 		
 		assertTrue(b.isLate());
 		assertFalse(b.isCurrent());
@@ -94,8 +94,8 @@ public class BookingTest {
 	
 	@Test
 	public void compareTo(){
-		Booking b = new Booking(0, new BorrowableStack(0, null), new DateInterval(start, end), "test"),
-				b2 = new Booking(0, new BorrowableStack(0, null), new DateInterval(startold, endold), "test");
+		Booking b = new Booking(0, new BorrowableStack(null, 0), new DateInterval(start, end), "test"),
+				b2 = new Booking(0, new BorrowableStack(null, 0), new DateInterval(startold, endold), "test");
 
 		assertTrue(b.compareTo(b2) > 0);
 		assertTrue(b2.compareTo(b) < 0);

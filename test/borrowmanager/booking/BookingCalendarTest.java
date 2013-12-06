@@ -23,7 +23,7 @@ public class BookingCalendarTest {
 	public static void setup(){
 		start = Calendar.getInstance().getTime();
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_MONTH, 7);
+		c.add(Calendar.DAY_OF_MONTH, 6);
 		end = c.getTime();
 		
 		c = Calendar.getInstance();
@@ -43,26 +43,34 @@ public class BookingCalendarTest {
 	
 	@Test
 	public void book(){
-		BookingCalendar bc = new BookingCalendar();
+		BookingCalendar bc = new BookingCalendar(null);
+		Integer borrowableId = 0;
+		Integer userId = 0;
+		Integer quantity = 1;
 		
 		assertTrue(bc.getBookings().isEmpty());
 		
-		assertTrue(bc.book(0, new BorrowableStack(0, null), new DateInterval(start, end), "test"));
+		assertTrue(bc.book(userId, quantity, new DateInterval(start, end), "test"));
 		
 		assertEquals(1, bc.getBookings().size());
 		
-		assertFalse(bc.book(0, null, new DateInterval(startold, endold), "test"));
+		assertFalse(bc.book(userId, quantity, new DateInterval(startold, endold), "test"));
 		
 		assertEquals(1, bc.getBookings().size());
 	}
 	
 	@Test
 	public void getCurrentBooking(){
-		BookingCalendar bc = new BookingCalendar();	
-		assertTrue(bc.book(0, new BorrowableStack(0, null), new DateInterval(end2, end), "test"));
+		BookingCalendar bc = new BookingCalendar(null);
+		Integer borrowableId = 0;
+		Integer userId = 0;
+		Integer quantity = 1;
+		
+		assertTrue(bc.book(userId, quantity, new DateInterval(end2, end), "test"));
 		assertNull(bc.getCurrentBooking());
-		assertTrue(bc.book(0, new BorrowableStack(0, null), new DateInterval(startold, start2), "test"));
-		assertNotNull(bc.getCurrentBooking());
+		
+		assertFalse(bc.book(userId, quantity, new DateInterval(startold, start2), "test"));
+		assertNull(bc.getCurrentBooking());
 		
 	}
 	

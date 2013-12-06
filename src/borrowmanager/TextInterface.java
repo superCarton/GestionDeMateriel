@@ -82,6 +82,12 @@ public class TextInterface {
 		    	manager.setUser(user);
 			    System.out.println("Hello "+user.getName()+" !");
 			    mainMenu();
+			    return;
+		    }
+		    else {
+		    	System.out.println("User "+s+" not found!");
+		    	welcome();
+		    	return;
 		    }
 		 }
 	}
@@ -479,6 +485,11 @@ public class TextInterface {
 	private void viewAllBookings() {
 		System.out.println("Here are all the booking in the reservation system :");
 		List<Booking> bookings = manager.getBookings();
+		
+		if (bookings.size() == 0) {
+			System.out.println("No booking to display for now.");
+		}
+		
 		for(Booking b : bookings) {
 			String userName = manager.getUser(b.getBorrowerId()).getName();
 			System.out.println(b.toListString(simpleDateFormat)+" [Borrowed by "+userName+"]");
@@ -489,6 +500,11 @@ public class TextInterface {
 	
 	private void viewAllLateBookings() {
 		List<Booking> bookings = manager.getBookings();
+		
+		if (bookings.size() == 0) {
+			System.out.println("No late booking to display. People are nice these days.");
+		}
+		
 		for(Booking b : bookings) {
 			if (b.isLate()) {
 				String userName = manager.getUser(b.getBorrowerId()).getName();
@@ -504,7 +520,20 @@ public class TextInterface {
 		System.out.println("Pick the one you want to validate :");
 		
 		List<Booking> bookings = manager.getNotYetValidatedBookings();
+		
+		if (bookings.size() == 0) {
+			System.out.println("There is not booking to valided for now !");
+			mainMenu();
+			return;
+		}
+		
 		Integer listIndex = pickBookingInList(bookings);
+		
+		if (listIndex == -1) {
+			mainMenu();
+			return;
+		}
+		
 		listIndex--; // for user convenience, the displayed list was indexed from one.
 		
 		bookings.get(listIndex).validate();
@@ -514,7 +543,7 @@ public class TextInterface {
 	
 	private void save() {
 		manager.save();
-		System.out.println("Données sauvegardées.");
+		System.out.println("Data saved to file.");
 		mainMenu();
 	}
 	
