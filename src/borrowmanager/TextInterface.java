@@ -456,7 +456,8 @@ public class TextInterface {
 		System.out.println("Here are all the booking in the reservation system :");
 		List<Booking> bookings = manager.getBookings();
 		for(Booking b : bookings) {
-			System.out.println(b.toListString(simpleDateFormat));
+			String userName = manager.getUser(b.getBorrowerId()).getName();
+			System.out.println(b.toListString(simpleDateFormat)+" [Borrowed by "+userName+"]");
 		}
 		System.out.println("__________");
 		mainMenu();
@@ -466,7 +467,8 @@ public class TextInterface {
 		List<Booking> bookings = manager.getBookings();
 		for(Booking b : bookings) {
 			if (b.isLate()) {
-				System.out.println(b.toListString(simpleDateFormat));
+				String userName = manager.getUser(b.getBorrowerId()).getName();
+				System.out.println(b.toListString(simpleDateFormat)+" [Borrowed by "+userName+"]");
 			}
 		}
 		System.out.println("__________");
@@ -479,7 +481,7 @@ public class TextInterface {
 		
 		List<Booking> bookings = manager.getNotYetValidatedBookings();
 		Integer listIndex = pickBookingInList(bookings);
-		listIndex--;
+		listIndex--; // for user convenience, the displayed list was indexed from one.
 		
 		bookings.get(listIndex).validate();
 		System.out.println("Booking validated successfuly !");
