@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 import borrowmanager.booking.Booking;
 import borrowmanager.booking.DateInterval;
 import borrowmanager.element.BorrowableStack;
+import borrowmanager.element.BorrowableStock;
 import borrowmanager.user.User;
 import borrowmanager.user.UserType;
 
@@ -42,7 +44,7 @@ public class TextInterface {
 		createAccount();		
 	}
 	
-	public void login() {
+	private void login() {
 		System.out.println("Please log in : ");
 		
 		boolean connected = false;
@@ -56,15 +58,16 @@ public class TextInterface {
 			}
 		    user = new User(1, s, UserType.STUDENT);
 		    manager.setUser(user);
+		    System.out.println("Hello "+user.getName()+" !");
 		 }
 	}
 	
-	public void logout() {
+	private void logout() {
 		manager.setUser(null);
 		welcome();
 	}
 	
-	public void createAccount() {
+	private void createAccount() {
 		System.out.println("Please select what you want to be :");
 		System.out.println("Available UserTypes :");
 		System.out.println("   1. STUDENT");
@@ -119,8 +122,6 @@ public class TextInterface {
 	}
 	
 	private void mainMenuBorrower() {
-		System.out.println("Hello "+user.getName()+" !");
-		
 		String input = null;
 		Boolean valid = false;
 		
@@ -173,7 +174,8 @@ public class TextInterface {
 			}
 			
 			if (tryToBook(itemId, quantity, interval, reason)) {
-				System.out.println("Booking waiting for confirmation by a stock manager.");
+				System.out.println("You registered your booking successfuly."
+						+" Your booking still has to be confirmed by a stock manager.");
 				mainMenu();
 			} else {
 				System.out.println("There was an error during the booking process. Please try again.");
@@ -185,10 +187,17 @@ public class TextInterface {
 	
 	private void giveBackMenu() {
 		System.out.println("You chose to give back something ! Good idea !");
-		System.out.println("Choose one of the item to give back");
+		
 		
 		//List<BorrowableStack> userStock = manager.getUserStock(user.getId());
 		List<Booking> userBookings = manager.getUserBookings(user.getId());
+		if (userBookings.size() == 0) {
+			System.out.println("But you don't have any item to return! Nice job!");
+			mainMenu();
+			return;
+		}
+		
+		System.out.println("Choose one of the item to give back");
 		Integer bookingID = pickBookingInList(userBookings);
 		
 		if (bookingID == -1) {
@@ -201,11 +210,15 @@ public class TextInterface {
 		
 		Booking booking = userBookings.get(bookingID);
 
-		//System.out.println("How many of this do you want to give back ?");
-		//Integer quantity = selectQuantity();
+		Boolean isLate = booking.end();
+		if (!isLate) {
+			System.out.println("You returned "+booking.getBorrowableStack().getName()+" on time! Congrats!");
+		}
+		else {
+			System.out.println("You returned "+booking.getBorrowableStack().getName()+" late. You will have to pay a fee.");
+		}
 		
-		// TODO : maybe pass a BorrowableStack ?
-		manager.giveBack(booking);
+		mainMenu();
 	}
 	
 	private boolean tryToBook(Integer borrowableId, Integer quantity, DateInterval interval, String reason) {
@@ -232,7 +245,7 @@ public class TextInterface {
 		
 		// Check if the item is available in the stock
 		//
-		if (!manager.isAvailableInQuantity(borrowableId, quantity, start, end)) {
+		if (!manager.isAvailable(borrowableId, quantity, start, end)) {
 			System.out.println("The item is not available for the specified date interval.");
 			return false;
 		}
@@ -291,20 +304,20 @@ public class TextInterface {
 
 	
 	private Integer pickItemInStock() {
-		return pickItemInList(manager.getStock());		
+		return pickItemInList(manager.getStockList());		
 	}
 	
 	/**
 	 * Pick an item in a list
 	 * @return
 	 */
-	private Integer pickItemInList(List<BorrowableStack> list) {
+	private Integer pickItemInList(Collection<BorrowableStock> list) {
 		String input = null;
 		Boolean valid = false;
 		
 		while (!valid) {
 			System.out.println("Select an item in the following list :");
-			for (BorrowableStack b : list) {
+			for (BorrowableStock b : list) {
 				String borrowableName = b.getName();
 				System.out.println("   "+b.getId()+". "+borrowableName);
 			}
@@ -316,7 +329,7 @@ public class TextInterface {
 				// do nothing
 			}
 			
-			for (BorrowableStack b : list) {
+			for (BorrowableStock b : list) {
 				Integer id = b.getId();
 				if (input.equals(Integer.toString(id))) {
 					return id;
@@ -332,7 +345,7 @@ public class TextInterface {
 	
 	private Integer pickBookingInList(List<Booking> list) {
 		String input = null;
-	
+		
 		while (true) {
 			System.out.println("Select an item in the following list :");
 			Integer i = 1;
@@ -342,7 +355,7 @@ public class TextInterface {
 				Date end = b.getInterval().getEnd();
 				String startString = simpleDateFormat.format(start);
 				String endString = simpleDateFormat.format(end);
-				System.out.println("   "+(i++)+" "+borrowableName+" ["+startString+" - "+endString+"] | Details: "+b.getReason());
+				System.out.println("   "+(i++)+" "+borrowableName+" x"+b.getQuantity()+" ["+startString+" - "+endString+"] | Details: "+b.getReason());
 			}
 			System.out.println("   b. Go back");
 			

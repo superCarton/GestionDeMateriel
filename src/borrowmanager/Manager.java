@@ -1,6 +1,6 @@
 package borrowmanager;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,12 +13,13 @@ import borrowmanager.booking.BookingCalendar;
 import borrowmanager.booking.DateInterval;
 import borrowmanager.element.BorrowableModel;
 import borrowmanager.element.BorrowableStack;
+import borrowmanager.element.BorrowableStock;
 import borrowmanager.user.User;
 
 public class Manager {
-	private Map<Integer, BookingCalendar> bookings;
+	//private Map<Integer, BookingCalendar> bookings;
 	private User currentUser;
-	private List<BorrowableStack> stock;
+	private Map<Integer, BorrowableStock> stock;
 	/**
 	 * Users of the Manager
 	 */
@@ -26,9 +27,9 @@ public class Manager {
 
 	public Manager() {
 		this.currentUser = null;
-		this.bookings = new HashMap<Integer, BookingCalendar>();
-		this.stock = new ArrayList<BorrowableStack>();
+		//this.bookings = new HashMap<Integer, BookingCalendar>();
 		this.users = new LinkedList<User>();
+		this.stock = new HashMap<Integer, BorrowableStock>();
 	}
 	
 	public void setUser(User u){
@@ -66,30 +67,30 @@ public class Manager {
 			return false;
 		}
 		
-		BookingCalendar calendar = bookings.get(borrowableId);
+		BorrowableStock stock = this.stock.get(borrowableId);
 		
-		if (calendar == null) {
+		if (stock == null) {
 			return false;
 		}
 		
-		if(!isAvailableInQuantity(borrowableId, quantity, start, end)){
+		if (!stock.isAvailable(quantity, start, end)){
 			return false;
 		}
 		
-		BorrowableStack bookedStack = stock.get(borrowableId).extract(quantity);
+		//BorrowableStack bookedStack = stock.get(borrowableId).extract(quantity);
 		
-		return calendar.book(borrowerId, bookedStack, bookingInterval, reason);
+		return stock.getCalendar().book(borrowerId, quantity, bookingInterval, reason);
 	}
 
 	public Boolean isAvailable(Integer borrowableId, Integer quantity) {
-		BorrowableStack b = getBorrowableById(borrowableId);
+		BorrowableStock b = this.stock.get(borrowableId);
 		if (b != null) {
 			Date now = new Date();
 			return isAvailable(borrowableId, quantity, now, now);
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns true if a borrowable is available for a given date interval
 	 * @param borrowableId The ID of the borrowable
@@ -98,16 +99,22 @@ public class Manager {
 	 * @return True if the borrowable is available, false otherwise.
 	 */
 	public Boolean isAvailable(Integer borrowableId, Integer quantity, Date start, Date end) {
-		BookingCalendar calendar = bookings.get(borrowableId);
-		return calendar.isAvailable(quantity, start, end);
+		System.out.println("Manager: isAvailable ?");
+		BorrowableStock stock = this.stock.get(borrowableId);
+		if (stock != null) {
+			return stock.isAvailable(quantity, start, end);
+		}
+		System.out.println("STOCK NULL!");
+		return false;
 	}
 	
+	/*
 	// TODO : check
 	public Boolean isAvailableInQuantity(Integer borrowableId, Integer quantity, Date start, Date end) {
 		BookingCalendar calendar = bookings.get(borrowableId);
 		BorrowableStack borrowableStack = getBorrowableById(borrowableId);
 		return calendar.isAvailableInQuantity(borrowableStack.getQuantity(), quantity, start, end);
-	}
+	}*/
 
 	/**
 	 * Give back a borrowable.
@@ -115,48 +122,32 @@ public class Manager {
 	 * @return True if the borrowable was given back too late.
 	 */
 	public Boolean giveBack(Booking booking) {
-		BorrowableStack stack = booking.getBorrowableStack();
 		return booking.end();
-		/*
-		// Check that the ID matches some borrowable.
-		
-		BookingCalendar calendar = bookings.get(borrowableId);
-		if (calendar == null) {
-			return false;
-		}
-		
-		// Get the current booking
-		Booking b = calendar.getCurrentBooking();
-		if (b == null) {
-			return false;
-		}
-		
-		// TODO : end() returns false if the borrowable was given back too late.
-		return b.end();
-		*/
 	}
-
+	
 	/**
 	 * 
 	 * @return
 	 */
 	public List<Booking> getNotYetValidatedBookings() {
-		if(!currentUser.canValidateBookings()){return null;}
+		if(!currentUser.canValidateBookings()){
+			return null;
+		}
+		
 		List<Booking> notValidatedBookings = new LinkedList<Booking>();
-		for (BookingCalendar calendar : bookings.values()) {
-			for(Booking booking : calendar.getBookings()) {
+		for (BorrowableStock stock: this.stock.values()) {
+			for(Booking booking : stock.getCalendar().getBookings()) {
 				if (!booking.isValidated()) {
 					notValidatedBookings.add(booking);
 				}
 			}
 		}
-		return notValidatedBookings;
-		
+		return notValidatedBookings;	
 	}
 
 	public Map<Integer, String> getStockDescriptionForFeature(String feature) {
 		Map<Integer, String> descriptions = new HashMap<Integer, String>();
-		for (BorrowableStack borrowable : stock) {
+		for (BorrowableStock borrowable : this.stock.values()) {
 			if (borrowable.hasFeature(feature)) {
 				descriptions.put(borrowable.getId(), borrowable.getName());
 			}
@@ -164,64 +155,66 @@ public class Manager {
 		return descriptions;
 	}
 
-	public BorrowableStack getBorrowableById(Integer id) {
-		for (BorrowableStack borrowable : stock) {
-			if (borrowable.getId() == id) {
-				return borrowable;
-			}
-		}
-		return null;
+	public BorrowableStock getBorrowableStockById(Integer id) {
+		return this.stock.get(id);
 	}
 	
 	public String getFullDescription(Integer id) {
-		BorrowableStack borrowable = getBorrowableById(id);
+		BorrowableStock borrowableStock = getBorrowableStockById(id);
 		// TODO : more data
-		return borrowable.getName();
+		return borrowableStock.getName();
 	}
 	
 	/**
-	 * @deprecated
 	 * Returns the data representing the stock. The Integer is the ID of the BorrowableModel
 	 * and the String is its name.
 	 * @return The data representing the stock.
 	 */
+	// TODO : fix this
+	/*
 	public Map<Integer, String> getAvailableStockData() {
 		Map<Integer, String> res = new HashMap<Integer, String>();
-		for (BorrowableStack b : stock) {
+		for (BorrowableStack b : stock2) {
 			res.put(b.getId(), b.getName());
 		}
 		return res;
-	}
+	}*/
 	
-	public List<BorrowableStack> getStock() {
+	public Map<Integer, BorrowableStock> getStock() {
 		return stock;
 	}
 	
-	// method to fill the stock with dummy elements for testing
-	void fillTemporaryStock(){
-		stock.add(new BorrowableStack(0, new BorrowableModel(0, "item0")));
-		bookings.put(0, new BookingCalendar());
-		
-		stock.add(new BorrowableStack(1, new BorrowableModel(1, "item1")));
-		bookings.put(1,  new BookingCalendar());
+	public Collection<BorrowableStock> getStockList() {
+		return stock.values();
 	}
-
+	
+	// method to fill the stock with dummy elements for testing
+	void fillTemporaryStock() {
+		BorrowableStock stockA = new BorrowableStock(new BorrowableModel(0, "item0"), 1); 
+		stock.put(stockA.getId(), stockA);
+		BorrowableStock stockB = new BorrowableStock(new BorrowableModel(1, "item1"), 2);
+		stock.put(stockB.getId(), stockB);
+	}
+	
 	/**
 	 * Returns the list of the items borrowed by a user.
 	 * @param userId The ID of the user.
 	 * @return The list of borrowed items.
 	 */
 	public List<BorrowableStack> getUserBorrowedItems(Integer userId) {
-		List<Booking> bookings = getUserBookings(userId);
 		List<BorrowableStack> list = new LinkedList<BorrowableStack>();
-		for(Booking b : bookings) {
-			if (!b.isFinished()) {
-				list.add(b.getBorrowableStack());
+		for(BorrowableStock stock : this.stock.values()) {	
+			BookingCalendar calendar = stock.getCalendar(); //bookings.get(borrowableID);
+			for(Booking b : calendar.getBookings()) {
+				if (b.getBorrowerId() == userId) {
+					BorrowableStack stack = new BorrowableStack(stock.getModel(), b.getQuantity());
+					list.add(stack);
+				}
 			}
 		}
 		return list;
 	}
-
+	
 	/**
 	 * Returns the list of the bookings of a user.
 	 * @param userId
@@ -229,9 +222,9 @@ public class Manager {
 	 */
 	public List<Booking> getUserBookings(Integer userId) {
 		List<Booking> list = new LinkedList<Booking>();
-		for(Integer borrowableID : bookings.keySet()) {
-			BookingCalendar calendar = bookings.get(borrowableID);
-			for(Booking b : calendar.getBookings()) {
+		for(Integer borrowableID : this.stock.keySet()) {
+			BorrowableStock stock = this.stock.get(borrowableID);
+			for(Booking b : stock.getCalendar().getBookings()) {
 				if (b.getBorrowerId() == userId) {
 					list.add(b);
 				}
@@ -239,4 +232,6 @@ public class Manager {
 		}
 		return list;
 	}
+	
+	
 }

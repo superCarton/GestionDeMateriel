@@ -3,21 +3,19 @@ package borrowmanager.element;
 import java.util.Map;
 
 public class BorrowableStack {
-	private Integer id;
 	private BorrowableModel model;
 	private State state;
 	private Integer quantity;
 	
-	public BorrowableStack(Integer id, BorrowableModel model) {
-		this(id, model, 1);
+	public BorrowableStack(BorrowableModel model) {
+		this(model, 1);
 	}
 	
-	public BorrowableStack(Integer id, BorrowableModel model, Integer quantity) {
-		this(id, model, quantity, State.NEW);
+	public BorrowableStack(BorrowableModel model, Integer quantity) {
+		this(model, quantity, State.NEW);
 	}
 	
-	public BorrowableStack(Integer id, BorrowableModel model, Integer quantity, State state) {
-		this.id = id;
+	public BorrowableStack(BorrowableModel model, Integer quantity, State state) {
 		this.model = model;
 		this.state = state;
 		this.quantity = quantity;
@@ -44,7 +42,7 @@ public class BorrowableStack {
 	 * @return the id
 	 */
 	public Integer getId() {
-		return id;
+		return model.getId();
 	}
 	
 	/**
@@ -71,7 +69,7 @@ public class BorrowableStack {
 	 */
 	public BorrowableStack extract(Integer n) {
 		if (n >= quantity) {
-			BorrowableStack newStack = new BorrowableStack(-1, model, quantity);
+			BorrowableStack newStack = new BorrowableStack(model, quantity);
 			quantity -= n;
 			return newStack;
 		}

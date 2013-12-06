@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import borrowmanager.element.BorrowableModel;
 import borrowmanager.element.BorrowableStack;
 
 /**
@@ -18,14 +19,17 @@ public class BookingCalendar {
 	 * Current bookings
 	 */
 	private List<Booking> bookings;
+	
+	private BorrowableModel borrowableModel;
 
 	/**
 	 * Default constructor, initializes an empty bookings list
 	 */
-	public BookingCalendar() {
-		bookings = new LinkedList<Booking>();
+	public BookingCalendar(BorrowableModel model) {
+		this.bookings = new LinkedList<Booking>();
+		this.borrowableModel = model ;
 	}
-
+	
 	/**
 	 * Returns the list of bookings
 	 * 
@@ -33,34 +37,6 @@ public class BookingCalendar {
 	 */
 	public List<Booking> getBookings() {
 		return bookings;
-	}
-
-	/**
-	 * Check if an interval is available for booking.
-	 * 
-	 * @param dateStart
-	 *            Start of the interval
-	 * @param dateEnd
-	 *            End of the interval
-	 * @return Is this interval available?
-	 */
-	public Boolean isAvailable(Integer quantity, Date dateStart, Date dateEnd) {
-		// Create a temporary date interval
-		//
-		DateInterval w = new DateInterval(dateStart, dateEnd);
-
-		// Go through the list of bookings
-		//
-		for (Booking b : bookings) {
-			// Return false if the two interval overlaps
-			//
-			if (b.overlaps(w)) {
-				return false;
-			}
-		}
-		// No overlaps, interval is available
-		//
-		return true;
 	}
 
 	/**
@@ -72,6 +48,7 @@ public class BookingCalendar {
 	 *            The end date.
 	 * @return The maximum number of booked items in a specified date interval.
 	 */
+	/*
 	private Integer getMaximumBookedNumberInInterval(Date dateStart,
 			Date dateEnd) {
 		// Create a temporary date interval
@@ -89,7 +66,7 @@ public class BookingCalendar {
 			}
 		}
 		return max;
-	}
+	}*/
 
 	/**
 	 * Returns true if a given quantity of the item is available for a given
@@ -105,6 +82,7 @@ public class BookingCalendar {
 	 *            The end date
 	 * @return The availability in quantity
 	 */
+	/*
 	public boolean isAvailableInQuantity(Integer stock, Integer quantity,
 			Date start, Date end) {
 		Integer maxBooked = getMaximumBookedNumberInInterval(start, end);
@@ -112,8 +90,8 @@ public class BookingCalendar {
 		System.out.println("Quantity = " + quantity);
 		System.out.println("maxBooked= " + maxBooked);
 		return stock - maxBooked >= quantity;
-	}
-
+	}*/
+	
 	/**
 	 * Book a new interval in the calendar.
 	 * 
@@ -125,10 +103,11 @@ public class BookingCalendar {
 	 *            The booking interval
 	 * @return Is the booking possible?
 	 */
-	public Boolean book(Integer borrowerId, BorrowableStack borrowableStack,
+	public Boolean book(Integer borrowerId, Integer quantity,
 			DateInterval interval, String reason) {
+		BorrowableStack stack = new BorrowableStack(borrowableModel, quantity);
 		try {
-			Booking b = new Booking(borrowerId, borrowableStack, interval,
+			Booking b = new Booking(borrowerId, stack, interval,
 					reason);
 			bookings.add(b);
 			Collections.sort(bookings);

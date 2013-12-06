@@ -2,6 +2,7 @@ package borrowmanager.booking;
 
 import java.util.Date;
 
+import borrowmanager.element.BorrowableModel;
 import borrowmanager.element.BorrowableStack;
 import borrowmanager.util.StringConfig;
 
@@ -16,10 +17,7 @@ public class Booking implements Comparable<Booking> {
 	 */
 	private Integer borrowerId;
 	
-	/**
-	 * Items borrowed
-	 */
-	private BorrowableStack borrowables;
+	private BorrowableStack borrowableStack;
 	
 	/**
 	 * Why is the item booked? (typically a class name)
@@ -48,17 +46,17 @@ public class Booking implements Comparable<Booking> {
 	 * @param interval	The interval (boundaries) of the booking
 	 * @param reason	Why is the booking made
 	 */
-	public Booking(Integer borrower, BorrowableStack borrowableStack, DateInterval interval, String reason){
+	public Booking(Integer borrower, BorrowableStack stack, DateInterval interval, String reason){
 		// Check the validity of the IDs
 		//
-		if(borrower == null || borrowableStack == null || interval == null){
+		if(borrower == null ||  interval == null){
 			throw new IllegalArgumentException(StringConfig.ERROR_BOOKING_INVALID);
 		}
 		
 		// Store the properties
 		//
 		this.borrowerId = borrower;
-		this.borrowables = borrowableStack;
+		this.borrowableStack = stack;
 		this.reason = reason;
 		this.interval = interval;
 		this.isFinished = false;
@@ -141,9 +139,10 @@ public class Booking implements Comparable<Booking> {
 	 * Returns the ID of the borrowed item
 	 * @return	The ID of the borrowed item
 	 */
+	/*
 	public BorrowableStack getBorrowableStack() {
 		return borrowables;
-	}
+	}*/
 
 	/**
 	 * Returns the justification of the booking
@@ -161,9 +160,17 @@ public class Booking implements Comparable<Booking> {
 		return interval;
 	}
 	
+	public BorrowableStack getBorrowableStack() {
+		return borrowableStack;
+	}
+	
+	public Integer getQuantity() {
+		return borrowableStack.getQuantity();
+	}
+	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		return new Booking(borrowerId, borrowables, interval, reason);
+		return new Booking(borrowerId, borrowableStack, interval, reason);
 	}
 	
 	@Override
@@ -174,7 +181,7 @@ public class Booking implements Comparable<Booking> {
 	
 	@Override
 	public String toString() {
-		return "Booking for item n�" + borrowables 
+		return "Booking for item n�" + borrowableStack.getId() 
 				+ "\nThis item has been booked by user n�" + borrowerId
 				+ "\nFor: " + reason + "\nThis booking has " + ((isValidated)?"":"not ")
 				+ "been validated by a manager\n" + interval.toString();
