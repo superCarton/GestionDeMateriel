@@ -107,7 +107,7 @@ public class BookingCalendar {
 			DateInterval interval, String reason) {
 		BorrowableStack stack = new BorrowableStack(borrowableModel, quantity);
 		Date now = new Date();
-		if (interval.getStart().compareTo(now) < 0 || interval.getEnd().compareTo(now) < 0) {
+		if (interval.getEnd().compareTo(now) < 0) {
 			return false;
 		}
 		try {

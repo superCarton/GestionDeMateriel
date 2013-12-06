@@ -69,8 +69,8 @@ public class BookingCalendarTest {
 		assertTrue(bc.book(userId, quantity, new DateInterval(end2, end), "test"));
 		assertNull(bc.getCurrentBooking());
 		
-		assertFalse(bc.book(userId, quantity, new DateInterval(startold, start2), "test"));
-		assertNull(bc.getCurrentBooking());
+		assertTrue(bc.book(userId, quantity, new DateInterval(start, end), "test"));
+		assertNotNull(bc.getCurrentBooking());
 		
 	}
 	
