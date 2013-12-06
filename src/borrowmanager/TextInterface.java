@@ -153,9 +153,7 @@ public class TextInterface {
 				logout();
 				return;
 			} else if (input.equals("4")) {
-				manager.save();
-				System.out.println("Données sauvegardées.");
-				mainMenu();
+				save();
 				return;
 			} else {
 				valid = false;
@@ -421,7 +419,8 @@ public class TextInterface {
 			System.out.println("   1. Review not yet validated bookings");
 			System.out.println("   2. View all bookings");
 			System.out.println("   3. View late bookings");
-			System.out.println("   4. Logout");
+			System.out.println("   4. Save data");
+			System.out.println("   5. Logout");
 			
 			try {
 				input = br.readLine();
@@ -442,6 +441,10 @@ public class TextInterface {
 				return;
 			}
 			else if (input.equals("4")) {
+				save();
+				return;
+			}
+			else if (input.equals("5")) {
 				logout();
 				return;
 			}
@@ -480,6 +483,12 @@ public class TextInterface {
 		
 		bookings.get(listIndex).validate();
 		System.out.println("Booking validated successfuly !");
+		mainMenu();
+	}
+	
+	private void save() {
+		manager.save();
+		System.out.println("Données sauvegardées.");
 		mainMenu();
 	}
 	
