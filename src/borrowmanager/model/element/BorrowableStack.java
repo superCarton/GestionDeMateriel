@@ -1,4 +1,4 @@
-package borrowmanager.element;
+package borrowmanager.model.element;
 
 import java.util.Map;
 

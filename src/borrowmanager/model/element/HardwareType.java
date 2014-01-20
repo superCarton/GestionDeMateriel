@@ -1,4 +1,4 @@
-package borrowmanager.element;
+package borrowmanager.model.element;
 
 public enum HardwareType {
 	CAMERA,

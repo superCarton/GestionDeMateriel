@@ -1,10 +1,10 @@
-package borrowmanager.booking;
+package borrowmanager.model.booking;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import borrowmanager.element.BorrowableModel;
-import borrowmanager.element.BorrowableStack;
+import borrowmanager.model.element.BorrowableModel;
+import borrowmanager.model.element.BorrowableStack;
 import borrowmanager.util.StringConfig;
 
 /**

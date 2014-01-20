@@ -1,4 +1,4 @@
-package borrowmanager.booking;
+package borrowmanager.model.booking;
 
 import java.util.Date;
 

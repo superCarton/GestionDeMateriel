@@ -1,4 +1,4 @@
-package borrowmanager;
+package borrowmanager.view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,11 +9,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import borrowmanager.booking.Booking;
-import borrowmanager.booking.DateInterval;
-import borrowmanager.element.BorrowableStock;
-import borrowmanager.user.User;
-import borrowmanager.user.UserType;
+import borrowmanager.UNUSED_user.UNUSED_User;
+import borrowmanager.UNUSED_user.UNUSED_UserType;
+import borrowmanager.model.Manager;
+import borrowmanager.model.booking.Booking;
+import borrowmanager.model.booking.DateInterval;
+import borrowmanager.model.element.BorrowableStock;
 /**
  * Text UI for the borrowmanager project
  * @author Tom Guillermin
@@ -25,7 +26,7 @@ public class TextInterface {
 	private BufferedReader br;
 	
 	private Manager manager;
-	private User user;
+	private UNUSED_User user;
 	
 	private String dateFormat = "dd/MM/yyyy";
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
@@ -111,7 +112,7 @@ public class TextInterface {
 		
 		boolean valid = false;
 		String input = null;
-		UserType userType = null ;
+		UNUSED_UserType userType = null ;
 		String userName = null;
 		while (!valid) {
 			try {
@@ -122,11 +123,11 @@ public class TextInterface {
 			
 			valid = true;
 			if (input.equals("1")) {
-				userType = UserType.STUDENT;
+				userType = UNUSED_UserType.STUDENT;
 			} else if (input.equals("2")) {
-				userType = UserType.TEACHER;
+				userType = UNUSED_UserType.TEACHER;
 			} else if (input.equals("3")) {
-				userType = UserType.STOCK_MANAGER;
+				userType = UNUSED_UserType.STOCK_MANAGER;
 			} else {
 				valid = false;
 			}
@@ -140,17 +141,17 @@ public class TextInterface {
 			// do nothing
 		}
 		
-		user = new User(idAutoIncrement, userName, userType);
+		user = new UNUSED_User(idAutoIncrement, userName, userType);
 		manager.setUser(user);
 		mainMenu();
 	}
 	
 	private void mainMenu() {
-		UserType ut = user.getUserType();
-		if (ut == UserType.STUDENT || ut == UserType.TEACHER) {
+		UNUSED_UserType ut = user.getUserType();
+		if (ut == UNUSED_UserType.STUDENT || ut == UNUSED_UserType.TEACHER) {
 			mainMenuBorrower();
 		}
-		else if (ut == UserType.STOCK_MANAGER) {
+		else if (ut == UNUSED_UserType.STOCK_MANAGER) {
 			mainMenuStockManager();
 		}
 	}
@@ -267,8 +268,8 @@ public class TextInterface {
 	private boolean tryToBook(Integer borrowableId, Integer quantity, DateInterval interval, String reason) {
 		// Check if the user can book something for a given length
 		//
-		UserType ut = user.getUserType();
-		Integer maxBookingLength = UserType.getBookingLength(ut);
+		UNUSED_UserType ut = user.getUserType();
+		Integer maxBookingLength = UNUSED_UserType.getBookingLength(ut);
 		if (interval.getLength() > maxBookingLength) {
 			System.out.println("You can't book something for more than "+maxBookingLength+" consecutive days.");
 			return false;
@@ -280,7 +281,7 @@ public class TextInterface {
 		Date start = interval.getStart();
 		Date end = interval.getEnd();
 		DateInterval reservationInterval = new DateInterval(now, start);
-		Integer maxReservationLength = UserType.getMaxReservationLength(ut);
+		Integer maxReservationLength = UNUSED_UserType.getMaxReservationLength(ut);
 		if (reservationInterval.getLength() > maxReservationLength) {
 			System.out.println("You can't book something more "+maxReservationLength+" days ahead (you tried "+reservationInterval.getLength()+" days)");
 			return false;

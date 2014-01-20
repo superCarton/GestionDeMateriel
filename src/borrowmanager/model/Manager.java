@@ -1,4 +1,4 @@
-package borrowmanager;
+package borrowmanager.model;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,29 +8,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import borrowmanager.booking.Booking;
-import borrowmanager.booking.DateInterval;
-import borrowmanager.element.BorrowableModel;
-import borrowmanager.element.BorrowableStock;
-import borrowmanager.user.User;
+import borrowmanager.UNUSED_user.UNUSED_User;
+import borrowmanager.model.booking.Booking;
+import borrowmanager.model.booking.DateInterval;
+import borrowmanager.model.element.BorrowableModel;
+import borrowmanager.model.element.BorrowableStock;
 
 public class Manager {
 	//private Map<Integer, BookingCalendar> bookings;
-	private User currentUser;
+	private UNUSED_User currentUser;
 	private Map<Integer, BorrowableStock> stock;
+	
 	/**
 	 * Users of the Manager
 	 */
-	private List<User> users;
+	private List<UNUSED_User> users;
 
 	public Manager() {
 		this.currentUser = null;
 		//this.bookings = new HashMap<Integer, BookingCalendar>();
-		this.users = new LinkedList<User>();
+		this.users = new LinkedList<UNUSED_User>();
 		this.stock = new HashMap<Integer, BorrowableStock>();
 	}
 	
-	public void setUser(User u){
+	public void setUser(UNUSED_User u){
 		if(users.contains(u) && this.getUser(u.getId()) != u){
 			throw new RuntimeException("This userid is already taken !");
 		}
@@ -43,8 +44,8 @@ public class Manager {
 		this.currentUser = u;
 	}
 	
-	public User getUser(Integer id){
-		for(User u : users){
+	public UNUSED_User getUser(Integer id){
+		for(UNUSED_User u : users){
 			if(u.getId() == id){
 				return u;
 			}
@@ -192,7 +193,7 @@ public class Manager {
 	}
 	
 	// method to fill the stock with dummy elements for testing
-	void fillTemporaryStock() {
+	public void fillTemporaryStock() {
 		BorrowableStock stockA = new BorrowableStock(new BorrowableModel(0, "item0"), 1); 
 		stock.put(stockA.getId(), stockA);
 		BorrowableStock stockB = new BorrowableStock(new BorrowableModel(1, "item1"), 2);
@@ -227,8 +228,8 @@ public class Manager {
 		return list;
 	}
 
-	public User getUserByName(String s) {
-		for(User u : users) {
+	public UNUSED_User getUserByName(String s) {
+		for(UNUSED_User u : users) {
 			if (u.getName().toLowerCase().equals(s.toLowerCase())) {
 				return u;
 			}

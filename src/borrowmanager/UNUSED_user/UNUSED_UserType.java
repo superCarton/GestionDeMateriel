@@ -1,16 +1,16 @@
-package borrowmanager.user;
+package borrowmanager.UNUSED_user;
 
 /**
  * UserType enum, listing all the possible user types
  * @author Tom Guillermin
  *
  */
-public enum UserType {
+public enum UNUSED_UserType {
 	STUDENT,
 	TEACHER,
 	STOCK_MANAGER;
 	
-	public static int getBookingLength(UserType u) {
+	public static int getBookingLength(UNUSED_UserType u) {
 		if (u == STUDENT) {
 			return 7;   
 		}
@@ -22,7 +22,7 @@ public enum UserType {
 		}
 	}
 	
-	public static int getMaxReservationLength(UserType u) {
+	public static int getMaxReservationLength(UNUSED_UserType u) {
 		if (u == STUDENT) {
 			return 10;   
 		}

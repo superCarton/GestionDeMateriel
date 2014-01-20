@@ -1,10 +1,10 @@
-package borrowmanager.element;
+package borrowmanager.model.element;
 
 import java.util.Date;
 import java.util.Map;
 
-import borrowmanager.booking.Booking;
-import borrowmanager.booking.BookingCalendar;
+import borrowmanager.model.booking.Booking;
+import borrowmanager.model.booking.BookingCalendar;
 
 /**
  * BorrowableStock, representing the stock of models

@@ -1,12 +1,12 @@
-package borrowmanager.booking;
+package borrowmanager.model.booking;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import borrowmanager.element.BorrowableModel;
-import borrowmanager.element.BorrowableStack;
+import borrowmanager.model.element.BorrowableModel;
+import borrowmanager.model.element.BorrowableStack;
 
 /**
  * The BookingCalendar holds the list of all the Bookings.
