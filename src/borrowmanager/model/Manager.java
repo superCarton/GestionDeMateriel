@@ -8,30 +8,35 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import borrowmanager.UNUSED_user.UNUSED_User;
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.DateInterval;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStock;
+import borrowmanager.model.user.Borrower;
+import borrowmanager.model.user.User;
+import borrowmanager.model.user.UsersManager;
 
 public class Manager {
 	//private Map<Integer, BookingCalendar> bookings;
-	private UNUSED_User currentUser;
+	private User currentUser;
 	private Map<Integer, BorrowableStock> stock;
 	
 	/**
 	 * Users of the Manager
 	 */
-	private List<UNUSED_User> users;
+	private List<User> users;
+	
+	private UsersManager usersManager;
 
 	public Manager() {
+		this.usersManager = new UsersManager();
 		this.currentUser = null;
 		//this.bookings = new HashMap<Integer, BookingCalendar>();
-		this.users = new LinkedList<UNUSED_User>();
+		this.users = new LinkedList<User>();
 		this.stock = new HashMap<Integer, BorrowableStock>();
 	}
 	
-	public void setUser(UNUSED_User u){
+	public void setUser(User u){
 		if(users.contains(u) && this.getUser(u.getId()) != u){
 			throw new RuntimeException("This userid is already taken !");
 		}
@@ -44,8 +49,8 @@ public class Manager {
 		this.currentUser = u;
 	}
 	
-	public UNUSED_User getUser(Integer id){
-		for(UNUSED_User u : users){
+	public User getUser(Integer id){
+		for(User u : users){
 			if(u.getId() == id){
 				return u;
 			}
@@ -55,17 +60,23 @@ public class Manager {
 	
 	public Boolean book(Integer borrowableId, Integer quantity,
 			Integer borrowerId, Date start, Date end, String reason) {
+		if (! (currentUser instanceof Borrower)) {
+			return false;
+		}
+		
+		Borrower borrower = (Borrower) currentUser;
+		
 		// Date verifications
 		
 		// Time before the beggining of the booking (reservation)
 		DateInterval reservationStartInterval = new DateInterval(new Date(), start);
-		if (reservationStartInterval.getLength() > currentUser.getMaxReservationLength()) {
+		if (reservationStartInterval.getLength() > borrower.getMaxReservationLength()) {
 			return false;
 		}
 		
 		// Duration of the booking
 		DateInterval bookingInterval= new DateInterval(start, end);
-		if (bookingInterval.getLength() > currentUser.getMaxBookingLength()) {
+		if (bookingInterval.getLength() > borrower.getMaxBookingLength()) {
 			return false;
 		}
 		
@@ -228,13 +239,21 @@ public class Manager {
 		return list;
 	}
 
-	public UNUSED_User getUserByName(String s) {
-		for(UNUSED_User u : users) {
+	public User getUserByName(String s) {
+		for(User u : users) {
 			if (u.getName().toLowerCase().equals(s.toLowerCase())) {
 				return u;
 			}
 		}
 		return null;
+	}
+
+	public Integer getIDAutoIncrement() {
+		int max = -1;
+		for (User u : users) {
+			max = Math.max(u.getId()+1, max);
+		}
+		return max;
 	}
 	
 	

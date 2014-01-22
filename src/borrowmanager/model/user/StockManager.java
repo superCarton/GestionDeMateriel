@@ -65,4 +65,9 @@ public class StockManager extends User {
 		this.login = (String) description.get("login");
 		this.password = (String) description.get("password");
 	}
+	
+	@Override
+	public boolean canValidateBookings() {
+		return true;
+	}
 }

@@ -3,7 +3,6 @@
  */
 package borrowmanager.model.user;
 
-import java.util.HashMap;
 import java.util.*;
 
 /**
@@ -14,7 +13,8 @@ import java.util.*;
 public class Teacher extends Borrower{
 	
 	/** The Constant loanDuration. */
-	private final static int loanDuration = 15;
+	private final static Integer maxBookingLength = 15;
+	private static final Integer maxReservationLength = 7;
 	
 	/**
 	 * Instantiates a new teacher.
@@ -24,8 +24,8 @@ public class Teacher extends Borrower{
 	 * @param login the login
 	 * @param password the password
 	 */
-	public Teacher(String name, String firstname, String login, String password){
-		super(name, firstname, login,password, loanDuration);
+	public Teacher(Integer id, String name, String firstname, String login, String password){
+		super(id, name, firstname, login,password);
 	}
 	
 	/**
@@ -58,5 +58,15 @@ public class Teacher extends Borrower{
 		this.firstname = (String) description.get("firstname");
 		this.login = (String) description.get("login");
 		this.password = (String) description.get("password");
+	}
+
+	@Override
+	public Integer getMaxBookingLength() {
+		return maxBookingLength;
+	}
+	
+	@Override
+	public Integer getMaxReservationLength() {
+		return maxReservationLength;
 	}
 }

@@ -43,7 +43,7 @@ public class TextInterface {
 	
 	public void welcome() {
 		System.out.println();
-		System.out.println("Welcome to the borrowing manager.");
+		System.out.println("Welcome to the IHM borrowing manager.");
 		System.out.println();
 		System.out.println("Do you want to login or create a new account ?");
 		
@@ -141,7 +141,7 @@ public class TextInterface {
 			// do nothing
 		}
 		
-		user = new UNUSED_User(idAutoIncrement, userName, userType);
+		user = new User(idAutoIncrement, userName, userType);
 		manager.setUser(user);
 		mainMenu();
 	}

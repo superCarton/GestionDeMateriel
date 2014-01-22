@@ -3,7 +3,6 @@
  */
 package borrowmanager.model.user;
 
-import java.util.HashMap;
 import java.util.*;
 
 /**
@@ -14,7 +13,9 @@ import java.util.*;
 public abstract class Borrower extends User{
 
 	/** The loan duration. */
-	private static int loanDuration;
+	protected static int loanDuration;
+	
+	protected static int maxReservationLength;
 	
 	/**
 	 * Instantiates a new borrower.
@@ -25,8 +26,8 @@ public abstract class Borrower extends User{
 	 * @param password the password
 	 * @param loanDuration the loan duration
 	 */
-	public Borrower(String name, String firstname, String login, String password, int loanDuration){
-		super(name, firstname, login, password);
+	public Borrower(Integer id, String name, String firstname, String login, String password){
+		super(id, name, firstname, login, password);
 		setLoanDuration(loanDuration);
 	}
 
@@ -40,9 +41,7 @@ public abstract class Borrower extends User{
 	 *
 	 * @return the loan duration
 	 */
-	public int getLoanDuration() {
-		return loanDuration;
-	}
+	public abstract Integer getMaxBookingLength();
 
 	/**
 	 * Sets the loan duration.
@@ -52,6 +51,8 @@ public abstract class Borrower extends User{
 	public static void setLoanDuration(int loanDuration) {
 		Borrower.loanDuration = loanDuration;
 	}
+	
+	public abstract Integer getMaxReservationLength() ;
 	
 	/* (non-Javadoc)
 	 * @see model.user.User#toString()
