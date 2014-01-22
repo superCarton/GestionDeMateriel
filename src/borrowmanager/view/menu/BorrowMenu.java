@@ -14,6 +14,7 @@ public class BorrowMenu extends TextInterfacePage {
 	
 	public BorrowMenu(Manager m) {
 		manager = m;
+		show();
 	}
 	
 	@Override

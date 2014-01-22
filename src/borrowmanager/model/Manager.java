@@ -41,9 +41,9 @@ public class Manager {
 	 * @param u The user
 	 */
 	public void setActiveUser(User u){
-		if(usersManager.getUser(u.getId()) != u){
+		/*if(usersManager.getUser(u.getId()) != u){
 			throw new RuntimeException("This userid is already taken !");
-		}
+		}*/
 		
 		/*if(!users.contains(u)){
 			users.add(u);
@@ -51,6 +51,10 @@ public class Manager {
 		}*/
 		
 		this.activeUser = u;
+	}
+	
+	public User getActiveUser() {
+		return activeUser;
 	}
 	
 	public Boolean book(Integer borrowableId, Integer quantity,
@@ -239,10 +243,4 @@ public class Manager {
 	public Integer getIDAutoIncrement() {
 		return usersManager.getIDAutoIncrement();
 	}
-
-	public User getActiveUser() {
-		return activeUser;
-	}
-	
-	
 }

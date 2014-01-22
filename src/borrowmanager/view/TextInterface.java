@@ -63,13 +63,14 @@ public class TextInterface {
 				return;
 			}
 			else if (input.equals("2")) {
-				createAccount();
+				//createAccount();
 				return;
 			}
 		}
 	}
 	
 	private void login() {
+		/*
 		System.out.println("Please log in : ");
 		
 		boolean connected = false;
@@ -95,6 +96,7 @@ public class TextInterface {
 		    	return;
 		    }
 		 }
+		 */
 	}
 	
 	private void logout() {
@@ -496,7 +498,7 @@ public class TextInterface {
 		}
 		
 		for(Booking b : bookings) {
-			String userName = manager.getUser(b.getBorrowerId()).getName();
+			String userName = manager.getUsersManager().getUser(b.getBorrowerId()).getName();
 			System.out.println(b.toListString(simpleDateFormat)+" [Borrowed by "+userName+"]");
 		}
 		System.out.println("__________");
@@ -512,7 +514,7 @@ public class TextInterface {
 		
 		for(Booking b : bookings) {
 			if (b.isLate()) {
-				String userName = manager.getUser(b.getBorrowerId()).getName();
+				String userName = manager.getUsersManager().getUser(b.getBorrowerId()).getName();
 				System.out.println(b.toListString(simpleDateFormat)+" [Borrowed by "+userName+"]");
 			}
 		}

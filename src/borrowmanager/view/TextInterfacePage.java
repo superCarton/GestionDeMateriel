@@ -17,8 +17,6 @@ public abstract class TextInterfacePage {
 	
 	public TextInterfacePage() {
 		br = new BufferedReader(new InputStreamReader(System.in));
-		
-		show();
 	}
 	
 	protected String input() {

@@ -1,16 +1,15 @@
 package borrowmanager.view.menu;
 
-import java.io.IOException;
-
 import borrowmanager.UNUSED_user.UNUSED_UserType;
 import borrowmanager.model.Manager;
 import borrowmanager.model.user.*;
 import borrowmanager.view.TextInterfacePage;
 
-public class CreateAccount extends TextInterfacePage {
+public class CreateAccountMenu extends TextInterfacePage {
 	private Manager manager;
-	public CreateAccount(Manager manager) {
+	public CreateAccountMenu(Manager manager) {
 		this.manager = manager;
+		show();
 	}
 	
 	@Override
@@ -41,16 +40,16 @@ public class CreateAccount extends TextInterfacePage {
 			}
 		}
 		
-		System.out.println("Please enter your name : ");
 		valid = false;
 		System.out.println("Please enter your first name :");
 		String firstName = input();
-		System.out.println("Please enter your first name :");
+		System.out.println("Please enter your last name :");
 		String lastName = input();
+		String login = inputLogin();
 		System.out.println("Please enter your password :");
 		String password = input();
-		String login = inputLogin();
 		
+		System.out.println("Creating user...");
 		Integer id = manager.getIDAutoIncrement();
 		
 		User u = null;
@@ -67,7 +66,12 @@ public class CreateAccount extends TextInterfacePage {
 			default:
 				throw new RuntimeException("Unknown user type "+userType);
 		}
-		if (u != null) manager.setActiveUser(u);
+		
+		if (u != null) {
+			manager.getUsersManager().add(u);
+			System.out.println("User created ! "+u.toString());
+			manager.setActiveUser(u);
+		}
 		new HomeMenu(manager);
 		
 		return false;
@@ -75,12 +79,13 @@ public class CreateAccount extends TextInterfacePage {
 	
 	public String inputLogin() {	
 		String login = null;
-		boolean valid = false;
-		while (!valid) {
-			System.out.println("Please enter your first name :");
+		while (true) {
+			System.out.println("Please enter your desired login :");
 			login = input();
 			User existing = manager.getUsersManager().getUserByLogin(login);
-			if (existing == null) valid = true;
+			if (existing == null) break;
+			System.out.println("Sorry, this username is already taken.");
+			
 		}
 		
 		return login;

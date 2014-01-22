@@ -1,13 +1,8 @@
 package borrowmanager.view;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class TextInterfaceOptionPage extends TextInterfacePage implements EventObjectListener {
@@ -18,12 +13,21 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 		this.handleEvent(event);
 	}
 
-	private Map<String, TextCommand> commands = new HashMap<String, TextCommand>();
+	private Map<String, TextCommand> commands = new LinkedHashMap<String, TextCommand>();
 	private boolean hasGoBackOption = false;
 	private final TextCommand backCommand = new TextCommand("back", "Go back");
 
 	private static final String separator = "===========================";
 	private String message = "What do you want to do ?";
+	
+	public TextInterfaceOptionPage() {
+
+	}
+	
+	protected void ready() {
+		build();
+		show();
+	}
 	
 	protected abstract void build();
 	
@@ -62,7 +66,7 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 	 * @return Auto increment value
 	 */
 	private int getAutoIncrementValue() {
-		int current = -1;
+		int current = 1;
 		for (String s : commands.keySet()) {
 			int parsed;
 			try {
@@ -72,7 +76,7 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 			}
 			// Parsed successfully
 			if (parsed <= current) {
-				parsed = current + 1;
+				current = parsed + 1;
 			}
 		}
 		return current;
@@ -118,8 +122,8 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 	}
 
 	public void handleEvent(EventObject e) {
-		String command = (String) e.getSource();
-		handleCommand(command);
+		TextCommand command = (TextCommand) e.getSource();
+		handleCommand(command.getCommandName());
 	}
 	
 	protected abstract void handleCommand(String c);
