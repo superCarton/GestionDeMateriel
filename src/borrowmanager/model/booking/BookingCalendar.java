@@ -104,21 +104,22 @@ public class BookingCalendar {
 	 *            The booking interval
 	 * @return Is the booking possible?
 	 */
-	public Boolean book(Integer borrowerId, Integer quantity,
+	public Booking book(Integer borrowerId, Integer quantity,
 			DateInterval interval, String reason) {
 		BorrowableStack stack = new BorrowableStack(borrowableModel, quantity);
 		Date now = Manager.now;
-		if (interval.getEnd().compareTo(now) < 0) {
-			return false;
+		// Only create future bookings
+		if (!Manager.DEBUG && interval.getEnd().compareTo(now) < 0) {
+			return null;
 		}
 		try {
 			Booking b = new Booking(borrowerId, stack, interval,
 					reason);
 			bookings.add(b);
 			Collections.sort(bookings);
-			return true;
+			return b;
 		} catch (IllegalArgumentException e) {
-			return false;
+			return null;
 		}
 	}
 

@@ -219,7 +219,7 @@ public class TextInterface_OLD {
 				// do nothing
 			}
 			
-			if (tryToBook(itemId, quantity, interval, reason)) {
+			if (tryToBook(itemId, quantity, interval, reason) != null) {
 				System.out.println("You registered your booking successfuly."
 						+" Your booking still has to be confirmed by a stock manager.");
 				mainMenu();
@@ -267,14 +267,14 @@ public class TextInterface_OLD {
 		mainMenu();
 	}
 	
-	private boolean tryToBook(Integer borrowableId, Integer quantity, DateInterval interval, String reason) {
+	private Booking tryToBook(Integer borrowableId, Integer quantity, DateInterval interval, String reason) {
 		// Check if the user can book something for a given length
 		//
 		UNUSED_UserType ut = user.getUserType();
 		Integer maxBookingLength = UNUSED_UserType.getBookingLength(ut);
 		if (interval.getLength() > maxBookingLength) {
 			System.out.println("You can't book something for more than "+maxBookingLength+" consecutive days.");
-			return false;
+			return null;
 		}
 		
 		// Check if the user can book something ahead to the start date from now
@@ -286,14 +286,14 @@ public class TextInterface_OLD {
 		Integer maxReservationLength = UNUSED_UserType.getMaxReservationLength(ut);
 		if (reservationInterval.getLength() > maxReservationLength) {
 			System.out.println("You can't book something more "+maxReservationLength+" days ahead (you tried "+reservationInterval.getLength()+" days)");
-			return false;
+			return null;
 		}
 		
 		// Check if the item is available in the stock
 		//
 		if (!manager.isAvailable(borrowableId, quantity, start, end)) {
 			System.out.println("The item is not available for the specified date interval.");
-			return false;
+			return null;
 		}
 		
 		return manager.book(borrowableId, quantity, user.getId(), interval.getStart(), interval.getEnd(), reason);

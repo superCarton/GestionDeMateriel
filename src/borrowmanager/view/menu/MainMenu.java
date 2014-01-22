@@ -10,6 +10,7 @@ public class MainMenu extends TextInterfaceOptionPage {
 	public MainMenu(Manager m) {
 		manager = m;
 		ready();
+		openChildPage(this);
 	}
 	
 	@Override
@@ -41,7 +42,7 @@ public class MainMenu extends TextInterfaceOptionPage {
 		else if (command.equals("quit")) {
 			System.exit(0);
 		}
-		display();
+		//display();
 		return this;
 	}
 }

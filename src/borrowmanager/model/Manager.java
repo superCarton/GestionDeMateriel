@@ -19,6 +19,7 @@ import borrowmanager.model.user.User;
 import borrowmanager.model.user.UsersManager;
 
 public class Manager {
+	public static final boolean DEBUG = true;
 	public static Date now = new Date();
 	private User activeUser;
 	private Map<Integer, BorrowableStock> stock;
@@ -59,7 +60,7 @@ public class Manager {
 		return activeUser;
 	}
 	
-	public Boolean book(Integer borrowableId, Integer quantity,
+	public Booking book(Integer borrowableId, Integer quantity,
 			Integer borrowerId, Date start, Date end, String reason) {
 		if (! (activeUser instanceof Borrower)) {
 			throw new RuntimeException("Active user "+activeUser+" is not a borrower");
@@ -71,10 +72,13 @@ public class Manager {
 		// Date verifications
 		
 		// Time before the beggining of the booking (reservation)
-		DateInterval reservationStartInterval = new DateInterval(new Date(), start);
-		if (reservationStartInterval.getLength() > borrower.getMaxReservationLength()) {
-			throw new RuntimeException("User cant do a reservation more than "+borrower.getMaxReservationLength()+" days ahead ! (here:"+reservationStartInterval.getLength()+")");
-			//return false;
+		// TODO : put this back !
+		if (!DEBUG) {
+			DateInterval reservationStartInterval = new DateInterval(new Date(), start);
+			if (reservationStartInterval.getLength() > borrower.getMaxReservationLength()) {
+				throw new RuntimeException("User cant do a reservation more than "+borrower.getMaxReservationLength()+" days ahead ! (here:"+reservationStartInterval.getLength()+")");
+				//return false;
+			}
 		}
 		
 		// Duration of the booking
@@ -95,7 +99,6 @@ public class Manager {
 			throw new RuntimeException("Object is not available in desired quantity");
 			//return false;
 		}
-		
 		return stock.getCalendar().book(borrowerId, quantity, bookingInterval, reason);
 	}
 
@@ -224,21 +227,67 @@ public class Manager {
 		usersManager.add(um);
 		
 		activeUser = u;
-		Date a = new Date("01/25/2014");
-		Date b = new Date("01/27/2014");
-		boolean ok = book(0, 1, 1, a, b, "MYCOURSE");
+		
+		Date a = new Date("01/25/2014"),
+			b = new Date("01/26/2014"),
+			c = new Date("01/16/2014"),
+			d = new Date("01/15/2014"),
+			e = new Date("01/27/2014"),
+			f = new Date("01/28/2014");
+		
+		book(0, 1, 1, a, b, "MYCOURSE");
+		Booking debugB = book(0, 1, 1, d, c, "MYCOURSE");
+		book(0, 1, 1, e, f, "MYCOURSE"); 
+		if (debugB == null) {
+			System.out.println("[DEBUG] Late debug booking is null");
+		}
+		else {
+			System.out.println("[DEBUG] Last booking = "+debugB);
+		}
 		activeUser = null;
 	}
 	
 	public List<Booking> getBookings() {
 		List<Booking> list = new LinkedList<Booking>();
-		for(Integer borrowableID : this.stock.keySet()) {
+		for (Integer borrowableID : this.stock.keySet()) {
 			BorrowableStock stock = this.stock.get(borrowableID);
 			list.addAll(stock.getCalendar().getBookings());
 		}
 		return list;
 	}
 	
+	public List<Booking> getActiveBookings() {
+		List<Booking> list = new LinkedList<Booking>();
+		// Browse the stock
+		for (Integer borrowableID : this.stock.keySet()) {
+			BorrowableStock stock = this.stock.get(borrowableID);
+			// Browse the item calendar
+			for (Booking b : stock.getCalendar().getBookings()) {
+				// Add only active bookings
+				if (b.isActive()) {
+					list.add(b);
+				}
+			}
+		}
+		return list;
+	}
+	
+	// TODO : factorize this with predicat class
+	public List<Booking> getLateBookings() {
+		List<Booking> list = new LinkedList<Booking>();
+		// Browse the stock
+		for (Integer borrowableID : this.stock.keySet()) {
+			BorrowableStock stock = this.stock.get(borrowableID);
+			// Browse the item calendar
+			for (Booking b : stock.getCalendar().getBookings()) {
+				// Add only late bookings
+				if (b.isLate()) {
+					list.add(b);
+				}
+			}
+		}
+		return list;
+	}
 	
 	/**
 	 * Returns the list of the bookings of a user.
@@ -250,7 +299,7 @@ public class Manager {
 		for(Integer borrowableID : this.stock.keySet()) {
 			BorrowableStock stock = this.stock.get(borrowableID);
 			for(Booking b : stock.getCalendar().getBookings()) {
-				if (b.getBorrowerId() == userId && !b.isFinished()) {
+				if (b.getBorrowerId() == userId && !b.isReturned()) {
 					list.add(b);
 				}
 			}

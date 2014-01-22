@@ -109,7 +109,7 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 			TextCommand command = commands.get(in);
 			return fireEvent(command);
 		}
-		
+		System.out.println("Command '"+in+"' not found.");
 		// Run in loop unless go back has been called
 		return this;
 	}

@@ -9,7 +9,6 @@ public class App {
 		Manager manager = new Manager();
 		manager.fillTemporaryStock();
 		
-		TextInterfacePage currentPage = new MainMenu(manager);
-		currentPage.display();
+		TextInterfacePage main = new MainMenu(manager);
 	}
 }

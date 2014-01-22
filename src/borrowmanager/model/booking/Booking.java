@@ -34,7 +34,7 @@ public class Booking implements Comparable<Booking> {
 	/**
 	 * Is the booking finished (item was returned)
 	 */
-	private Boolean isFinished;
+	private Boolean isReturned;
 	
 	/**
 	 * Boundaries of the booking
@@ -61,7 +61,7 @@ public class Booking implements Comparable<Booking> {
 		this.borrowableStack = stack;
 		this.reason = reason;
 		this.interval = interval;
-		this.isFinished = false;
+		this.isReturned = false;
 		
 		this.isValidated = false;
 	}
@@ -97,7 +97,7 @@ public class Booking implements Comparable<Booking> {
 	 */
 	public boolean isLate(){
 		Date now = Manager.now ;
-		return !isFinished && interval.isLate(now);
+		return !isReturned && interval.isLate(now);
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class Booking implements Comparable<Booking> {
 	 */
 	public boolean end(){
 		this.interval.end();
-		this.isFinished = true;
+		this.isReturned = true;
 		
 		if(!isLate()){
 			return false;
@@ -124,10 +124,22 @@ public class Booking implements Comparable<Booking> {
 	}
 	
 	/**
-	 * Is the booking over (item was returned)
+	 * Returns true if the booking is over (item was returned)
 	 */
-	public boolean isFinished(){
-		return isFinished;
+	public boolean isReturned(){
+		return isReturned;
+	}
+	
+	public boolean isActive() {
+		// In the date interval and not returned
+		if (isCurrent() && !isReturned()) {
+			return true;
+		}
+		// The end date is passed but the item was not returned
+		else if (isLate()) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
