@@ -21,8 +21,8 @@ public class StockManager extends User {
 	 * @param login the login
 	 * @param password the password
 	 */
-	public StockManager(String name, String firstname, String login, String password) {
-		super(name, firstname, login, password);
+	public StockManager(Integer id, String name, String firstname, String login, String password) {
+		super(id, name, firstname, login, password);
 	}
 	
 	/**

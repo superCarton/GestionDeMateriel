@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import borrowmanager.UNUSED_user.UNUSED_UserType;
 import borrowmanager.model.Manager;
-import borrowmanager.model.user.User;
+import borrowmanager.model.user.*;
 import borrowmanager.view.TextInterfacePage;
 
 public class CreateAccount extends TextInterfacePage {
@@ -47,6 +47,8 @@ public class CreateAccount extends TextInterfacePage {
 		String firstName = input();
 		System.out.println("Please enter your first name :");
 		String lastName = input();
+		System.out.println("Please enter your password :");
+		String password = input();
 		String login = inputLogin();
 		
 		Integer id = manager.getIDAutoIncrement();
@@ -54,13 +56,13 @@ public class CreateAccount extends TextInterfacePage {
 		User u;
 		switch(userType) {
 			case STUDENT:
-				u = new Student(id, firstName, lastName, login);
+				u = new Student(id, firstName, lastName, login, password);
 				break;
 			case TEACHER:
-				u = manager.createTeacher(id, firstName, lastName, login);
+				u = new Teacher(id, firstName, lastName, login, password);
 				break;
 			case STOCK_MANAGER:
-				u = manager.createStockManager(id, firstName, lastName, login);
+				u = new StockManager(id, firstName, lastName, login, password);
 				break;
 		}
 		manager.setUser(u);
