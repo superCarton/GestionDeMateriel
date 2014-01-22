@@ -22,6 +22,9 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 	private boolean hasGoBackOption = false;
 	private final TextCommand backCommand = new TextCommand("back", "Go back");
 
+	private static final String separator = "===========================";
+	private String message = "What do you want to do ?";
+	
 	protected abstract void build();
 	
 	/**
@@ -74,8 +77,15 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 		}
 		return current;
 	}
+	
+	protected void setMessage(String m) {
+		message = m;
+	}
 
 	public boolean show() {
+		System.out.println(separator);
+		System.out.println(message);
+		
 		// Display the commands
 		for (String key : commands.keySet()) {
 			displayCommand(key, commands.get(key));
@@ -107,9 +117,11 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 		System.out.println(key + " - " + c.getText());
 	}
 
-	public void welcome() {
-		EventObject event = new EventObject(3);
-
+	public void handleEvent(EventObject e) {
+		String command = (String) e.getSource();
+		handleCommand(command);
 	}
+	
+	protected abstract void handleCommand(String c);
 
 }

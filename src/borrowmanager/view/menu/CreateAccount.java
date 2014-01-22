@@ -53,7 +53,7 @@ public class CreateAccount extends TextInterfacePage {
 		
 		Integer id = manager.getIDAutoIncrement();
 		
-		User u;
+		User u = null;
 		switch(userType) {
 			case STUDENT:
 				u = new Student(id, firstName, lastName, login, password);
@@ -64,9 +64,11 @@ public class CreateAccount extends TextInterfacePage {
 			case STOCK_MANAGER:
 				u = new StockManager(id, firstName, lastName, login, password);
 				break;
+			default:
+				throw new RuntimeException("Unknown user type "+userType);
 		}
-		manager.setUser(u);
-		new HomeMenu(u);
+		if (u != null) manager.setActiveUser(u);
+		new HomeMenu(manager);
 		
 		return false;
 	}

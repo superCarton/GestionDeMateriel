@@ -17,8 +17,8 @@ import borrowmanager.model.user.User;
 import borrowmanager.model.user.UsersManager;
 
 public class Manager {
-	//private Map<Integer, BookingCalendar> bookings;
-	private User currentUser;
+	public Date now = new Date();
+	private User activeUser;
 	private Map<Integer, BorrowableStock> stock;
 	
 	/**
@@ -28,8 +28,7 @@ public class Manager {
 
 	public Manager() {
 		this.usersManager = new UsersManager();
-		this.currentUser = null;
-		//this.bookings = new HashMap<Integer, BookingCalendar>();
+		this.activeUser = null;
 		this.stock = new HashMap<Integer, BorrowableStock>();
 	}
 	
@@ -41,7 +40,7 @@ public class Manager {
 	 * Sets the current user of the app
 	 * @param u The user
 	 */
-	public void setUser(User u){
+	public void setActiveUser(User u){
 		if(usersManager.getUser(u.getId()) != u){
 			throw new RuntimeException("This userid is already taken !");
 		}
@@ -51,16 +50,16 @@ public class Manager {
 			Collections.sort(users);
 		}*/
 		
-		this.currentUser = u;
+		this.activeUser = u;
 	}
 	
 	public Boolean book(Integer borrowableId, Integer quantity,
 			Integer borrowerId, Date start, Date end, String reason) {
-		if (! (currentUser instanceof Borrower)) {
+		if (! (activeUser instanceof Borrower)) {
 			return false;
 		}
 		
-		Borrower borrower = (Borrower) currentUser;
+		Borrower borrower = (Borrower) activeUser;
 		
 		// Date verifications
 		
@@ -141,7 +140,7 @@ public class Manager {
 	 * @return
 	 */
 	public List<Booking> getNotYetValidatedBookings() {
-		if(!currentUser.canValidateBookings()){
+		if(!activeUser.canValidateBookings()){
 			return null;
 		}
 		
@@ -239,6 +238,10 @@ public class Manager {
 
 	public Integer getIDAutoIncrement() {
 		return usersManager.getIDAutoIncrement();
+	}
+
+	public User getActiveUser() {
+		return activeUser;
 	}
 	
 	

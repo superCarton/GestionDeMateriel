@@ -14,21 +14,21 @@ public class LoginMenu extends TextInterfacePage {
 	@Override
 	protected boolean show() {
 		System.out.println("Login: ");
-		String name = input();
+		String login = input();
+		// No password
 		
-		User user = manager.getUserByName(name);
+		User user = manager.getUsersManager().getUserByLogin(login);
 	    if (user != null) {
-	    	manager.setUser(user);
+	    	manager.setActiveUser(user);
 		    System.out.println("Hello "+user.getName()+" !");
-		    new UserHomeMenu(manager);
+		    new HomeMenu(manager);
 		    return false;
 	    }
 	    else {
-	    	System.out.println("User "+name+" not found!");
+	    	System.out.println("User "+login+" not found!");
 	    	new LoginMenu(manager);
 	    	return false;
 	    }
-		return false;
 	}
 
 }

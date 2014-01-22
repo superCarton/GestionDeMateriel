@@ -84,7 +84,7 @@ public class TextInterface {
 		    
 		    manager.getUserByName(s);
 		    if (user != null) {
-		    	manager.setUser(user);
+		    	manager.setActiveUser(user);
 			    System.out.println("Hello "+user.getName()+" !");
 			    mainMenu();
 			    return;
@@ -102,7 +102,7 @@ public class TextInterface {
 		welcome();
 	}
 	
-	private void createAccount() {
+	/*private void createAccount() {
 		System.out.println("Please select what you want to be :");
 		System.out.println("Available UserTypes :");
 		System.out.println("   1. STUDENT");
@@ -144,7 +144,7 @@ public class TextInterface {
 		user = new User(idAutoIncrement, userName, userType);
 		manager.setUser(user);
 		mainMenu();
-	}
+	}*/
 	
 	private void mainMenu() {
 		UNUSED_UserType ut = user.getUserType();
