@@ -2,6 +2,8 @@ package borrowmanager.model.booking;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableModel;
@@ -41,6 +43,8 @@ public class Booking implements Comparable<Booking> {
 	 */
 	public DateInterval interval;
 	
+	private List<Reminder> reminders;
+	
 	/**
 	 * Constructs a booking
 	 * @param borrower	The ID of the user borrowing the item
@@ -62,6 +66,7 @@ public class Booking implements Comparable<Booking> {
 		this.reason = reason;
 		this.interval = interval;
 		this.isReturned = false;
+		this.reminders = new LinkedList<Reminder>();
 		
 		this.isValidated = false;
 	}
@@ -121,6 +126,38 @@ public class Booking implements Comparable<Booking> {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean wasAReminderSendToday() {
+		long diff = Manager.now.getTime() - getLastReminder().getDate().getTime();
+		return diff / 1000 / 60 < 24;
+	}
+	
+	/**
+	 * Adds a reminder to the booking.
+	 */
+	public void addReminder() {
+		if (!wasAReminderSendToday()) {
+			throw new RuntimeException("A reminde has been already sent to that user. Wait tomorrow.");
+		}
+		
+		reminders.add(new Reminder(Manager.now));
+	}
+	
+	/**
+	 * Returns the list of the reminders sent for this booking.
+	 * @return
+	 */
+	public List<Reminder> getReminders() {
+		return reminders;
+	}
+	
+	/**
+	 * Returns the last reminder sent for this booking.
+	 * @return
+	 */
+	public Reminder getLastReminder() {
+		return reminders.get(reminders.size()-1);
 	}
 	
 	/**

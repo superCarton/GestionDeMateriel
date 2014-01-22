@@ -42,12 +42,12 @@ public abstract class TextInterfacePage {
 	}
 	
 	protected boolean question(String message) {
-		System.out.println(message + " (y/n)");
-		String i = input().toLowerCase();
 		while (true) {
+			System.out.println(message + " (y/n)");
+			String i = input().toLowerCase();
 			if (i.equals("y")) return true;
 			if (i.equals("n")) return false;
-			System.out.println("Answer '"+i+"' not recognized.");
+			System.out.println("Answer '"+i+"' not recognized. Please answer by 'y' or 'n'");
 		}
 	}
 	

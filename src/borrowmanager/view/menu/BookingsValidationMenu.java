@@ -29,6 +29,9 @@ public class BookingsValidationMenu extends TextInterfacePage {
 			
 			if (picked != null) {
 				list.get(picked).validate();
+				System.out.println("The booking has been validated !");
+				System.out.println("Press enter to continue");
+				input();
 			}
 			else {
 				return null;
