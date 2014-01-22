@@ -7,25 +7,24 @@ import borrowmanager.view.TextInterfacePage;
 
 public class CreateAccountMenu extends TextInterfacePage {
 	private Manager manager;
+	
 	public CreateAccountMenu(Manager manager) {
 		this.manager = manager;
-		show();
 	}
 	
 	@Override
-	protected boolean show() {
-		System.out.println("Please select what you want to be :");
-		System.out.println("Available UserTypes :");
-		System.out.println("   1. STUDENT");
-		System.out.println("   2. TEACHER");
-		System.out.println("   3. STOCK_MANAGER");
-		System.out.println("Type 1,2 or 3 : ");
-		
+	public TextInterfacePage display() {
 		boolean valid = false;
 		String input = null;
 		UNUSED_UserType userType = null ;
 		String userName = null;
 		while (!valid) {
+			System.out.println("Please select what you want to be :");
+			System.out.println("Available UserTypes :");
+			System.out.println("   1. STUDENT");
+			System.out.println("   2. TEACHER");
+			System.out.println("   3. STOCK_MANAGER");
+			System.out.println("Type 1,2 or 3 : ");
 			input = input();
 			
 			valid = true;
@@ -72,9 +71,10 @@ public class CreateAccountMenu extends TextInterfacePage {
 			System.out.println("User created ! "+u.toString());
 			manager.setActiveUser(u);
 		}
-		new HomeMenu(manager);
 		
-		return false;
+		//new HomeMenu(manager);
+		
+		return null;
 	}
 	
 	public String inputLogin() {	

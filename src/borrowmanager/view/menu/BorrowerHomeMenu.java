@@ -2,6 +2,7 @@ package borrowmanager.view.menu;
 
 import borrowmanager.model.Manager;
 import borrowmanager.view.TextInterfaceOptionPage;
+import borrowmanager.view.TextInterfacePage;
 
 public class BorrowerHomeMenu extends TextInterfaceOptionPage {
 
@@ -14,26 +15,32 @@ public class BorrowerHomeMenu extends TextInterfaceOptionPage {
 	
 	@Override
 	protected void build() {
-		System.out.println("Manager = "+manager);
-		System.out.println("ActiveUser = "+manager.getActiveUser());
 		setMessage("Welcome "+manager.getActiveUser().getName()+" !\n"+
 				"What do you want to do ?");
 		addOption("borrow", "Borrow something");
 		addOption("giveBack", "Give back something");
+		addOption("borrowedList", "See what I've currently borrowed");
+		addOption("reservationList", "See my reservations");
+		addOption("reservationList", "See all my bookings");
 		addOption("logout", "Log out");
 	}
 	
 	@Override
-	public void handleCommand(String c) {
+	public TextInterfacePage handleCommand(String c) {
 		if (c.equals("borrow")) {
-			new BorrowMenu(manager);
+			openChildPage(new BorrowMenu(manager));
 		}
 		else if (c.equals("giveBack")) {
-			new GiveBackMenu(manager);
+			openChildPage(new GiveBackListMenu(manager));
+		}
+		else if (c.equals("borrowedList")) {
+			openChildPage(new BorrowedListView(manager));
 		}
 		else if (c.equals("logout")) {
-			
+			manager.setActiveUser(null);
+			return null;
 		}
+		return this;
 	}
 
 }

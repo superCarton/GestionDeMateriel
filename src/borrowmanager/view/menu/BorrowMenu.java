@@ -14,20 +14,22 @@ public class BorrowMenu extends TextInterfacePage {
 	
 	public BorrowMenu(Manager m) {
 		manager = m;
-		show();
 	}
 	
 	@Override
-	protected boolean show() {
+	public TextInterfacePage display() {
 		System.out.println("You chose to borrow something from the stock.");
 		
 		// Pick an item
 		ItemPicker picker = new ItemInStockPicker(manager);
+		picker.display();
 		Integer itemId = picker.getPickedItemId();
 		
 		// If the user wants to go back
-		if (itemId == null) { 
-			new BorrowerHomeMenu(manager);
+		if (itemId == null) {
+			System.out.println("Booking cancelled.");
+			return null;
+			//new BorrowerHomeMenu(manager);
 		}
 		
 		Integer quantity = inputQuantity();
@@ -37,15 +39,15 @@ public class BorrowMenu extends TextInterfacePage {
 		String reason = input();
 		
 		if (tryToBook(itemId, quantity, interval, reason)) {
-			System.out.println("You registered your booking successfuly."
+			System.out.println("You registered your booking successfuly.\n"
 					+" Your booking still has to be confirmed by a stock manager.");
-			new BorrowerHomeMenu(manager);
+			//new BorrowerHomeMenu(manager);
 		} else {
 			System.out.println("There was an error during the booking process. Please try again.");
-			new BorrowerHomeMenu(manager);
+			//new BorrowerHomeMenu(manager);
 		}
 		
-		return false;
+		return null;
 	}
 	
 	/**

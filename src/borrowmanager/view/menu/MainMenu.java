@@ -3,6 +3,7 @@ package borrowmanager.view.menu;
 
 import borrowmanager.model.Manager;
 import borrowmanager.view.TextInterfaceOptionPage;
+import borrowmanager.view.TextInterfacePage;
 
 public class MainMenu extends TextInterfaceOptionPage {
 	private Manager manager;
@@ -15,20 +16,22 @@ public class MainMenu extends TextInterfaceOptionPage {
 	protected void build() {
 		addOption("login","Login");
 		addOption("newAccount","Create a new account");
+		addOption("changeDate","[TEST] Change the date");
 		addOption("quit", "Quit");
 	}
 	
 	@Override
-	public void handleCommand(String command) {
+	public TextInterfacePage handleCommand(String command) {
 		if (command.equals("login")) {
-			new LoginMenu(manager);
+			openChildPage(new LoginMenu(manager));
 		}
 		else if (command.equals("newAccount")) {
-			new CreateAccountMenu(manager);
+			openChildPage(new CreateAccountMenu(manager));
 		}
 		else if (command.equals("quit")) {
 			System.exit(0);
 		}
-		
+		display();
+		return this;
 	}
 }

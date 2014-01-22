@@ -13,6 +13,7 @@ import borrowmanager.model.booking.DateInterval;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStock;
 import borrowmanager.model.user.Borrower;
+import borrowmanager.model.user.Student;
 import borrowmanager.model.user.User;
 import borrowmanager.model.user.UsersManager;
 
@@ -208,6 +209,10 @@ public class Manager {
 		stock.put(stockA.getId(), stockA);
 		BorrowableStock stockB = new BorrowableStock(new BorrowableModel(1, "item1"), 2);
 		stock.put(stockB.getId(), stockB);
+		
+		// Also create user
+		User u = new Student(1, "g", "tom", "tom", "hello");
+		usersManager.add(u);
 	}
 	
 	public List<Booking> getBookings() {

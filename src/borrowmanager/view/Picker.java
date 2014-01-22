@@ -21,32 +21,36 @@ public abstract class Picker<ID, T> extends TextInterfacePage {
 	}
 
 	@Override
-	protected boolean show() {
+	public TextInterfacePage display() {
 		String input = null;
 		Boolean valid = false;
 		
 		while (!valid) {
 			System.out.println("Select an item in the following list :");
 			for (T element : itemList) {
-				System.out.println("   "+elementToListString(element));
+				System.out.println("   "+getUniqueIdentifier(element)+". "+elementToListString(element));
 			}
+			System.out.println();
 			System.out.println("   b. Go back");
 			
 			input = input();
 			
-			for (T element : itemList) {
-				ID uniqueIdentifier = getUniqueIdentifier(element);
-				if (input.equals(uniqueIdentifier)) {
-					pickedItemId = uniqueIdentifier;
-					return false;
-				}
-			}
 			if (input.toLowerCase().equals("b")) {
 				pickedItemId = null;
-				return false;
+				return null;
+			}
+			
+			for (T element : itemList) {
+				ID uniqueIdentifier = getUniqueIdentifier(element);
+				System.out.println("Input '"+input+"' VS uniqueID:'"+uniqueIdentifier+"'");
+				if (input.equals(uniqueIdentifier.toString())) {
+					System.out.println("Matching !");
+					pickedItemId = uniqueIdentifier;
+					return null;
+				}
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	protected abstract String elementToListString(T element) ;

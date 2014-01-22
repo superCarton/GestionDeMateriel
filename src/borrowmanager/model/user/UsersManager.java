@@ -54,7 +54,7 @@ public class UsersManager {
 	 */
 	public User getUserByLogin(String s) {
 		for(User u : users) {
-			if (u.getName().toLowerCase().equals(s.toLowerCase())) {
+			if (u.getLogin().toLowerCase().equals(s.toLowerCase())) {
 				return u;
 			}
 		}

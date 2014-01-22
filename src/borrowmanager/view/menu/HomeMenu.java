@@ -4,6 +4,7 @@ import borrowmanager.model.Manager;
 import borrowmanager.model.user.Borrower;
 import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.User;
+import borrowmanager.view.TextInterfacePage;
 
 /**
  * The purpose of this class is only to redirect correctly the user to
@@ -11,16 +12,21 @@ import borrowmanager.model.user.User;
  * @author Tom Guillermin
  *
  */
-public class HomeMenu {
+public class HomeMenu extends TextInterfacePage {
 
+	private Manager manager;
 	public HomeMenu(Manager m) {
-		System.out.println("HOME REDIRECTION");
-		User u = m.getActiveUser();
+		manager = m;
+	}
+
+	@Override
+	public TextInterfacePage display() {
+		User u = manager.getActiveUser();
 		if (u instanceof StockManager) {
-			//new StockManagerHomeMenu(m);
+			//return new StockManagerHomeMenu(m);
 		} else if (u instanceof Borrower){
-			System.out.println("Creating new BorrowerHomeMenu with manager "+m);
-			new BorrowerHomeMenu(m);
+			return new BorrowerHomeMenu(manager);
 		}
+		return null;
 	}
 }

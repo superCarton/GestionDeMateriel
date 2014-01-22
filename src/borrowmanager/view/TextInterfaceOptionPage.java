@@ -8,16 +8,15 @@ import java.util.Map;
 public abstract class TextInterfaceOptionPage extends TextInterfacePage implements EventObjectListener {
 	// call this method whenever you want to notify
 	// the event listeners of the particular event
-	private synchronized void fireEvent(TextCommand command) {
+	private synchronized TextInterfacePage fireEvent(TextCommand command) {
 		EventObject event = new EventObject(command);
-		this.handleEvent(event);
+		return this.handleEvent(event);
 	}
 
 	private Map<String, TextCommand> commands = new LinkedHashMap<String, TextCommand>();
 	private boolean hasGoBackOption = false;
 	private final TextCommand backCommand = new TextCommand("back", "Go back");
 
-	private static final String separator = "===========================";
 	private String message = "What do you want to do ?";
 	
 	public TextInterfaceOptionPage() {
@@ -26,7 +25,6 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 	
 	protected void ready() {
 		build();
-		show();
 	}
 	
 	protected abstract void build();
@@ -86,8 +84,7 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 		message = m;
 	}
 
-	public boolean show() {
-		System.out.println(separator);
+	public TextInterfacePage display() {
 		System.out.println(message);
 		
 		// Display the commands
@@ -101,31 +98,31 @@ public abstract class TextInterfaceOptionPage extends TextInterfacePage implemen
 		}
 		
 		// Prompt the user
-		System.out.println("Please type your choice : ");
+		System.out.println("Please enter your choice : ");
 		String in = input();
 		
 		// Go back
 		if (hasGoBackOption && in.equals("B")) {
-			return false ;
+			return null ;
 		}
 		if (commands.containsKey(in)) {
 			TextCommand command = commands.get(in);
-			fireEvent(command);
+			return fireEvent(command);
 		}
 		
 		// Run in loop unless go back has been called
-		return true;
+		return this;
 	}
 
 	private void displayCommand(String key, TextCommand c) {
 		System.out.println(key + " - " + c.getText());
 	}
 
-	public void handleEvent(EventObject e) {
+	public TextInterfacePage handleEvent(EventObject e) {
 		TextCommand command = (TextCommand) e.getSource();
-		handleCommand(command.getCommandName());
+		return handleCommand(command.getCommandName());
 	}
 	
-	protected abstract void handleCommand(String c);
+	protected abstract TextInterfacePage handleCommand(String c);
 
 }

@@ -66,7 +66,7 @@ public abstract class User implements Comparable<User> {
 	 * @return the name
 	 */
 	public String getName(){
-		return lastname;
+		return firstname+" "+lastname;
 	}
 	
 	/**

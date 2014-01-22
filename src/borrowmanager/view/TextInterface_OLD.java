@@ -20,7 +20,7 @@ import borrowmanager.model.element.BorrowableStock;
  * @author Tom Guillermin
  *
  */
-public class TextInterface {
+public class TextInterface_OLD {
 	
 	private Integer idAutoIncrement = 1;
 	private BufferedReader br;
@@ -31,7 +31,7 @@ public class TextInterface {
 	private String dateFormat = "dd/MM/yyyy";
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 	
-	public TextInterface() {
+	public TextInterface_OLD() {
 		manager = new Manager();
 		manager.fillTemporaryStock();
 		br = new BufferedReader(new InputStreamReader(System.in));

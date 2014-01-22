@@ -12,11 +12,21 @@ import borrowmanager.model.booking.DateInterval;
 public abstract class TextInterfacePage {
 	private BufferedReader br;
 	
+	private static final String separator = "\n===========================\n";
+	
 	private static final String dateFormat = "dd/MM/yyyy";
 	protected static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 	
 	public TextInterfacePage() {
 		br = new BufferedReader(new InputStreamReader(System.in));
+	}
+	
+	protected void openChildPage(TextInterfacePage page) {
+		while (page != null) {
+			System.out.println(separator);
+			page = page.display();
+		}
+		System.out.println("Exiting loop from : "+this);
 	}
 	
 	protected String input() {
@@ -27,6 +37,16 @@ public abstract class TextInterfacePage {
 			// nothing
 		}
 	    return s;
+	}
+	
+	protected boolean question(String message) {
+		System.out.println(message + " (y/n)");
+		String i = input().toLowerCase();
+		while (true) {
+			if (i.equals("y")) return true;
+			if (i.equals("n")) return false;
+			System.out.println("Answer '"+i+"' not recognized.");
+		}
 	}
 	
 	protected Integer inputQuantity() {
@@ -91,7 +111,7 @@ public abstract class TextInterfacePage {
 		return new DateInterval(startDate, endDate);
 	}
 	
-	protected abstract boolean show();
+	public abstract TextInterfacePage display();
 	
 	
 }

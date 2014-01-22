@@ -12,7 +12,7 @@ public class LoginMenu extends TextInterfacePage {
 	}
 	
 	@Override
-	protected boolean show() {
+	public TextInterfacePage display() {
 		System.out.println("Login: ");
 		String login = input();
 		// No password
@@ -20,15 +20,16 @@ public class LoginMenu extends TextInterfacePage {
 		User user = manager.getUsersManager().getUserByLogin(login);
 	    if (user != null) {
 	    	manager.setActiveUser(user);
-		    System.out.println("Hello "+user.getName()+" !");
-		    new HomeMenu(manager);
-		    return false;
+		    System.out.println("You logged in successfully as "+user.getName()+".");
+		    //new HomeMenu(manager);
+		    openChildPage(new HomeMenu(manager));
 	    }
 	    else {
 	    	System.out.println("User "+login+" not found!");
-	    	new LoginMenu(manager);
-	    	return false;
+	    	//new LoginMenu(manager);
+	    	//return this;
 	    }
+	    return null;
 	}
 
 }

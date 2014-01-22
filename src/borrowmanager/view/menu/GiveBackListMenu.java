@@ -8,22 +8,24 @@ import borrowmanager.model.user.Borrower;
 import borrowmanager.view.BookingPicker;
 import borrowmanager.view.TextInterfacePage;
 
-public class GiveBackMenu extends TextInterfacePage {
+public class GiveBackListMenu extends TextInterfacePage {
 
 	private Manager manager;
-	public GiveBackMenu(Manager m) {
+	public GiveBackListMenu(Manager m) {
 		manager = m;
 	}
 	@Override
-	protected boolean show() {
+	public TextInterfacePage display() {
 		Borrower user = (Borrower) manager.getActiveUser();
-		System.out.println("You chose to give back something ! Good idea !");
+		System.out.println("You chose to give back something. (Good idea !)");
 
 		List<Booking> userBookings = manager.getUserActiveBookings(user.getId());
 		if (userBookings.size() == 0) {
 			System.out.println("But you don't have any item to return! Nice job!");
-			new BorrowerHomeMenu(manager);
-			return true;
+			System.out.println("Press enter to continue to the main menu.");
+			input();
+			//new BorrowerHomeMenu(manager);
+			return null;
 		}
 		
 		System.out.println("Choose one of the item to give back");
@@ -32,8 +34,8 @@ public class GiveBackMenu extends TextInterfacePage {
 		Integer bookingID = picker.getPickedItemId();
 		
 		if (bookingID == null) {
-			new BorrowerHomeMenu(manager);
-			return false;
+			//new BorrowerHomeMenu(manager);
+			return null;
 		}
 		
 		Booking booking = userBookings.get(bookingID);
@@ -46,8 +48,8 @@ public class GiveBackMenu extends TextInterfacePage {
 			System.out.println("You returned "+booking.getBorrowableStack().getName()+" late. You will have to pay a fee.");
 		}
 		
-		new BorrowerHomeMenu(manager);
-		return false;
+		//new BorrowerHomeMenu(manager);
+		return null;
 	}
 
 }

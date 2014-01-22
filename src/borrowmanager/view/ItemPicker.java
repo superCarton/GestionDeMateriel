@@ -12,7 +12,7 @@ public class ItemPicker extends Picker<Integer, BorrowableStock> {
 
 	@Override
 	protected String elementToListString(BorrowableStock element) {
-		return element.getId()+". "+element.getName();
+		return element.getName();
 	}
 
 	@Override

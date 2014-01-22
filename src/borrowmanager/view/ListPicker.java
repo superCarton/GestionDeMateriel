@@ -8,6 +8,7 @@ public abstract class ListPicker<T> extends Picker<Integer, T> {
 	
 	public ListPicker(List<T> l) {
 		super(l);
+		realList = l;
 	}
 
 	@Override
