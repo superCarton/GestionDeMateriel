@@ -40,6 +40,9 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		else if (c.equals("stats")) {
 			// open stats page
 		}
+		else if (c.equals("logout")) {
+			return null;
+		}
 		return this;
 	}
 

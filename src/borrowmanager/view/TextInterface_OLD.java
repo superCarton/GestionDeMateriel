@@ -256,7 +256,8 @@ public class TextInterface_OLD {
 		
 		Booking booking = userBookings.get(bookingID);
 
-		Boolean isLate = booking.end();
+		Boolean isLate = booking.isLate();
+		booking.end();
 		if (!isLate) {
 			System.out.println("You returned "+booking.getBorrowableStack().getName()+" on time! Congrats!");
 		}

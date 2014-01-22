@@ -118,18 +118,19 @@ public class Booking implements Comparable<Booking> {
 	 * Finishes the booking (sets the end date to today) if this booking isn't late
 	 * @return	Is the booking late?
 	 */
-	public boolean end(){
+	public void end(){
 		this.interval.end();
 		this.isReturned = true;
 		
-		if(!isLate()){
-			return false;
-		}
-		return true;
+		//return isLate();
 	}
 	
 	public boolean wasAReminderSendToday() {
-		long diff = Manager.now.getTime() - getLastReminder().getDate().getTime();
+		Reminder last = getLastReminder();
+		if (last == null) return false;
+		// Calculate the time difference (in ms) since the last reminder
+		long diff = Manager.now.getTime() - last.getDate().getTime();
+		// Convert from ms to hours. The threshold is 24
 		return diff / 1000 / 60 < 24;
 	}
 	
@@ -137,7 +138,8 @@ public class Booking implements Comparable<Booking> {
 	 * Adds a reminder to the booking.
 	 */
 	public void addReminder() {
-		if (!wasAReminderSendToday()) {
+		// Error if a reminder was already sent in the last 24h hours.
+		if (wasAReminderSendToday()) {
 			throw new RuntimeException("A reminde has been already sent to that user. Wait tomorrow.");
 		}
 		
@@ -157,6 +159,7 @@ public class Booking implements Comparable<Booking> {
 	 * @return
 	 */
 	public Reminder getLastReminder() {
+		if (reminders.size() == 0) return null;
 		return reminders.get(reminders.size()-1);
 	}
 	
@@ -250,5 +253,21 @@ public class Booking implements Comparable<Booking> {
 	@Override
 	public int compareTo(Booking o) {
 		return this.interval.compareTo(o.interval);
+	}
+
+	/**
+	 * Returns true if the booking is in the future
+	 * @return
+	 */
+	public boolean isFuture() {
+		return interval.startsAfter(Manager.now);
+	}
+	
+	/**
+	 * Returns true if the booking is a reservation
+	 * @return
+	 */
+	public boolean isReservation() {
+		return isFuture();
 	}
 }

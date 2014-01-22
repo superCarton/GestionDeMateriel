@@ -21,6 +21,7 @@ public class BorrowerHomeMenu extends TextInterfaceOptionPage {
 		addOption("giveBack", "Give back something");
 		addOption("borrowedList", "See what I've currently borrowed");
 		addOption("reservationList", "See my reservations");
+		addOption("cancelReservation", "Cancel a reservation");
 		addOption("reservationList", "See all my bookings");
 		addOption("logout", "Log out");
 	}
@@ -35,6 +36,9 @@ public class BorrowerHomeMenu extends TextInterfaceOptionPage {
 		}
 		else if (c.equals("borrowedList")) {
 			openChildPage(new BorrowedListView(manager));
+		}
+		else if (c.equals("reservationList")) {
+			openChildPage(new MyReservationListView(manager));
 		}
 		else if (c.equals("logout")) {
 			manager.setActiveUser(null);

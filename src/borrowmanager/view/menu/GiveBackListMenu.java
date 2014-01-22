@@ -14,6 +14,7 @@ public class GiveBackListMenu extends TextInterfacePage {
 	public GiveBackListMenu(Manager m) {
 		manager = m;
 	}
+	
 	@Override
 	public TextInterfacePage display() {
 		Borrower user = (Borrower) manager.getActiveUser();
@@ -30,7 +31,7 @@ public class GiveBackListMenu extends TextInterfacePage {
 		
 		System.out.println("Choose one of the item to give back");
 		BookingPicker picker = new BookingPicker(userBookings);
-		
+		picker.display();
 		Integer bookingID = picker.getPickedItemId();
 		
 		if (bookingID == null) {
@@ -40,16 +41,21 @@ public class GiveBackListMenu extends TextInterfacePage {
 		
 		Booking booking = userBookings.get(bookingID);
 
-		Boolean isLate = booking.end();
+		returnItem(booking);
+		
+		//new BorrowerHomeMenu(manager);
+		return null;
+	}
+	
+	public static void returnItem(Booking booking) {
+		Boolean isLate = booking.isLate();
+		booking.end();
 		if (!isLate) {
 			System.out.println("You returned "+booking.getBorrowableStack().getName()+" on time! Congrats!");
 		}
 		else {
 			System.out.println("You returned "+booking.getBorrowableStack().getName()+" late. You will have to pay a fee.");
 		}
-		
-		//new BorrowerHomeMenu(manager);
-		return null;
 	}
 
 }

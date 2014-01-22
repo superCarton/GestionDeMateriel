@@ -75,6 +75,14 @@ public class DateInterval implements Comparable<DateInterval> {
 	public Boolean contains(Date date){
 		return this.start.before(date) && end.after(date);
 	}
+	
+	public Boolean startsAfter(Date d) {
+		return this.start.after(d);
+	}
+	
+	public Boolean endsAfter(Date d) {
+		return this.end.after(d);
+	}
 
 	/**
 	 * End the current interval at the current moment

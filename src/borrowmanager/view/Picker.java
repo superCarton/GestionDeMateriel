@@ -42,9 +42,7 @@ public abstract class Picker<ID, T> extends TextInterfacePage {
 			
 			for (T element : itemList) {
 				ID uniqueIdentifier = getUniqueIdentifier(element);
-				System.out.println("Input '"+input+"' VS uniqueID:'"+uniqueIdentifier+"'");
 				if (input.equals(uniqueIdentifier.toString())) {
-					System.out.println("Matching !");
 					pickedItemId = uniqueIdentifier;
 					return null;
 				}

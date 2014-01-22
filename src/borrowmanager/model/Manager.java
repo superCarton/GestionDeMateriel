@@ -142,7 +142,9 @@ public class Manager {
 	 * @return True if the borrowable was given back too late.
 	 */
 	public Boolean giveBack(Booking booking) {
-		return booking.end();
+		boolean late = booking.isLate();
+		booking.end();
+		return late;
 	}
 	
 	public void save() {
@@ -289,25 +291,53 @@ public class Manager {
 		return list;
 	}
 	
-	/**
-	 * Returns the list of the bookings of a user.
-	 * @param userId
-	 * @return
-	 */
-	public List<Booking> getUserActiveBookings(Integer userId) {
+	public List<Booking> getUserBookings(Integer userId) {
 		List<Booking> list = new LinkedList<Booking>();
 		for(Integer borrowableID : this.stock.keySet()) {
 			BorrowableStock stock = this.stock.get(borrowableID);
 			for(Booking b : stock.getCalendar().getBookings()) {
-				if (b.getBorrowerId() == userId && !b.isReturned()) {
+				if (b.getBorrowerId() == userId) {
 					list.add(b);
 				}
 			}
 		}
 		return list;
 	}
-
 	
+	/**
+	 * Returns the list of the bookings of a user.
+	 * @param userId
+	 * @return
+	 */
+	public List<Booking> getUserActiveBookings(Integer userId) {
+		List<Booking> list = new LinkedList<Booking>(),
+				base = getUserBookings(userId);
+		// Filter only the active bookings
+		for (Booking b : base) {
+			if (b.isActive()) {
+				list.add(b);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns the list of the reservations made by the user.
+	 * @param userId The user id
+	 * @return
+	 */
+	public List<Booking> getUserReservations(Integer userId) {
+		List<Booking> list = new LinkedList<Booking>(),
+				base = getUserBookings(userId);
+		// Filter only the reservation (booking in the future)
+		for (Booking b : base) {
+			if (b.isReservation()) {
+				list.add(b);
+			}
+		}
+		return list;
+	}
+
 
 	public Integer getIDAutoIncrement() {
 		return usersManager.getIDAutoIncrement();

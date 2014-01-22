@@ -37,11 +37,19 @@ public class BookingsList extends TextInterfacePage {
 			Integer picked = picker.getPickedItemId();
 			
 			if (picked != null) {
-				return new BookingDetails(manager, list.get(picked));
+				openChildPage(new BookingDetails(manager, list.get(picked)));
+				//return new BookingDetails(manager, list.get(picked));
+			}
+			else {
+				return null;
 			}
 		}
+		else {
+			System.out.println("Nothing to display.");
+			return null;
+		}
 		
-		return null;
+		return this;
 	}
 
 }
