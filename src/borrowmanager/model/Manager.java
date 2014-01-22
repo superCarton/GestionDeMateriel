@@ -22,40 +22,36 @@ public class Manager {
 	private Map<Integer, BorrowableStock> stock;
 	
 	/**
-	 * Users of the Manager
+	 * Users Manager
 	 */
-	private List<User> users;
-	
 	private UsersManager usersManager;
 
 	public Manager() {
 		this.usersManager = new UsersManager();
 		this.currentUser = null;
 		//this.bookings = new HashMap<Integer, BookingCalendar>();
-		this.users = new LinkedList<User>();
 		this.stock = new HashMap<Integer, BorrowableStock>();
 	}
 	
+	public UsersManager getUsersManager() {
+		return usersManager;
+	}
+	
+	/**
+	 * Sets the current user of the app
+	 * @param u The user
+	 */
 	public void setUser(User u){
-		if(users.contains(u) && this.getUser(u.getId()) != u){
+		if(usersManager.getUser(u.getId()) != u){
 			throw new RuntimeException("This userid is already taken !");
 		}
 		
-		if(!users.contains(u)){
+		/*if(!users.contains(u)){
 			users.add(u);
 			Collections.sort(users);
-		}
+		}*/
 		
 		this.currentUser = u;
-	}
-	
-	public User getUser(Integer id){
-		for(User u : users){
-			if(u.getId() == id){
-				return u;
-			}
-		}
-		return null;
 	}
 	
 	public Boolean book(Integer borrowableId, Integer quantity,
@@ -239,21 +235,10 @@ public class Manager {
 		return list;
 	}
 
-	public User getUserByName(String s) {
-		for(User u : users) {
-			if (u.getName().toLowerCase().equals(s.toLowerCase())) {
-				return u;
-			}
-		}
-		return null;
-	}
+	
 
 	public Integer getIDAutoIncrement() {
-		int max = -1;
-		for (User u : users) {
-			max = Math.max(u.getId()+1, max);
-		}
-		return max;
+		return usersManager.getIDAutoIncrement();
 	}
 	
 	

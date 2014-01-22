@@ -34,6 +34,34 @@ public class UsersManager {
 	}
 	
 	/**
+	 * Get user by their ID.
+	 * @param id The user ID
+	 * @return The user
+	 */
+	public User getUser(Integer id){
+		for(User u : users){
+			if(u.getId() == id){
+				return u;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get user by their login
+	 * @param s The user login
+	 * @return
+	 */
+	public User getUserByLogin(String s) {
+		for(User u : users) {
+			if (u.getName().toLowerCase().equals(s.toLowerCase())) {
+				return u;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Adds a user
 	 *
 	 * @param user the user
@@ -163,5 +191,17 @@ public class UsersManager {
 		          System.out.println(e);
 		}
 		return object;
+	}
+
+	/**
+	 * Returns a unused auto incremented user ID
+	 * @return
+	 */
+	public Integer getIDAutoIncrement() {
+		int max = -1;
+		for (User u : users) {
+			max = Math.max(u.getId()+1, max);
+		}
+		return max;
 	}
 }

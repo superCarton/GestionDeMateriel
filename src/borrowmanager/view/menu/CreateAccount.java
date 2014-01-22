@@ -71,9 +71,17 @@ public class CreateAccount extends TextInterfacePage {
 		return false;
 	}
 	
-	public String inputLogin() {
-		System.out.println("Please enter your first name :");
-		String login = input();
+	public String inputLogin() {	
+		String login = null;
+		boolean valid = false;
+		while (!valid) {
+			System.out.println("Please enter your first name :");
+			login = input();
+			User existing = manager.getUsersManager().getUserByLogin(login);
+			if (existing == null) valid = true;
+		}
+		
+		return login;
 	}
 
 }
