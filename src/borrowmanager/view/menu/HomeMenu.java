@@ -23,7 +23,7 @@ public class HomeMenu extends TextInterfacePage {
 	public TextInterfacePage display() {
 		User u = manager.getActiveUser();
 		if (u instanceof StockManager) {
-			//return new StockManagerHomeMenu(m);
+			return new StockManagerHomeMenu(manager);
 		} else if (u instanceof Borrower){
 			return new BorrowerHomeMenu(manager);
 		}

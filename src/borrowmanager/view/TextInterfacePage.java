@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import borrowmanager.model.Manager;
 import borrowmanager.model.booking.DateInterval;
 
 public abstract class TextInterfacePage {
@@ -26,7 +27,8 @@ public abstract class TextInterfacePage {
 			System.out.println(separator);
 			page = page.display();
 		}
-		System.out.println("Exiting loop from : "+this);
+		System.out.println();
+		//System.out.println("Exiting loop from : "+this);
 	}
 	
 	protected String input() {
@@ -71,7 +73,7 @@ public abstract class TextInterfacePage {
 	
 	private Date readFutureDate() {
 		Date date ;
-		Date now = new Date();
+		Date now = Manager.now;
 		
 		while (true) {
 			date = readDate();
@@ -83,7 +85,7 @@ public abstract class TextInterfacePage {
 		}
 	}
 	
-	private Date readDate() {
+	protected Date readDate() {
 		String input = null;
 		while (true) {
 			System.out.println("Enter date ("+dateFormat+") : ");

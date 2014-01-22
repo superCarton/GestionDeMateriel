@@ -3,6 +3,7 @@ package borrowmanager.model.element;
 import java.util.Date;
 import java.util.Map;
 
+import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.BookingCalendar;
 
@@ -119,7 +120,7 @@ public class BorrowableStock {
 	 * @return
 	 */
 	public Integer getAvailableNumber() {
-		return getAvailableNumber(new Date());
+		return getAvailableNumber(Manager.now);
 	}
 	
 	/**

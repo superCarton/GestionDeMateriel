@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStack;
 
@@ -106,7 +107,7 @@ public class BookingCalendar {
 	public Boolean book(Integer borrowerId, Integer quantity,
 			DateInterval interval, String reason) {
 		BorrowableStack stack = new BorrowableStack(borrowableModel, quantity);
-		Date now = new Date();
+		Date now = Manager.now;
 		if (interval.getEnd().compareTo(now) < 0) {
 			return false;
 		}

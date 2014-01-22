@@ -26,7 +26,8 @@ public class BookingDetails extends TextInterfacePage {
 		
 		if (booking.isLate()) {
 			System.out.println();
-			System.out.println("WARNING : This booking is late ! You should give it back !");
+			System.out.println("WARNING :\tThis booking is late ! You should give it back !");
+			System.out.println("\tMoreover, you will have to pay an additional fee.");
 		}
 		
 		System.out.println();

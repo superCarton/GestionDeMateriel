@@ -2,6 +2,7 @@ package borrowmanager.model.booking;
 
 import java.util.Date;
 
+import borrowmanager.model.Manager;
 import borrowmanager.util.StringConfig;
 
 /**
@@ -79,7 +80,7 @@ public class DateInterval implements Comparable<DateInterval> {
 	 * End the current interval at the current moment
 	 */
 	public void end() {
-		this.end = new Date();
+		this.end = Manager.now;
 	}
 	
 	@Override

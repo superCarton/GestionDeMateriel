@@ -3,6 +3,7 @@ package borrowmanager.model.booking;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStack;
 import borrowmanager.util.StringConfig;
@@ -95,7 +96,7 @@ public class Booking implements Comparable<Booking> {
 	 * @return	Is the booking late?
 	 */
 	public boolean isLate(){
-		Date now = new Date();
+		Date now = Manager.now ;
 		return !isFinished && interval.isLate(now);
 	}
 	
@@ -104,7 +105,7 @@ public class Booking implements Comparable<Booking> {
 	 * @return	Does the booking contain today?
 	 */
 	public boolean isCurrent(){
-		Date now = new Date();
+		Date now = Manager.now;
 		return interval.contains(now);
 	}
 	

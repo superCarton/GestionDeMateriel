@@ -1,5 +1,7 @@
 package borrowmanager.view.menu;
 
+import java.util.Date;
+
 import borrowmanager.model.Manager;
 import borrowmanager.view.TextInterfacePage;
 
@@ -12,7 +14,12 @@ public class DateChangeMenu extends TextInterfacePage {
 	
 	@Override
 	public TextInterfacePage display() {
-		// TODO Auto-generated method stub
+		System.out.println("You can change the date used as 'today' in the app (for testing purposes)");
+		manager.now = readDate();
+		System.out.println("New date set !");
+		System.out.println();
+		System.out.println("Press enter to continue");
+		input();
 		return null;
 	}
 	

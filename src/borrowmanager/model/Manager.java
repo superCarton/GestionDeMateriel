@@ -13,12 +13,13 @@ import borrowmanager.model.booking.DateInterval;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStock;
 import borrowmanager.model.user.Borrower;
+import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.Student;
 import borrowmanager.model.user.User;
 import borrowmanager.model.user.UsersManager;
 
 public class Manager {
-	public Date now = new Date();
+	public static Date now = new Date();
 	private User activeUser;
 	private Map<Integer, BorrowableStock> stock;
 	
@@ -61,7 +62,8 @@ public class Manager {
 	public Boolean book(Integer borrowableId, Integer quantity,
 			Integer borrowerId, Date start, Date end, String reason) {
 		if (! (activeUser instanceof Borrower)) {
-			return false;
+			throw new RuntimeException("Active user "+activeUser+" is not a borrower");
+			//return false;
 		}
 		
 		Borrower borrower = (Borrower) activeUser;
@@ -71,23 +73,27 @@ public class Manager {
 		// Time before the beggining of the booking (reservation)
 		DateInterval reservationStartInterval = new DateInterval(new Date(), start);
 		if (reservationStartInterval.getLength() > borrower.getMaxReservationLength()) {
-			return false;
+			throw new RuntimeException("User cant do a reservation more than "+borrower.getMaxReservationLength()+" days ahead ! (here:"+reservationStartInterval.getLength()+")");
+			//return false;
 		}
 		
 		// Duration of the booking
 		DateInterval bookingInterval= new DateInterval(start, end);
 		if (bookingInterval.getLength() > borrower.getMaxBookingLength()) {
-			return false;
+			throw new RuntimeException("User cant book something for more than"+borrower.getMaxBookingLength()+" consecutives days! (here:"+bookingInterval.getLength()+")");
+			//return false;
 		}
 		
 		BorrowableStock stock = this.stock.get(borrowableId);
 		
 		if (stock == null) {
-			return false;
+			throw new RuntimeException("Stock is Null");
+			//return false;
 		}
 		
 		if (!stock.isAvailable(quantity, start, end)){
-			return false;
+			throw new RuntimeException("Object is not available in desired quantity");
+			//return false;
 		}
 		
 		return stock.getCalendar().book(borrowerId, quantity, bookingInterval, reason);
@@ -96,7 +102,7 @@ public class Manager {
 	public Boolean isAvailable(Integer borrowableId, Integer quantity) {
 		BorrowableStock b = this.stock.get(borrowableId);
 		if (b != null) {
-			Date now = new Date();
+			Date now = Manager.now;
 			return isAvailable(borrowableId, quantity, now, now);
 		}
 		return false;
@@ -213,6 +219,15 @@ public class Manager {
 		// Also create user
 		User u = new Student(1, "g", "tom", "tom", "hello");
 		usersManager.add(u);
+		
+		User um = new StockManager(2, "MANAGER","LE","manager","hello2");
+		usersManager.add(um);
+		
+		activeUser = u;
+		Date a = new Date("01/25/2014");
+		Date b = new Date("01/27/2014");
+		boolean ok = book(0, 1, 1, a, b, "MYCOURSE");
+		activeUser = null;
 	}
 	
 	public List<Booking> getBookings() {

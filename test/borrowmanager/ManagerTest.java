@@ -57,19 +57,19 @@ public class ManagerTest {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_MONTH, 5);
 		Date plus5 = c.getTime();
-		assertTrue(m.book(0, quantity, 0, new Date(), plus5, "test"));
-		assertFalse(m.book(0, quantity, 0, new Date(), plus5, "test2"));
+		assertTrue(m.book(0, quantity, 0, m.now, plus5, "test"));
+		assertFalse(m.book(0, quantity, 0, m.now, plus5, "test2"));
 		
 		c.add(Calendar.DAY_OF_MONTH, 6);
 		Date plus11 = c.getTime();
-		assertFalse(m.book(1, quantity, 0, new Date(), plus11, "test3"));
+		assertFalse(m.book(1, quantity, 0, m.now, plus11, "test3"));
 		
 		c.add(Calendar.DAY_OF_MONTH, 4);
 		Date plus15 = c.getTime();
-		assertFalse(m.book(1, 0, 0, new Date(), plus15, "test4"));
+		assertFalse(m.book(1, 0, 0, m.now, plus15, "test4"));
 		
 		m.setUser(new User(1, "manager", UserType.STOCK_MANAGER));
-		assertFalse(m.book(1, quantity, 1, new Date(), plus5, "test5"));
+		assertFalse(m.book(1, quantity, 1, m.now, plus5, "test5"));
 		
 		m.setUser(new User(2, "teacher", UserType.TEACHER));
 		assertTrue(m.book(1, quantity, 2, plus11, plus15, "test6"));		
@@ -89,7 +89,7 @@ public class ManagerTest {
 		
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_MONTH, 5);
-		assertTrue(m.book(0, quantity, 0, new Date(), c.getTime(), "test"));
+		assertTrue(m.book(0, quantity, 0, m.now, c.getTime(), "test"));
 		
 		m.setUser(new User(2, "manager", UserType.STOCK_MANAGER));
 		
@@ -108,7 +108,7 @@ public class ManagerTest {
 		assertTrue(m.isAvailable(0, 1));
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_MONTH, 5);
-		assertTrue(m.isAvailable(0, 1, new Date(), c.getTime()));
+		assertTrue(m.isAvailable(0, 1, m.now, c.getTime()));
 		
 		// TODO
 	}
