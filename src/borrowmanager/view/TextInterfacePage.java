@@ -13,7 +13,7 @@ public abstract class TextInterfacePage {
 	private BufferedReader br;
 	
 	private static final String dateFormat = "dd/MM/yyyy";
-	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+	protected static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 	
 	public TextInterfacePage() {
 		br = new BufferedReader(new InputStreamReader(System.in));

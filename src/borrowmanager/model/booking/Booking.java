@@ -183,8 +183,8 @@ public class Booking implements Comparable<Booking> {
 	
 	@Override
 	public String toString() {
-		return "Booking for item n�" + borrowableStack.getId() 
-				+ "\nThis item has been booked by user n�" + borrowerId
+		return "Booking for item #" + borrowableStack.getId() 
+				+ "\nThis item has been booked by user n#" + borrowerId
 				+ "\nFor: " + reason + "\nThis booking has " + ((isValidated)?"":"not ")
 				+ "been validated by a manager\n" + interval.toString();
 	}

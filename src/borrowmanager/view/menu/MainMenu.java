@@ -1,6 +1,5 @@
 package borrowmanager.view.menu;
 
-import java.util.EventObject;
 
 import borrowmanager.model.Manager;
 import borrowmanager.view.TextInterfaceOptionPage;
@@ -18,8 +17,7 @@ public class MainMenu extends TextInterfaceOptionPage {
 	}
 	
 	@Override
-	public void handleEvent(EventObject e) {
-		String command = (String) e.getSource();
+	public void handleCommand(String command) {
 		if (command.equals("login")) {
 			new LoginMenu(manager);
 		}
@@ -28,7 +26,4 @@ public class MainMenu extends TextInterfaceOptionPage {
 		}
 		
 	}
-
-
-
 }

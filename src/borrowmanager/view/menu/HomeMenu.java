@@ -11,7 +11,7 @@ public class HomeMenu {
 	public HomeMenu(Manager m) {
 		User u = m.getActiveUser();
 		if (u instanceof StockManager) {
-			new StockManagerHomeMenu(m);
+			//new StockManagerHomeMenu(m);
 		} else if (u instanceof Borrower){
 			new BorrowerHomeMenu(m);
 		}
