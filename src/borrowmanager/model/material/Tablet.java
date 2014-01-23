@@ -23,9 +23,9 @@ public class Tablet extends Device {
 	 * @param type the type
 	 * @param maxTimeLoan the max time loan
 	 */
-	public Tablet(String name, String brand, String description, int reference,
+	public Tablet(Integer id, String name, String brand, String description, int reference,
 			OS type, int maxTimeLoan) {
-		super(name, brand, description, reference, type, maxTimeLoan);
+		super(id, name, brand, description, reference, type, maxTimeLoan);
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class Tablet extends Device {
 	 */
 	@Override
 	public Object clone(){
-		return new Tablet(this.getName(), this.getBrand(), this.getDescription(), this.getReference(), this.getTypeOS(), this.getMaxTimeLoan());
+		return new Tablet(this.getId(), this.getName(), this.getBrand(), this.getDescription(), this.getReference(), this.getTypeOS(), this.getMaxTimeLoan());
 	}
 	
 	/* (non-Javadoc)

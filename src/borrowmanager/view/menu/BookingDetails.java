@@ -4,6 +4,7 @@ import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.element.BorrowableStack;
 import borrowmanager.model.element.BorrowableStock;
+import borrowmanager.model.material.MaterialType;
 import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.User;
 import borrowmanager.view.TextInterfaceOptionPage;
@@ -25,7 +26,8 @@ public class BookingDetails extends TextInterfaceOptionPage {
 		boolean isViewedByBorrower = user == manager.getActiveUser(),
 				isViewedByStockManager = manager.getActiveUser() instanceof StockManager;
 		System.out.println("Booking Information:");
-		BorrowableStack item = booking.getBorrowableStack();
+		MaterialType item = booking.getMaterialType();
+		//BorrowableStack item = booking.getBorrowableStack();
 		System.out.println("Item borrowed :\t"+item.getName());
 		System.out.println("Quantity :\t"+booking.getQuantity());
 		System.out.println("Date :\t"+booking.getInterval().toString());
@@ -103,7 +105,7 @@ public class BookingDetails extends TextInterfaceOptionPage {
 		boolean isViewedByBorrower = user == manager.getActiveUser(),
 				isViewedByStockManager = manager.getActiveUser() instanceof StockManager;
 		System.out.println("Booking Information:");
-		BorrowableStack item = booking.getBorrowableStack();
+		MaterialType item = booking.getMaterialType(); //getBorrowableStack();
 		System.out.println("Item borrowed :\t"+item.getName());
 		System.out.println("Quantity :\t"+booking.getQuantity());
 		System.out.println("Date :\t"+booking.getInterval().toString());
@@ -185,7 +187,8 @@ public class BookingDetails extends TextInterfaceOptionPage {
 		}
 		else if (c.equals("cancelReservation")) {
 			if (question("Would you like to cancel the reservation ?")) {
-				manager.cancelBooking(booking);
+				// TODO
+				//manager.cancelBooking(booking);
 			}
 		}
 		// TODO Auto-generated method stub

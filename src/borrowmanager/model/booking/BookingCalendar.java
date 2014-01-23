@@ -8,6 +8,8 @@ import java.util.List;
 import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStack;
+import borrowmanager.model.material.Material;
+import borrowmanager.model.material.MaterialType;
 
 /**
  * The BookingCalendar holds the list of all the Bookings.
@@ -20,15 +22,15 @@ public class BookingCalendar {
 	 * Current bookings
 	 */
 	private List<Booking> bookings;
-	
-	private BorrowableModel borrowableModel;
+
+	private MaterialType materialType;
 
 	/**
 	 * Default constructor, initializes an empty bookings list
 	 */
-	public BookingCalendar(BorrowableModel model) {
+	public BookingCalendar(MaterialType type) {
 		this.bookings = new LinkedList<Booking>();
-		this.borrowableModel = model ;
+		this.materialType = type;
 	}
 	
 	/**
@@ -104,17 +106,18 @@ public class BookingCalendar {
 	 *            The booking interval
 	 * @return Is the booking possible?
 	 */
-	public Booking book(Integer borrowerId, Integer quantity,
+	public Booking book(Integer borrowerId, List<Material> materials,
 			DateInterval interval, String reason) {
-		BorrowableStack stack = new BorrowableStack(borrowableModel, quantity);
+		
+		//BorrowableStack stack = new BorrowableStack(materialType, quantity);
 		Date now = Manager.now;
 		// Only create future bookings
 		if (!Manager.DEBUG && interval.getEnd().compareTo(now) < 0) {
 			return null;
 		}
+		
 		try {
-			Booking b = new Booking(borrowerId, stack, interval,
-					reason);
+			Booking b = new Booking(borrowerId, materials, interval,reason);
 			bookings.add(b);
 			Collections.sort(bookings);
 			return b;

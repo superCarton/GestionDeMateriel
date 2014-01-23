@@ -79,11 +79,11 @@ public class Stock {
 		
 		
 		if(!stock.containsKey(material.getMaterialType())){
-			throw new Exception("L'objet demandé est absent du stock");
+			throw new Exception("L'objet demandï¿½ est absent du stock");
 		} else {
 			ArrayList<Material> materials = stock.get(material.getMaterialType());
 			if(!materials.contains(material))
-				throw new Exception("L'objet demandé est absent du stock");
+				throw new Exception("L'objet demandï¿½ est absent du stock");
 			else
 				materials.remove(material);
 		}
@@ -127,7 +127,6 @@ public class Stock {
 	public Map<MaterialType, ArrayList<Material>> getStock(){
 		return stock;
 	}
-	
 	
 	/**
 	 * Load.

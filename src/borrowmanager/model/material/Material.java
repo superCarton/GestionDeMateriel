@@ -3,8 +3,9 @@
  */
 package borrowmanager.model.material;
 
-import java.util.HashMap;
 import java.util.*;
+
+import borrowmanager.model.element.State;
 
 /**
  * The Class Material.
@@ -16,6 +17,8 @@ public class Material {
 	/** The material_type. */
 	private MaterialType material_type;
 	
+	private State state;
+	
 	/** The serial_number. */
 	private String serial_number;
 	
@@ -25,7 +28,8 @@ public class Material {
 	 * @param type the type
 	 * @param serial the serial
 	 */
-	public Material(MaterialType type, String serial){
+	public Material(MaterialType type, String serial) {
+		state = State.NEW;
 		material_type = type;
 		serial_number = serial;
 	}
@@ -49,6 +53,14 @@ public class Material {
 	 */
 	public MaterialType getMaterialType(){
 		return material_type;
+	}
+	
+	/**
+	 * Gets the material state.
+	 * @return the material state
+	 */
+	public State getState() {
+		return state;
 	}
 	
 	/**

@@ -13,6 +13,7 @@ import java.util.*;
  */
 public class MaterialType{
 
+	private Integer id;
 	/** The name. */
 	protected String name;
 	
@@ -30,15 +31,17 @@ public class MaterialType{
 
 	/**
 	 * Instantiates a new material type.
-	 *
+	 * @param id TODO
 	 * @param name the name
 	 * @param brand the brand
 	 * @param description the description
 	 * @param reference the reference
 	 * @param maxTimeLoan the max time loan
+	 * @param id the unique id
 	 */
-	public MaterialType(String name, String brand, String description,
-			int reference, int maxTimeLoan) {
+	public MaterialType(int id, String name, String brand,
+			String description, int reference, int maxTimeLoan) {
+		this.id = id;
 		this.name = name;
 		this.brand = brand;
 		this.description = description;
@@ -50,6 +53,14 @@ public class MaterialType{
 	 * Instantiates a new material type.
 	 */
 	public MaterialType() {}
+	
+	/**
+	 * Returns the ID
+	 * @return
+	 */
+	public Integer getId() {
+		return id;
+	}
 
 	/**
 	 * Sets the object.

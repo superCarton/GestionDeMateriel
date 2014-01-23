@@ -26,9 +26,9 @@ public abstract class Device extends MaterialType {
 	 * @param type the type
 	 * @param maxTimeLoan the max time loan
 	 */
-	public Device(String name, String brand, String description, int reference,
+	public Device(Integer id, String name, String brand, String description, int reference,
 			OS type, int maxTimeLoan) {
-		super(name, brand, description, reference, maxTimeLoan);
+		super(id, name, brand, description, reference, maxTimeLoan);
 		typeOs = type;
 	}
 

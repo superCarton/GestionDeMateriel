@@ -8,6 +8,8 @@ import java.util.List;
 import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStack;
+import borrowmanager.model.material.Material;
+import borrowmanager.model.material.MaterialType;
 import borrowmanager.util.StringConfig;
 
 /**
@@ -21,7 +23,8 @@ public class Booking implements Comparable<Booking> {
 	 */
 	private Integer borrowerId;
 	
-	private BorrowableStack borrowableStack;
+	private List<Material> materials; 
+	//private BorrowableStack borrowableStack;
 	
 	/**
 	 * Why is the item booked? (typically a class name)
@@ -44,6 +47,8 @@ public class Booking implements Comparable<Booking> {
 	public DateInterval interval;
 	
 	private List<Reminder> reminders;
+
+	private boolean returnedLate;
 	
 	/**
 	 * Constructs a booking
@@ -52,7 +57,7 @@ public class Booking implements Comparable<Booking> {
 	 * @param interval	The interval (boundaries) of the booking
 	 * @param reason	Why is the booking made
 	 */
-	public Booking(Integer borrower, BorrowableStack stack, DateInterval interval, String reason){
+	public Booking(Integer borrower, List<Material> materials, /*BorrowableStack stack,*/ DateInterval interval, String reason){
 		// Check the validity of the IDs
 		//
 		if(borrower == null ||  interval == null){
@@ -62,7 +67,8 @@ public class Booking implements Comparable<Booking> {
 		// Store the properties
 		//
 		this.borrowerId = borrower;
-		this.borrowableStack = stack;
+		//this.borrowableStack = stack;
+		this.materials = materials;
 		this.reason = reason;
 		this.interval = interval;
 		this.isReturned = false;
@@ -105,6 +111,10 @@ public class Booking implements Comparable<Booking> {
 		return !isReturned && interval.isLate(now);
 	}
 	
+	public boolean wasReturnedLate() {
+		return false;
+	}
+	
 	/**
 	 * Checks if the booking is current (contains today's date)
 	 * @return	Does the booking contain today?
@@ -119,6 +129,8 @@ public class Booking implements Comparable<Booking> {
 	 * @return	Is the booking late?
 	 */
 	public void end(){
+		this.returnedLate = isLate();
+		this.daysLate = getDaysLate();
 		this.interval.end();
 		this.isReturned = true;
 		
@@ -179,6 +191,7 @@ public class Booking implements Comparable<Booking> {
 		else if (isLate()) {
 			return true;
 		}
+		
 		return false;
 	}
 
@@ -215,19 +228,26 @@ public class Booking implements Comparable<Booking> {
 		return interval;
 	}
 	
-	public BorrowableStack getBorrowableStack() {
+	/*public BorrowableStack getBorrowableStack() {
 		return borrowableStack;
+	}*/
+	
+	public List<Material> getMaterials() {
+		return materials;
 	}
 	
 	public Integer getQuantity() {
-		return borrowableStack.getQuantity();
+		return materials.size();
+		//return borrowableStack.getQuantity();
 	}
 	
+	/*
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		return new Booking(borrowerId, borrowableStack, interval, reason);
-	}
+	}*/
 	
+	// TODO : need to fix ?
 	@Override
 	public boolean equals(Object obj) {
 		Booking b = (Booking) obj;
@@ -236,7 +256,7 @@ public class Booking implements Comparable<Booking> {
 	
 	@Override
 	public String toString() {
-		return "Booking for item #" + borrowableStack.getId() 
+		return "Booking for item " + materials.get(0).getMaterialType().getName()+" x"+materials.size() 
 				+ "\nThis item has been booked by user n#" + borrowerId
 				+ "\nFor: " + reason + "\nThis booking has " + ((isValidated)?"":"not ")
 				+ "been validated by a manager\n" + interval.toString();
@@ -247,7 +267,7 @@ public class Booking implements Comparable<Booking> {
 		String endString = format.format(getInterval().getEnd());
 		String notValidatedStr = !isValidated ? "[NOT VALIDATED] " : "";
 		String late = isLate() ? "[LATE !] ":"";
-		return notValidatedStr+late+borrowableStack.getName()+" x"+getQuantity()+" ["+startString+" - "+endString+"] | Details: "+getReason();
+		return notValidatedStr+late+materials.get(0).getMaterialType().getName()+" x"+getQuantity()+" ["+startString+" - "+endString+"] | Details: "+getReason();
 	}
 
 	@Override
@@ -269,5 +289,10 @@ public class Booking implements Comparable<Booking> {
 	 */
 	public boolean isReservation() {
 		return isFuture();
+	}
+
+	public MaterialType getMaterialType() {
+		// TODO : better...
+		return this.materials.get(0).getMaterialType();
 	}
 }

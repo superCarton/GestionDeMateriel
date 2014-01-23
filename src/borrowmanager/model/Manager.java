@@ -12,6 +12,10 @@ import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.DateInterval;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStock;
+import borrowmanager.model.material.Material;
+import borrowmanager.model.material.MaterialType;
+import borrowmanager.model.material.OS;
+import borrowmanager.model.material.SmartPhone;
 import borrowmanager.model.user.Borrower;
 import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.Student;
@@ -99,7 +103,8 @@ public class Manager {
 			throw new RuntimeException("Object is not available in desired quantity");
 			//return false;
 		}
-		return stock.getCalendar().book(borrowerId, quantity, bookingInterval, reason);
+		return stock.book(borrowerId, quantity, bookingInterval, reason);
+		//return stock.getCalendar().book(borrowerId, quantity, bookingInterval, reason);
 	}
 
 	public Boolean isAvailable(Integer borrowableId, Integer quantity) {
@@ -171,6 +176,7 @@ public class Manager {
 		return notValidatedBookings;	
 	}
 
+	/*
 	public Map<Integer, String> getStockDescriptionForFeature(String feature) {
 		Map<Integer, String> descriptions = new HashMap<Integer, String>();
 		for (BorrowableStock borrowable : this.stock.values()) {
@@ -179,7 +185,7 @@ public class Manager {
 			}
 		}
 		return descriptions;
-	}
+	}*/
 
 	public BorrowableStock getBorrowableStockById(Integer id) {
 		return this.stock.get(id);
@@ -216,10 +222,26 @@ public class Manager {
 	
 	// method to fill the stock with dummy elements for testing
 	public void fillTemporaryStock() {
-		BorrowableStock stockA = new BorrowableStock(new BorrowableModel(0, "item0"), 1); 
-		stock.put(stockA.getId(), stockA);
-		BorrowableStock stockB = new BorrowableStock(new BorrowableModel(1, "item1"), 2);
-		stock.put(stockB.getId(), stockB);
+		//MaterialType typeA = new MaterialType(0, "Item0", "MyBrand", "Lol_descr", "reference, maxTimeLoan)
+		SmartPhone s4 = new SmartPhone(0, "S4", "samsungs", "fassst", 42, OS.ANDROID, 7);
+		SmartPhone lolPhone = new SmartPhone(1, "iPhone", "Applz", "pouerk", 1, OS.IOS, 6);
+		
+		Material m1 = new Material(s4, "serial####1253QSF}"),
+				m2 = new Material(s4, "serial####QDSF");
+		List<Material> s4Stock = new LinkedList<Material>();
+		s4Stock.add(m1);
+		s4Stock.add(m2);
+		Material i1 = new Material(lolPhone, "serial####lolll}");
+		List<Material> iStock = new LinkedList<Material>();
+		iStock.add(i1);
+		
+		
+		BorrowableStock stockS4 = new BorrowableStock(s4, s4Stock);
+		//BorrowableStock stockA = new BorrowableStock(new BorrowableModel(0, "item0"), 1); 
+		stock.put(stockS4.getId(), stockS4);
+		//BorrowableStock stockB = new BorrowableStock(new BorrowableModel(1, "item1"), 2);
+		BorrowableStock stockIphon = new BorrowableStock(lolPhone, iStock);
+		stock.put(stockIphon.getId(), stockIphon);
 		
 		// Also create user
 		User u = new Student(1, "g", "tom", "tom", "hello");
@@ -341,5 +363,11 @@ public class Manager {
 
 	public Integer getIDAutoIncrement() {
 		return usersManager.getIDAutoIncrement();
+	}
+
+	public void cancelBooking(Booking booking) {
+		//BorrowableStock theStock = stock.get(booking.getBorrowableStack().getModel().getId());
+		//TODO
+		//theStock.getCalendar().cancel(booking);
 	}
 }

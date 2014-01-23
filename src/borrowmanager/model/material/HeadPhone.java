@@ -22,9 +22,9 @@ public class HeadPhone extends MaterialType {
 	 * @param reference the reference
 	 * @param maxTimeLoan the max time loan
 	 */
-	public HeadPhone(String name, String brand, String description,
+	public HeadPhone(Integer id, String name, String brand, String description,
 			int reference, int maxTimeLoan) {
-		super(name, brand, description, reference, maxTimeLoan);
+		super(id, name, brand, description, reference, maxTimeLoan);
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class HeadPhone extends MaterialType {
 	 */
 	@Override
 	public Object clone(){
-		return new HeadPhone(this.getName(), this.getBrand(), this.getDescription(), this.getReference(), this.getMaxTimeLoan());
+		return new HeadPhone(this.getId(), this.getName(), this.getBrand(), this.getDescription(), this.getReference(), this.getMaxTimeLoan());
 	}
 	
 	/* (non-Javadoc)

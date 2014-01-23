@@ -51,10 +51,10 @@ public class GiveBackListMenu extends TextInterfacePage {
 		Boolean isLate = booking.isLate();
 		booking.end();
 		if (!isLate) {
-			System.out.println("You returned "+booking.getBorrowableStack().getName()+" on time! Congrats!");
+			System.out.println("You returned "+booking.getMaterialType().getName()+" on time! Congrats!");
 		}
 		else {
-			System.out.println("You returned "+booking.getBorrowableStack().getName()+" late. You will have to pay a fee.");
+			System.out.println("You returned "+booking.getMaterialType().getName()+" late. You will have to pay a fee.");
 		}
 	}
 

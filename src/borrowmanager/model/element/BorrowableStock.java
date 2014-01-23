@@ -1,11 +1,19 @@
 package borrowmanager.model.element;
 
+import java.util.AbstractSet;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.BookingCalendar;
+import borrowmanager.model.booking.DateInterval;
+import borrowmanager.model.material.Material;
+import borrowmanager.model.material.MaterialType;
 
 /**
  * BorrowableStock, representing the stock of models
@@ -13,65 +21,63 @@ import borrowmanager.model.booking.BookingCalendar;
  *
  */
 public class BorrowableStock {
-	private BorrowableModel model;
+	private MaterialType materialType;
 	private BookingCalendar calendar;
-	private Integer initialStock;
+	private List<Material> stock;
 	
-	public BorrowableStock(BorrowableModel model) {
-		this(model, 1);
+	public BorrowableStock(MaterialType type) {
+		this(type, new LinkedList<Material>());
 	}
 	
-	public BorrowableStock(BorrowableModel model, Integer initialStock) {
-		this.model = model;
-		this.initialStock = initialStock;
-		this.calendar = new BookingCalendar(model);
+	public BorrowableStock(MaterialType type, List<Material> initialStock) {
+		this.materialType = type;
+		this.stock = initialStock;
+		this.calendar = new BookingCalendar(type);
 	}
 
-	public HardwareType getType() {
-		return model.getType();
+	/**
+	 * Returns the model of the borrowable
+	 * @return
+	 */
+	public MaterialType getType() {
+		return materialType;
 	}
 
+	/*
 	public Map<String, String> getData() {
-		return model.getData();
-	}
+		return materialType.getData();
+	}*/
 
 	/**
 	 * Returns true if the borrowable has a feature.
 	 * @param feature The name of the feature.
 	 * @return True if the borrowable has the feature.
 	 */
+	/*
 	public Boolean hasFeature(String feature) {
-		return model.hasFeature(feature);
-	}
+		return materialType.hasFeature(feature);
+	}*/
 
 	/**
 	 * @return the id
 	 */
 	public Integer getId() {
-		return model.getId();
+		return materialType.getId();
 	}
 	
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return model.getName();
-	}
-	
-	/**
-	 * Returns the model of the borrowable
-	 * @return
-	 */
-	public BorrowableModel getModel() {
-		return model;
+		return materialType.getName();
 	}
 	
 	/**
 	 * Returns the initial value of the stock. 
 	 * @return
 	 */
-	public Integer getInitialStock() {
-		return initialStock;
+	public List<Material> getStock() {
+		return stock;
 	}
 	
 	/**
@@ -129,16 +135,57 @@ public class BorrowableStock {
 	 * @return The available number of the item at the given date.
 	 */
 	public Integer getAvailableNumber(Date date) {
-		Integer availableNumber = initialStock;
-		//System.out.println("(Initial stock : "+initialStock+")");
-		for(Booking b : calendar.getBookings()) {
+		return getAvailableMaterials(date).size();
+	}
+	
+	/**
+	 * Returns the list of the unavailable materials at a given date.
+	 * @param date The date
+	 * @return
+	 */
+	public Set<Material> getUnavailableMaterials(Date date) {
+		Set<Material> unavailable = new HashSet<Material>();
+		for (Booking b : calendar.getBookings()) {
 			if (b.getInterval().contains(date)) {
-				//System.out.println(b.getInterval().toString()+" contains "+date.toLocaleString());
-				//System.out.println("   ==> existing booking quantity = "+b.getQuantity());
-				availableNumber -= b.getQuantity();
+				unavailable.addAll(b.getMaterials());
 			}
 		}
-		//System.out.println("Available number @ "+date.toLocaleString()+" : "+availableNumber);
-		return availableNumber;
+		return unavailable;
+	}
+	
+	public List<Material> getAvailableMaterials(Date date) {
+		Set<Material> unavailable = getUnavailableMaterials(date);
+		
+		return getAvailableMaterials(unavailable);
+	}
+	
+	public List<Material> getAvailableMaterials(Set<Material> unavailable) {
+		List<Material> available = new LinkedList<Material>();
+		for (Material m : stock) {
+			if (! unavailable.contains(m)) {
+				available.add(m);
+			}
+		}
+		return available;
+	}
+	
+	public List<Material> getAvailableMaterials(Date start, Date end) {
+		long startTime = start.getTime();
+		long endTime = end.getTime();
+		long dayLength = 24*60*60*1000;
+		
+		Set<Material> unavailable = new HashSet<Material>();
+		for(long i = startTime ; i <= endTime ; i+= dayLength) {
+			Date d = new Date(i);
+			// TODO : maybe remove doublons
+			unavailable.addAll(getUnavailableMaterials(d));
+		}
+		
+		return getAvailableMaterials(unavailable);
+	}
+	
+	public Booking book(Integer borrowerId, Integer quantity, DateInterval bookingInterval, String reason) {
+		List<Material> list = getAvailableMaterials(bookingInterval.getStart(), bookingInterval.getEnd());
+		return getCalendar().book(borrowerId, list, bookingInterval, reason);
 	}
 }
