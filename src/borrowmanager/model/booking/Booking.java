@@ -116,10 +116,17 @@ public class Booking implements Comparable<Booking> {
 		return !isReturned && interval.isLate(now);
 	}
 	
+	/**
+	 * Returns true if the item was returned late.
+	 */
 	public boolean wasReturnedLate() {
 		return false;
 	}
 	
+	/**
+	 * Returns the number of days that  the booking is late.
+	 * @return Number of days late
+	 */
 	public Integer getDaysLate() {
 		Date lastDate;
 		if (isReturned()) {
@@ -203,6 +210,10 @@ public class Booking implements Comparable<Booking> {
 		return isReturned;
 	}
 	
+	/**
+	 * Returns true if the booking is currently active
+	 * @return
+	 */
 	public boolean isActive() {
 		// In the date interval and not returned
 		if (isCurrent() && !isReturned()) {
@@ -214,6 +225,16 @@ public class Booking implements Comparable<Booking> {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Returns true if the booking is active at a given date.
+	 * @param date The date
+	 * @return
+	 */
+	public boolean isActive(Date date) {
+		// Note : isLate() will return false if the item was returned, so it's ok.
+		return interval.contains(date) || isLate();
 	}
 
 	/**

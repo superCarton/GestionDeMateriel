@@ -146,7 +146,8 @@ public class BorrowableStock {
 	public Set<Material> getUnavailableMaterials(Date date) {
 		Set<Material> unavailable = new HashSet<Material>();
 		for (Booking b : calendar.getBookings()) {
-			if (b.getInterval().contains(date)) {
+			if (b.isActive(date)) {
+			//if (b.getInterval().contains(date)) {
 				unavailable.addAll(b.getMaterials());
 			}
 		}
