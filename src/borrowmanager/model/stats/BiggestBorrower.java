@@ -5,6 +5,10 @@ import java.util.List;
 import borrowmanager.model.Manager;
 import borrowmanager.model.user.User;
 
+/**
+ * The MostBorrowingMaterial is a class extends of Stats which gives the biggest borrower
+ * @author Jonathan Pujol
+ */
 public class BiggestBorrower extends Stats<String> {
 
 	public BiggestBorrower(Manager manager) {

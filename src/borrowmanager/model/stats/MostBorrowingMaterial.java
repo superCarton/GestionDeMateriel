@@ -6,6 +6,10 @@ import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableStock;
 import borrowmanager.model.material.MaterialType;
 
+/**
+ * The MostBorrowingMaterial is a class extends of Stats which gives the most borrowing material
+ * @author Jonathan Pujol
+ */
 public class MostBorrowingMaterial extends Stats<String>{
 
 	public MostBorrowingMaterial(Manager manager) {

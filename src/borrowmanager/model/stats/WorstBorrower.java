@@ -9,6 +9,10 @@ import borrowmanager.model.element.BorrowableStock;
 import borrowmanager.model.user.Borrower;
 import borrowmanager.model.user.User;
 
+/**
+ * The MostBorrowingMaterial is a class extends of Stats which gives the borrower who doesn't respect the less the delay
+ * @author Jonathan Pujol
+ */
 public class WorstBorrower extends Stats<String> {
 
 	public WorstBorrower(Manager manager) {
