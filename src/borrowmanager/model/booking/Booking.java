@@ -120,7 +120,7 @@ public class Booking implements Comparable<Booking> {
 	 * Returns true if the item was returned late.
 	 */
 	public boolean wasReturnedLate() {
-		return false;
+		return isReturned() && returnedLate;
 	}
 	
 	/**
