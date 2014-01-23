@@ -34,6 +34,14 @@ public class UsersManager {
 	}
 	
 	/**
+	 * Returns the list of all users.
+	 * @return
+	 */
+	public List<User> getAllUsers() {
+		return users;
+	}
+	
+	/**
 	 * Get user by their ID.
 	 * @param id The user ID
 	 * @return The user

@@ -49,6 +49,8 @@ public class Booking implements Comparable<Booking> {
 	private List<Reminder> reminders;
 
 	private boolean returnedLate;
+	private Integer daysLate;
+	private Date returnDate;
 	
 	/**
 	 * Constructs a booking
@@ -75,6 +77,9 @@ public class Booking implements Comparable<Booking> {
 		this.reminders = new LinkedList<Reminder>();
 		
 		this.isValidated = false;
+		
+		this.returnedLate = false;
+		this.daysLate = 0;
 	}
 
 	/**
@@ -113,6 +118,22 @@ public class Booking implements Comparable<Booking> {
 	
 	public boolean wasReturnedLate() {
 		return false;
+	}
+	
+	public Integer getDaysLate() {
+		Date lastDate;
+		if (isReturned()) {
+			lastDate = returnDate;
+		}
+		else {
+			lastDate = Manager.now;
+		}
+		Date end = interval.getEnd();
+		if (lastDate.after(end)) {
+			DateInterval interval = new DateInterval(end, lastDate);
+			return interval.getLength();
+		}
+		return 0;
 	}
 	
 	/**
