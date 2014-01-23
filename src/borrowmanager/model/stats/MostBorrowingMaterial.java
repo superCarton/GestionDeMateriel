@@ -1,0 +1,30 @@
+package borrowmanager.model.stats;
+
+import java.util.Collection;
+
+import borrowmanager.model.Manager;
+import borrowmanager.model.element.BorrowableStock;
+import borrowmanager.model.material.MaterialType;
+
+public class MostBorrowingMaterial extends Stats<String>{
+
+	public MostBorrowingMaterial(Manager manager) {
+		super(manager, "Most borrowing Material" , "The material which is the most borrow");
+	}
+
+	@Override
+	public String calculate() {
+		MaterialType  mostBorrow = null;
+		int numberOfBorrow = 0;
+		Collection<BorrowableStock> object = manager.getStockList();
+		for (BorrowableStock o : object) {
+			int number = o.getCalendar().getBookings().size();
+			if (number > numberOfBorrow) {
+				mostBorrow = o.getType();
+				numberOfBorrow = number;
+			}
+		}
+		return mostBorrow.getName();
+	}
+
+}
