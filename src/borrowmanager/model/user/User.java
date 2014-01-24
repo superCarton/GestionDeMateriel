@@ -5,6 +5,9 @@ package borrowmanager.model.user;
 
 import java.util.*;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import borrowmanager.UNUSED_user.UNUSED_User;
 
 
@@ -50,6 +53,10 @@ public abstract class User implements Comparable<User> {
 	 * Instantiates a new user.
 	 */
 	public User() {}
+	
+	public User(JsonObject json) {
+		fromJSON(json);
+	}
 
 	/**
 	 * Gets the id.
@@ -145,5 +152,23 @@ public abstract class User implements Comparable<User> {
 		
 		return u.id == this.id && u.getName() == this.getName();
 	}
+
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		json.addProperty("className", this.getClass().getSimpleName());
+		json.addProperty("id", id);
+		json.addProperty("lastname", lastname);
+		json.addProperty("firstname", firstname);
+		json.addProperty("login", login);
+		json.addProperty("password", password);
+		return json;
+	}
 	
+	public void fromJSON(JsonObject json) {
+		id = json.get("id").getAsInt();
+		lastname = json.get("lastname").getAsString();
+		firstname = json.get("firstname").getAsString();
+		login = json.get("login").getAsString();
+		password = json.get("password").getAsString();
+	}
 }

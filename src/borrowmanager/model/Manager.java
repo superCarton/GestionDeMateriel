@@ -1,5 +1,9 @@
 package borrowmanager.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -10,6 +14,10 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.DateInterval;
@@ -24,8 +32,10 @@ import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.Student;
 import borrowmanager.model.user.User;
 import borrowmanager.model.user.UsersManager;
+import borrowmanager.util.FileUtils;
 
 public class Manager {
+	private final static String filePath = "data.json";
 	public static final boolean DEBUG = true;
 	public static Date now = new Date();
 	private User activeUser;
@@ -40,6 +50,11 @@ public class Manager {
 		this.usersManager = new UsersManager();
 		this.activeUser = null;
 		this.stock = new HashMap<Integer, BorrowableStock>();
+		
+		File f = new File(filePath);
+		if (f.exists()) {
+			load();
+		}
 	}
 	
 	public UsersManager getUsersManager() {
@@ -153,10 +168,6 @@ public class Manager {
 		boolean late = booking.isLate();
 		booking.end();
 		return late;
-	}
-	
-	public void save() {
-		
 	}
 	
 	/**
@@ -274,8 +285,16 @@ public class Manager {
 		}
 		activeUser = null;
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String jsonOutput = gson.toJson(stockS4.toJSON());
+		String jsonOutput = gson.toJson(u.toJSON());
 		System.out.println(jsonOutput);
+	}
+	
+	public List<Material> getMaterials() {
+		List<Material> list = new LinkedList<Material>();
+		for (BorrowableStock s : stock.values()) {
+			list.addAll(s.getStock());
+		}
+		return list;
 	}
 	
 	public List<Booking> getBookings() {
@@ -376,5 +395,58 @@ public class Manager {
 		//BorrowableStock theStock = stock.get(booking.getBorrowableStack().getModel().getId());
 		//TODO
 		//theStock.getCalendar().cancel(booking);
+	}
+	
+	/**
+	 * Saves the app data to file.
+	 */
+	public void save() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String jsonOutput = gson.toJson(toJSON());
+		
+		try {
+			PrintWriter out = new PrintWriter("data.json");
+			out.println(jsonOutput);
+			out.close();
+		} catch (FileNotFoundException e) {
+			System.err.println("Error while saving data to file.");
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	/**
+	 * Loads the app data from file.
+	 */
+	public void load() {
+		try {
+			String rawData = FileUtils.readFile("data.json");
+			JsonParser jsonParser = new JsonParser();
+			JsonObject json = (JsonObject)jsonParser.parse(rawData);
+			fromJSON(json);
+		} catch (IOException e) {
+			System.err.println("Error while loading file");
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		JsonArray stockJson = new JsonArray();
+		json.add("stock", stockJson);
+		for (Integer id : stock.keySet()) {
+			stockJson.add(stock.get(id).toJSON());
+		}
+		json.add("users", usersManager.toJSON());
+		return json;
+	}
+
+	public void fromJSON(JsonObject json) {
+		for (JsonElement j : json.get("stock").getAsJsonArray()) {
+			BorrowableStock s = new BorrowableStock(j.getAsJsonObject());
+			stock.put(s.getId(), s);
+		}
+		usersManager = new UsersManager(json.get("users").getAsJsonObject());
 	}
 }

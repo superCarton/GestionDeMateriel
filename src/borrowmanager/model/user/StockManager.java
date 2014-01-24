@@ -3,8 +3,9 @@
  */
 package borrowmanager.model.user;
 
-import java.util.HashMap;
 import java.util.*;
+
+import com.google.gson.JsonObject;
 
 /**
  * The Class Manager.
@@ -30,6 +31,10 @@ public class StockManager extends User {
 	 */
 	public StockManager(){super();}
 	
+	public StockManager(JsonObject json) {
+		super(json);
+	}
+
 	/* (non-Javadoc)
 	 * @see model.user.User#toString()
 	 */

@@ -5,18 +5,16 @@ package borrowmanager.model.user;
 
 import java.util.*;
 
+import com.google.gson.JsonObject;
+
 /**
  * The Class Student.
  * @author Marina Delerce & Romain Guillot 
  * @version 1.0.0
  */
-public class Student extends Borrower{
-
+public class Student extends Borrower {
 	private static final Integer maxBookingLength = 7;
 	private static final Integer maxReservationLength = 7;
-	
-	/** The Constant loanDuration. */
-	private final static int loanDuration = 5;
 	
 	/**
 	 * Instantiates a new student.
@@ -35,6 +33,10 @@ public class Student extends Borrower{
 	 */
 	public Student(){super();}
 	
+	public Student(JsonObject json) {
+		super(json);
+	}
+
 	/* (non-Javadoc)
 	 * @see model.user.Borrower#getSerializableDescription()
 	 */

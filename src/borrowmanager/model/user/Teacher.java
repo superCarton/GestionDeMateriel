@@ -5,6 +5,8 @@ package borrowmanager.model.user;
 
 import java.util.*;
 
+import com.google.gson.JsonObject;
+
 /**
  * The Class Teacher.
  * @author Marina Delerce & Romain Guillot 
@@ -33,6 +35,10 @@ public class Teacher extends Borrower{
 	 */
 	public Teacher(){super();}
 	
+	public Teacher(JsonObject json) {
+		super(json);
+	}
+
 	/* (non-Javadoc)
 	 * @see model.user.Borrower#getSerializableDescription()
 	 */

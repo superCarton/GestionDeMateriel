@@ -10,6 +10,10 @@ import java.util.List;
 import borrowmanager.util.DataXML;
 import java.util.*;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 /**
  * The Class Users.
  * @author Marina Delerce & Romain Guillot 
@@ -33,6 +37,11 @@ public class UsersManager {
 		users = new LinkedList<User>();
 	}
 	
+	public UsersManager(JsonObject json) {
+		this();
+		fromJSON(json);
+	}
+
 	/**
 	 * Returns the list of all users.
 	 * @return
@@ -211,5 +220,38 @@ public class UsersManager {
 			max = Math.max(u.getId()+1, max);
 		}
 		return max;
+	}
+
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		JsonArray list = new JsonArray();
+		json.add("list", list);
+		for (User u : users) {
+			list.add(u.toJSON());
+		}
+		return json;
+	}
+	
+	public void fromJSON(JsonObject json) {
+		for (JsonElement j : json.get("list").getAsJsonArray()) {
+			// TODO
+			User u;
+			JsonObject jo = j.getAsJsonObject();
+			String className = jo.get("className").getAsString();
+			if (className.equals("Student")) {
+				u = new Student(jo);
+			}
+			else if (className.equals("Teacher")) {
+				u = new Teacher(jo);
+			}
+			else if (className.equals("StockManager")) {
+				u = new StockManager(jo);
+			}
+			else {
+				throw new RuntimeException("Class '"+className+"' not found!");
+			}
+			
+			users.add(u);
+		}
 	}
 }

@@ -5,6 +5,8 @@ package borrowmanager.model.user;
 
 import java.util.*;
 
+import com.google.gson.JsonObject;
+
 /**
  * The Class Borrower.
  * @author Marina Delerce & Romain Guillot 
@@ -36,12 +38,18 @@ public abstract class Borrower extends User{
 	 */
 	public Borrower(){super();}
 	
+	public Borrower(JsonObject json) {
+		super(json);
+	}
 	/**
 	 * Gets the loan duration.
 	 *
 	 * @return the loan duration
 	 */
 	public abstract Integer getMaxBookingLength();
+	
+	
+	//protected abstract void setMaxBookingLength(Integer length);
 
 	/**
 	 * Sets the loan duration.
@@ -53,6 +61,8 @@ public abstract class Borrower extends User{
 	}
 	
 	public abstract Integer getMaxReservationLength() ;
+	
+	//protected abstract void setMaxReservationLength(Integer length);
 	
 	/* (non-Javadoc)
 	 * @see model.user.User#toString()

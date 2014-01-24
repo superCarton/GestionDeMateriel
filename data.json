@@ -1,0 +1,127 @@
+{
+  "stock": [
+    {
+      "materialType": {
+        "id": 0,
+        "name": "S4",
+        "brand": "samsungs",
+        "maxBorrowDuration": 7,
+        "description": "fassst",
+        "reference": 42
+      },
+      "stock": [
+        {
+          "id": 0,
+          "stateName": "NEW",
+          "serial_number": "serial####1253QSF}"
+        },
+        {
+          "id": 1,
+          "stateName": "NEW",
+          "serial_number": "serial####QDSF"
+        }
+      ],
+      "calendar": {
+        "bookings": [
+          {
+            "borrowerId": 1,
+            "startDate": 1389740400000,
+            "endDate": 1390553274212,
+            "materials": [
+              {
+                "id": 0
+              },
+              {
+                "id": 1
+              }
+            ],
+            "reason": "MYCOURSE",
+            "isValidated": false,
+            "isReturned": true,
+            "reminders": [],
+            "returnedLate": true,
+            "daysLate": 8
+          },
+          {
+            "borrowerId": 1,
+            "startDate": 1390604400000,
+            "endDate": 1390690800000,
+            "materials": [
+              {
+                "id": 0
+              },
+              {
+                "id": 1
+              }
+            ],
+            "reason": "MYCOURSE",
+            "isValidated": false,
+            "isReturned": false,
+            "reminders": [],
+            "returnedLate": false,
+            "daysLate": 0
+          },
+          {
+            "borrowerId": 1,
+            "startDate": 1390777200000,
+            "endDate": 1390863600000,
+            "materials": [
+              {
+                "id": 0
+              },
+              {
+                "id": 1
+              }
+            ],
+            "reason": "MYCOURSE",
+            "isValidated": false,
+            "isReturned": false,
+            "reminders": [],
+            "returnedLate": false,
+            "daysLate": 0
+          }
+        ]
+      }
+    },
+    {
+      "materialType": {
+        "id": 1,
+        "name": "iPhone",
+        "brand": "Applz",
+        "maxBorrowDuration": 6,
+        "description": "pouerk",
+        "reference": 1
+      },
+      "stock": [
+        {
+          "id": 2,
+          "stateName": "NEW",
+          "serial_number": "serial####lolll}"
+        }
+      ],
+      "calendar": {
+        "bookings": []
+      }
+    }
+  ],
+  "users": {
+    "list": [
+      {
+        "className": "Student",
+        "id": 1,
+        "lastname": "g",
+        "firstname": "tom",
+        "login": "tom",
+        "password": "hello"
+      },
+      {
+        "className": "StockManager",
+        "id": 2,
+        "lastname": "MANAGER",
+        "firstname": "LE",
+        "login": "manager",
+        "password": "hello2"
+      }
+    ]
+  }
+}

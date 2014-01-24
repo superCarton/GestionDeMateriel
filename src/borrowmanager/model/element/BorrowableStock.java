@@ -66,6 +66,7 @@ public class BorrowableStock {
 	}*/
 
 	/**
+	 * Returns the material type id.
 	 * @return the id
 	 */
 	public Integer getId() {

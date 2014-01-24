@@ -7,8 +7,8 @@ import borrowmanager.view.menu.MainMenu;
 public class App {
 	public static void main(String args[]) {
 		Manager manager = new Manager();
-		manager.fillTemporaryStock();
-		
+		//manager.fillTemporaryStock();
+		manager.save();
 		TextInterfacePage main = new MainMenu(manager);
 	}
 }

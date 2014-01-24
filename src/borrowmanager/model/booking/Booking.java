@@ -55,6 +55,7 @@ public class Booking implements Comparable<Booking> {
 	private Date returnDate = null;
 	
 	private Booking() {
+		this.materials = new LinkedList<Material>();
 		this.reminders = new LinkedList<Reminder>();
 		this.isReturned = false;
 		
@@ -87,7 +88,6 @@ public class Booking implements Comparable<Booking> {
 		this.materials = materials;
 		this.reason = reason;
 		this.interval = interval;
-		
 	}
 
 	public Booking(JsonObject json, List<Material> allStockMaterials) {
@@ -411,8 +411,8 @@ public class Booking implements Comparable<Booking> {
 		
 		returnedLate = json.get("returnedLate").getAsBoolean();
 		daysLate = json.get("daysLate").getAsInt();
-		JsonObject jsonDate = json.get("returnDate").getAsJsonObject();
-		if (jsonDate.isJsonNull()) returnDate = null;
+		JsonElement jsonDate = json.get("returnDate");
+		if (jsonDate == null) returnDate = null;
 		else returnDate = new Date(jsonDate.getAsLong());
 	}
 }
