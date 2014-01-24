@@ -11,14 +11,14 @@ import borrowmanager.model.material.MaterialType;
  * @author Jonathan Pujol
  * 
  */
-public class MostBorrowedMaterial extends Stats<MaterialType> {
+public class MostBorrowedMaterial extends Stats<StatValue<MaterialType, Integer>> {
 
 	public MostBorrowedMaterial(Manager manager) {
 		super(manager, "Most borrowing Material" , "The material which is the most borrow");
 	}
 
 	@Override
-	public MaterialType calculate() {
+	public StatValue<MaterialType, Integer> calculate() {
 		MaterialType  mostBorrow = null;
 		int numberOfBorrow = 0;
 		Collection<BorrowableStock> object = manager.getStockList();
@@ -29,7 +29,7 @@ public class MostBorrowedMaterial extends Stats<MaterialType> {
 				numberOfBorrow = number;
 			}
 		}
-		return mostBorrow;
+		return new StatValue<MaterialType, Integer>(mostBorrow, numberOfBorrow);
 	}
 
 }
