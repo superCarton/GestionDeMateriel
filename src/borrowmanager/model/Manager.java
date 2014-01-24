@@ -25,6 +25,7 @@ import borrowmanager.model.element.State;
 import borrowmanager.model.material.Material;
 import borrowmanager.model.material.OS;
 import borrowmanager.model.material.SmartPhone;
+import borrowmanager.model.material.Tablet;
 import borrowmanager.model.user.Borrower;
 import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.Student;
@@ -250,11 +251,13 @@ public class Manager {
 	// method to fill the stock with dummy elements for testing
 	public void fillTemporaryStock() {
 		//MaterialType typeA = new MaterialType(0, "Item0", "MyBrand", "Lol_descr", "reference, maxTimeLoan)
-		SmartPhone s4 = new SmartPhone(0, "S4", "samsungs", "fassst", 42, OS.ANDROID, 7);
-		SmartPhone lolPhone = new SmartPhone(1, "iPhone", "Applz", "pouerk", 1, OS.IOS, 6);
+		SmartPhone s4 = new SmartPhone(0, "Galaxy S4", "Samsung", "fassst", 42, OS.ANDROID, 7);
+		SmartPhone lolPhone = new SmartPhone(1, "iPhone", "Apple", "pouerk", 1, OS.IOS, 6);
+		Tablet galaxyTab = new Tablet(2, "Galaxy Tab 10", "Samsung", "TAB", 42, OS.ANDROID, 7);
 		
 		Material m1 = new Material(s4, 0, "serial####1253QSF}"),
-				m2 = new Material(s4, 1, "serial####QDSF");
+				m2 = new Material(s4, 1, "serial####QDSF"),
+				tab1 = new Material(galaxyTab, 2, "tabSerial#1");
 		m2.setDestroyed(true);
 		List<Material> s4Stock = new LinkedList<Material>();
 		s4Stock.add(m1);
@@ -262,14 +265,16 @@ public class Manager {
 		Material i1 = new Material(lolPhone, 2, "serial####lolll}");
 		List<Material> iStock = new LinkedList<Material>();
 		iStock.add(i1);
+		List<Material> galaxyTabList = new LinkedList<Material>();
+		galaxyTabList.add(tab1);
 		
-		
-		BorrowableStock stockS4 = new BorrowableStock(s4, s4Stock);
-		//BorrowableStock stockA = new BorrowableStock(new BorrowableModel(0, "item0"), 1); 
+		BorrowableStock stockS4 = new BorrowableStock(s4, s4Stock); 
 		stock.put(stockS4.getId(), stockS4);
-		//BorrowableStock stockB = new BorrowableStock(new BorrowableModel(1, "item1"), 2);
 		BorrowableStock stockIphon = new BorrowableStock(lolPhone, iStock);
 		stock.put(stockIphon.getId(), stockIphon);
+		
+		BorrowableStock stockGalaxyTab = new BorrowableStock(galaxyTab, galaxyTabList);
+		stock.put(stockGalaxyTab.getId(), stockGalaxyTab);
 		
 		// Also create user
 		User u = new Student(1, "g", "tom", "tom", "hello");
