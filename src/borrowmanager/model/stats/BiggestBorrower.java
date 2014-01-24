@@ -22,7 +22,9 @@ public class BiggestBorrower extends Stats<StatValue<User, Integer>> {
 		int numberOfBorrow = 0;
 		List<User> users = manager.getUsersManager().getAllUsers();
 		for (User u : users){
-			if(manager.getUserBookings(u.getId()).size() > numberOfBorrow) {
+			int userNum = manager.getUserBookings(u.getId()).size();
+			if(userNum >= numberOfBorrow) {
+				numberOfBorrow = userNum;
 				biggest = u;
 			}
 		}
