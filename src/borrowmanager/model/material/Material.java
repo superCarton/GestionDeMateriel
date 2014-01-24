@@ -82,11 +82,15 @@ public class Material {
 	}
 	
 	public void setDestroyed(boolean b) {
-		if (b) state = State.DESTROYED;
+		if (b) {
+			state = State.DESTROYED;
+			healthPoint = 0;
+		}
 	}
 	
 	public void naturalDegradation() {
 		healthPoint -= 10;
+		updateState();
 	}
 	
 	public void updateState() {

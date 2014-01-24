@@ -255,6 +255,7 @@ public class Manager {
 		
 		Material m1 = new Material(s4, 0, "serial####1253QSF}"),
 				m2 = new Material(s4, 1, "serial####QDSF");
+		m2.setDestroyed(true);
 		List<Material> s4Stock = new LinkedList<Material>();
 		s4Stock.add(m1);
 		s4Stock.add(m2);

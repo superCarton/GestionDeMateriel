@@ -42,7 +42,7 @@ public class BookingDetails extends TextInterfaceOptionPage {
 		for (Material m : booking.getMaterials()) {
 			serialNumbersAndState += "\n\t"+m.getState().getName()+"\t (serial: "+m.getSerialNumber()+")";
 		}
-		System.out.println("State and serial numbers and state:"+serialNumbersAndState);
+		System.out.println("Current state and serial numbers of the items:"+serialNumbersAndState);
 		System.out.println("Start :\t"+booking.getInterval().getStart().toString());
 		System.out.println("End :\t"+booking.getInterval().getEnd().toString());
 		
