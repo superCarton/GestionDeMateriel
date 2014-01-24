@@ -1,7 +1,5 @@
 package borrowmanager.model.stats;
 
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
-
 public class StatValue<A, B> {
 	private A a;
 	private B b;
