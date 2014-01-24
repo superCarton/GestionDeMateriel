@@ -52,6 +52,11 @@ public class Material {
 		material_type.setObject(materialTypeDescription);
 	}
 	
+	public Material(JsonObject json, MaterialType type) {
+		material_type = type;
+		fromJSON(json);
+	}
+
 	/**
 	 * Gets the material type.
 	 *
@@ -135,9 +140,15 @@ public class Material {
 	public JsonElement toJSON() {
 		JsonObject json = new JsonObject();
 		json.addProperty("id", id);
-		json.addProperty("materialTypeId", material_type.getId());
-		json.addProperty("stateLevel", state.getLevel());
+		//json.addProperty("materialTypeId", material_type.getId());
+		json.addProperty("stateName", state.name());
 		json.addProperty("serial_number", serial_number);
 		return json;
+	}
+	
+	public void fromJSON(JsonObject json) {
+		id = json.get("id").getAsInt();
+		state = State.valueOf(json.get("stateName").getAsString());
+		serial_number = json.get("serial_number").getAsString();
 	}
 }

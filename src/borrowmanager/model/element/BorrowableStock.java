@@ -1,22 +1,14 @@
 package borrowmanager.model.element;
 
-import java.lang.reflect.Type;
-import java.util.AbstractSet;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
@@ -43,6 +35,11 @@ public class BorrowableStock {
 		this.materialType = type;
 		this.stock = initialStock;
 		this.calendar = new BookingCalendar(type);
+	}
+	
+	public BorrowableStock(JsonObject json) {
+		stock = new LinkedList<Material>();
+		fromJSON(json, null);
 	}
 
 	/**
@@ -188,7 +185,6 @@ public class BorrowableStock {
 		Set<Material> unavailable = new HashSet<Material>();
 		for(long i = startTime ; i <= endTime ; i+= dayLength) {
 			Date d = new Date(i);
-			// TODO : maybe remove doublons
 			unavailable.addAll(getUnavailableMaterials(d));
 		}
 		
@@ -202,20 +198,26 @@ public class BorrowableStock {
 
 	public JsonElement toJSON() {
 		JsonObject json = new JsonObject();
-		json.addProperty("materialType", materialType.getId());
-		json.add("calendar", calendar.toJSON());
+		json.add("materialType", materialType.toJSON());
+		// Stock description
 		JsonArray stockJson = new JsonArray();
+		json.add("stock", stockJson);
 		for (Material m : stock) {
 			stockJson.add(m.toJSON());
 		}
-		json.add("stock", stockJson);
-		// TODO Auto-generated method stub
+				
+		json.add("calendar", calendar.toJSON());
+		
 		return json;
 	}
 	
-	public BorrowableStock deserialize(JsonElement arg0, Type arg1,
-			JsonDeserializationContext arg2) throws JsonParseException {
-		// TODO Auto-generated method stub
-		return null;
+	public void fromJSON(JsonObject json, Manager manager) {
+		materialType = new MaterialType(json.get("materialType").getAsJsonObject());
+		// Stock description
+		for (JsonElement j : json.get("stock").getAsJsonArray()) {
+			stock.add(new Material(j.getAsJsonObject(), materialType));
+		}
+	
+		calendar = new BookingCalendar(json.get("calendar").getAsJsonObject(), materialType, stock);
 	}
 }

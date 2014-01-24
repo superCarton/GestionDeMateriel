@@ -21,7 +21,7 @@ import com.google.gson.JsonSerializer;
  * @author Marina Delerce & Romain Guillot & Tom Guillermin 
  * @version 1.0.0
  */
-public class MaterialType implements JsonSerializer<MaterialType>, JsonDeserializer<MaterialType> {
+public class MaterialType {
 
 	private Integer id;
 	/** The name. */
@@ -63,6 +63,14 @@ public class MaterialType implements JsonSerializer<MaterialType>, JsonDeseriali
 	 * Instantiates a new material type.
 	 */
 	public MaterialType() {}
+	
+	/**
+	 * Instanciate from a JSON object
+	 * @param json
+	 */
+	public MaterialType(JsonObject json) {
+		fromJSON(json);
+	}
 	
 	/**
 	 * Returns the ID
@@ -157,14 +165,8 @@ public class MaterialType implements JsonSerializer<MaterialType>, JsonDeseriali
 		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan) return false; 
 		return true;
 	}
-	
-	public String toJSON() {
-		Gson json = new Gson();
-		return json.toJson(this);
-	}
 
-	@Override
-	public JsonElement serialize(MaterialType arg0, Type arg1, JsonSerializationContext arg2) {
+	public JsonElement toJSON() {
 		final JsonObject json = new JsonObject();
 		json.addProperty("id", id);
 		json.addProperty("name", name);
@@ -175,11 +177,13 @@ public class MaterialType implements JsonSerializer<MaterialType>, JsonDeseriali
 		return json;
 	}
 
-	@Override
-	public MaterialType deserialize(JsonElement arg0, Type arg1,
-			JsonDeserializationContext arg2) throws JsonParseException {
-		// TODO Auto-generated method stub
-		return null;
+	public void fromJSON(JsonObject json) {
+		id = json.get("id").getAsInt();
+		name = json.get("name").getAsString();
+		brand = json.get("brand").getAsString();
+		maxTimeLoan = json.get("maxBorrowDuration").getAsInt();
+		description = json.get("description").getAsString();
+		reference = json.get("reference").getAsInt();
 	}
 	
 }

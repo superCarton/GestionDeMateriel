@@ -10,8 +10,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import borrowmanager.model.Manager;
-import borrowmanager.model.element.BorrowableModel;
-import borrowmanager.model.element.BorrowableStack;
 import borrowmanager.model.material.Material;
 import borrowmanager.model.material.MaterialType;
 
@@ -35,6 +33,11 @@ public class BookingCalendar {
 	public BookingCalendar(MaterialType type) {
 		this.bookings = new LinkedList<Booking>();
 		this.materialType = type;
+	}
+	
+	public BookingCalendar(JsonObject json, MaterialType type, List<Material> allStockMaterials) {
+		this(type);
+		fromJSON(json, allStockMaterials);
 	}
 	
 	/**
@@ -168,12 +171,21 @@ public class BookingCalendar {
 
 	public JsonElement toJSON() {
 		JsonObject json = new JsonObject();
-		json.addProperty("materialTypeId", materialType.getId());
+		//json.addProperty("materialTypeId", materialType.getId());
 		JsonArray bookingsJson = new JsonArray();
 		json.add("bookings",bookingsJson);
 		for (Booking b : bookings) {
 			bookingsJson.add(b.toJSON());
 		}
 		return json;
+	}
+	
+	public void fromJSON(JsonObject json, List<Material> allStockMaterials) {
+		JsonArray bookingsJson = json.get("bookings").getAsJsonArray();
+		for (JsonElement b : bookingsJson) {
+			Booking booking = new Booking(b.getAsJsonObject(), allStockMaterials);
+			bookings.add(booking);
+		}
+		
 	}
 }

@@ -10,15 +10,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import borrowmanager.model.Manager;
-import borrowmanager.model.element.BorrowableModel;
-import borrowmanager.model.element.BorrowableStack;
 import borrowmanager.model.material.Material;
 import borrowmanager.model.material.MaterialType;
 import borrowmanager.util.StringConfig;
 
 /**
  * The Booking class represents a booking made by a user for a certain item.
- * @author Franck Dechavanne
+ * @author Franck Dechavanne & Tom Guillermin
  *
  */
 public class Booking implements Comparable<Booking> {
@@ -56,6 +54,17 @@ public class Booking implements Comparable<Booking> {
 	private Integer daysLate;
 	private Date returnDate = null;
 	
+	private Booking() {
+		this.reminders = new LinkedList<Reminder>();
+		this.isReturned = false;
+		
+		
+		this.isValidated = false;
+		
+		this.returnedLate = false;
+		this.daysLate = 0;
+	}
+	
 	/**
 	 * Constructs a booking
 	 * @param borrower	The ID of the user borrowing the item
@@ -64,6 +73,7 @@ public class Booking implements Comparable<Booking> {
 	 * @param reason	Why is the booking made
 	 */
 	public Booking(Integer borrower, List<Material> materials, /*BorrowableStack stack,*/ DateInterval interval, String reason){
+		this();
 		// Check the validity of the IDs
 		//
 		if(borrower == null ||  interval == null){
@@ -77,13 +87,12 @@ public class Booking implements Comparable<Booking> {
 		this.materials = materials;
 		this.reason = reason;
 		this.interval = interval;
-		this.isReturned = false;
-		this.reminders = new LinkedList<Reminder>();
 		
-		this.isValidated = false;
-		
-		this.returnedLate = false;
-		this.daysLate = 0;
+	}
+
+	public Booking(JsonObject json, List<Material> allStockMaterials) {
+		this();
+		fromJSON(json, allStockMaterials);
 	}
 
 	/**
@@ -350,6 +359,7 @@ public class Booking implements Comparable<Booking> {
 		
 		// Materials list
 		JsonArray materialsJson = new JsonArray();
+		json.add("materials", materialsJson);
 		for (Material m : materials) {
 			JsonObject matJson = new JsonObject();
 			matJson.addProperty("id", m.getId());
@@ -371,5 +381,38 @@ public class Booking implements Comparable<Booking> {
 		json.addProperty("returnDate", returnDate != null ? returnDate.getTime() : null);
 		
 		return json;
+	}
+	
+	private void fromJSON(JsonObject json, List<Material> allStockMaterials) {
+		borrowerId = json.get("borrowerId").getAsInt();
+		Date startDate = new Date(json.get("startDate").getAsLong()),
+				endDate = new Date(json.get("endDate").getAsLong());
+		interval = new DateInterval(startDate, endDate);
+		
+		// Materials list
+		for (JsonElement j : json.get("materials").getAsJsonArray()) {
+			int id = j.getAsJsonObject().get("id").getAsInt();
+			for (Material m : allStockMaterials) {
+				if (m.getId() == id) {
+					materials.add(m);
+					break;
+				}
+			}
+		}
+		
+		reason = json.get("reason").getAsString();
+		isValidated = json.get("isValidated").getAsBoolean();
+		isReturned = json.get("isReturned").getAsBoolean();
+		
+		// Reminders
+		for (JsonElement r : json.get("reminders").getAsJsonArray()) {
+			reminders.add(new Reminder(r.getAsJsonObject()));
+		}
+		
+		returnedLate = json.get("returnedLate").getAsBoolean();
+		daysLate = json.get("daysLate").getAsInt();
+		JsonObject jsonDate = json.get("returnDate").getAsJsonObject();
+		if (jsonDate.isJsonNull()) returnDate = null;
+		else returnDate = new Date(jsonDate.getAsLong());
 	}
 }

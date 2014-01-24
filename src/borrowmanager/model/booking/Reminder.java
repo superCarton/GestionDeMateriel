@@ -14,6 +14,10 @@ public class Reminder {
 		read = false;
 	}
 	
+	public Reminder(JsonObject json) {
+		fromJSON(json);
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -31,5 +35,10 @@ public class Reminder {
 		json.addProperty("date", date.getTime());
 		json.addProperty("read", read);
 		return json;
+	}
+	
+	private void fromJSON(JsonObject json) {
+		date = new Date(json.get("date").getAsLong());
+		read = json.get("read").getAsBoolean();
 	}
 }
