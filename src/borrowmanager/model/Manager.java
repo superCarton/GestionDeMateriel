@@ -157,7 +157,7 @@ public class Manager {
 	 */
 	public Boolean isAvailable(Integer borrowableId, Integer quantity, Date start, Date end) {
 		BorrowableStock stock = this.stock.get(borrowableId);
-		System.out.println("stock.isAvailable (from Manager.isAvailable long signature)");
+		//System.out.println("stock.isAvailable (from Manager.isAvailable long signature)");
 		if (stock != null) {
 			return stock.isAvailable(quantity, start, end);
 		}
@@ -303,7 +303,7 @@ public class Manager {
 	public List<Material> getMaterials() {
 		List<Material> list = new LinkedList<Material>();
 		for (BorrowableStock s : stock.values()) {
-			list.addAll(s.getStock());
+			list.addAll(s.getMaterials());
 		}
 		return list;
 	}

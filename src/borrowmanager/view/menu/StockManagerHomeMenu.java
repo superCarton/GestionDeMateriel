@@ -19,6 +19,7 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 	@Override
 	protected void build() {
 		addOption("validate","Validate bookings");
+		addOption("seeStocks", "View the stock");
 		addOption("seeAll", "View all bookings");
 		addOption("seeActive", "View all active bookings");
 		addOption("seeReservations", "View all reservations");
@@ -34,6 +35,9 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 	protected TextInterfacePage handleCommand(String c) {
 		if (c.equals("validate")) {
 			openChildPage(new BookingsValidationMenu(manager));
+		}
+		else if (c.equals("seeStocks")) {
+			openChildPage(new StocksList(manager));
 		}
 		else if (c.equals("seeAll")) {
 			openChildPage(new AllBookingsList(manager));
@@ -58,8 +62,9 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		}
 		else if (c.equals("takeBackFromRepair")) {
 			List<Material> repaired = manager.getMaterialsBackFromRepair();
-			System.out.println("Materials repaired : "+repaired.size());
+			System.out.println("Number of items repaired : "+repaired.size());
 			if (repaired.size() > 0) {
+				System.out.println("List of items repaired :");
 				for (Material m : repaired) {
 					System.out.println("\t- "+m.getFullName());
 				}

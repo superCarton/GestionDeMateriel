@@ -26,13 +26,10 @@
           {
             "borrowerId": 1,
             "startDate": 1389740400000,
-            "endDate": 1390604447371,
+            "endDate": 1390605805546,
             "materials": [
               {
                 "id": 0
-              },
-              {
-                "id": 1
               }
             ],
             "reason": "MYCOURSE1",
@@ -50,9 +47,6 @@
             "materials": [
               {
                 "id": 0
-              },
-              {
-                "id": 1
               }
             ],
             "reason": "MYCOURSE",
@@ -70,9 +64,6 @@
             "materials": [
               {
                 "id": 0
-              },
-              {
-                "id": 1
               }
             ],
             "reason": "MYCOURSE",

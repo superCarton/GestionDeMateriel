@@ -8,6 +8,7 @@ import java.util.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import borrowmanager.model.Manager;
 import borrowmanager.model.element.State;
 
 /**
@@ -92,7 +93,7 @@ public class Material {
 	}
 	
 	public void updateState() {
-		if (healthPoint == 100) {
+		if (healthPoint >= 100) {
 			state = State.NEW;
 		}
 		else if (healthPoint >= 85) {
@@ -127,7 +128,7 @@ public class Material {
 	}
 	
 	public void takeBackFromRepair() {
-		healthPoint = 100;
+		healthPoint = 80;
 		updateState();
 	}
 	
@@ -235,5 +236,14 @@ public class Material {
 		
 		JsonElement repairEndJson = json.get("repairEnd");
 		repairEnd = (repairEndJson != null) ? new Date(json.get("repairEnd").getAsLong()) : null;
+	}
+
+	public String getLineDescription() {
+		String repairString = "";
+		if (state == State.IN_REPAIR) {
+			if (Manager.now.after(repairEnd)) repairString = " (repair finished) ";
+			else repairString = " (until "+repairEnd.toLocaleString()+") ";
+		}
+		return getFullName()+" | State: "+getState().getName()+repairString;
 	}
 }

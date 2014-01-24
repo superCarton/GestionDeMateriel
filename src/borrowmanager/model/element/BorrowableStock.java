@@ -84,7 +84,7 @@ public class BorrowableStock {
 	 * Returns the initial value of the stock. 
 	 * @return
 	 */
-	public List<Material> getStock() {
+	public List<Material> getMaterials() {
 		return stock;
 	}
 	
@@ -153,10 +153,18 @@ public class BorrowableStock {
 	 */
 	public Set<Material> getUnavailableMaterials(Date date) {
 		Set<Material> unavailable = new HashSet<Material>();
+		// The materials that are booked are not available
 		for (Booking b : calendar.getBookings()) {
 			if (b.isActive(date)) {
 			//if (b.getInterval().contains(date)) {
 				unavailable.addAll(b.getMaterials());
+			}
+		}
+		
+		// Check for general availability of the material
+		for (Material m : stock) {
+			if (! m.isAvailable()) {
+				unavailable.add(m);
 			}
 		}
 		return unavailable;
