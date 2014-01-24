@@ -2,8 +2,6 @@ package borrowmanager.view.menu;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
-import borrowmanager.model.element.BorrowableStack;
-import borrowmanager.model.element.BorrowableStock;
 import borrowmanager.model.material.Material;
 import borrowmanager.model.material.MaterialType;
 import borrowmanager.model.user.StockManager;

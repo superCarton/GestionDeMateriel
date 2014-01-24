@@ -27,7 +27,6 @@ public class Material {
 
 	private Integer id;
 	
-	private Boolean inRepair;
 	private Date repairEnd = null;
 
 	private int healthPoint;
@@ -56,7 +55,6 @@ public class Material {
 		this.materialType = type;
 		this.id = id;
 		this.serialNumber = serial;
-		this.inRepair = false;
 	}
 	
 	public Material(JsonObject json, MaterialType type) {
@@ -112,7 +110,7 @@ public class Material {
 	}
 	
 	public void sendInRepair(Date now) {
-		inRepair = true;
+		state = State.IN_REPAIR;
 		// Add 3 days of repair
 		Calendar c = Calendar.getInstance();
 		c.setTime(now);
@@ -125,11 +123,12 @@ public class Material {
 	 * @return
 	 */
 	public Boolean isInRepair() {
-		return inRepair;
+		return state == State.IN_REPAIR;
 	}
 	
 	public void takeBackFromRepair() {
-		inRepair = false;
+		healthPoint = 100;
+		updateState();
 	}
 	
 	/**
@@ -164,7 +163,7 @@ public class Material {
 	}
 	
 	public Boolean isAvailable() {
-		return !inRepair && state != State.DESTROYED;
+		return !isInRepair() && state != State.DESTROYED;
 	}
 	
 	/**
@@ -206,28 +205,7 @@ public class Material {
 	public Integer getId() {
 		return id;
 	}
-
-	public JsonElement toJSON() {
-		JsonObject json = new JsonObject();
-		json.addProperty("id", id);
-		json.addProperty("stateName", state.name());
-		json.addProperty("serial_number", serialNumber);
-		json.addProperty("isInRepair", inRepair);
-		json.addProperty("repairEnd", repairEnd != null ? repairEnd.getTime() : null);
-
-		return json;
-	}
 	
-	public void fromJSON(JsonObject json) {
-		id = json.get("id").getAsInt();
-		state = State.valueOf(json.get("stateName").getAsString());
-		serialNumber = json.get("serial_number").getAsString();
-		inRepair = json.get("isInRepair").getAsBoolean();
-		
-		JsonElement repairEndJson = json.get("repairEnd");
-		repairEnd = (repairEndJson != null) ? new Date(json.get("repairEnd").getAsLong()) : null;
-	}
-
 	public Integer getRepairDuration() {
 		return repairDuration;
 	}
@@ -238,5 +216,24 @@ public class Material {
 	 */
 	public String getFullName() {
 		return this.materialType.getFullName()+" with serial number "+serialNumber;
+	}
+
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		json.addProperty("id", id);
+		json.addProperty("stateName", state.name());
+		json.addProperty("serial_number", serialNumber);
+		json.addProperty("repairEnd", repairEnd != null ? repairEnd.getTime() : null);
+
+		return json;
+	}
+	
+	public void fromJSON(JsonObject json) {
+		id = json.get("id").getAsInt();
+		state = State.valueOf(json.get("stateName").getAsString());
+		serialNumber = json.get("serial_number").getAsString();
+		
+		JsonElement repairEndJson = json.get("repairEnd");
+		repairEnd = (repairEndJson != null) ? new Date(json.get("repairEnd").getAsLong()) : null;
 	}
 }

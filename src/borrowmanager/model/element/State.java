@@ -5,7 +5,8 @@ public enum State {
 	EXCELLENT(2, "Excellent"),
 	GOOD(3, "Good"),
 	BAD(4, "Bad"),
-	DESTROYED(5, "Destroyed");
+	DESTROYED(5, "Destroyed"),
+	IN_REPAIR(6, "In repair");
 	
 	private int level;
 	private String name;
