@@ -1,7 +1,10 @@
 package borrowmanager.view.menu;
 
 import borrowmanager.model.Manager;
+import borrowmanager.model.material.MaterialType;
 import borrowmanager.model.stats.BiggestBorrower;
+import borrowmanager.model.stats.MostBorrowedMaterial;
+import borrowmanager.model.stats.MostBrokenMaterial;
 import borrowmanager.model.stats.StatValue;
 import borrowmanager.model.stats.WorstBorrower;
 import borrowmanager.model.user.User;
@@ -18,6 +21,7 @@ public class StatisticsMenu extends TextInterfaceOptionPage {
 
 	@Override
 	protected void build() {
+		setHasGoBackOption(true);
 		addOption("biggestBorrower","Biggest borrower");
 		addOption("worstBorrower","Worst borrower");
 		addOption("mostBorrowed","Most borrowed");
@@ -39,14 +43,27 @@ public class StatisticsMenu extends TextInterfaceOptionPage {
 			System.out.println("The worst borrower is "+result.getKey().getName()+" with "+result.getValue()+" borrowings returned late.");
 		}
 		else if (c.equals("mostBorrowed")) {
-			/*MostBorrowedMaterial stat = new MostBorrowed(manager);
+			MostBorrowedMaterial stat = new MostBorrowedMaterial(manager);
 			StatValue<MaterialType, Integer> result = stat.calculate();
 			System.out.println(stat.getDescription());
-			System.out.println("The most borrowed material is "+result.getKey().getName()+" with "+result.getValue()+" borrows.");
-			*/
+			System.out.println("The most borrowed material is "+result.getKey().getFullName()+" with "+result.getValue()+" borrows.");
+		}
+		else if (c.equals("mostBrokenMaterial")) {
+			MostBrokenMaterial stat = new MostBrokenMaterial(manager);
+			StatValue<MaterialType, Integer> result = stat.calculate();
+			System.out.println(stat.getDescription());
+			if (result.getKey() == null) {
+				System.out.println("Nothing is broken in the stock ! :)");
+			}
+			else {
+				System.out.println("The most broken material is "+result.getKey().getFullName()+" with "+result.getValue()+" borrows.");
+			}
+		}
+		else {
+			
 		}
 		enterToContinue();
-		return null;
+		return this;
 	}
 
 }

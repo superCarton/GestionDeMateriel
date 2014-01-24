@@ -27,6 +27,11 @@ public class Material {
 
 	private Integer id;
 	
+	private Boolean inRepair;
+	private Date repairEnd = null;
+
+	private int healthPoint;
+	
 	/**
 	 * Instantiates a new material.
 	 *
@@ -34,22 +39,22 @@ public class Material {
 	 * @param serial the serial
 	 */
 	public Material(MaterialType type, Integer id, String serial) {
-		this.state = State.NEW;
-		this.material_type = type;
-		this.id = id;
-		this.serial_number = serial;
+		this(type, id, serial, 100);
 	}
 	
 	/**
 	 * Instantiates a new material.
 	 *
-	 * @param description the description
+	 * @param type the type
+	 * @param serial the serial
 	 */
-	public Material(HashMap<String, Object> description){
-		serial_number = (String) description.get("serialNumber");
-		HashMap<String, Object> materialTypeDescription = (HashMap<String, Object>) description.get("materialType");
-		material_type = (MaterialType) createObject((String) materialTypeDescription.get("className"));
-		material_type.setObject(materialTypeDescription);
+	public Material(MaterialType type, Integer id, String serial, Integer health) {
+		this.healthPoint = 100;
+		updateState();
+		this.material_type = type;
+		this.id = id;
+		this.serial_number = serial;
+		this.inRepair = false;
 	}
 	
 	public Material(JsonObject json, MaterialType type) {
@@ -74,6 +79,61 @@ public class Material {
 		return state;
 	}
 	
+	public void setDestroyed(boolean b) {
+		if (b) state = State.DESTROYED;
+	}
+	
+	public void naturalDegradation() {
+		healthPoint -= 10;
+	}
+	
+	public void updateState() {
+		if (healthPoint == 100) {
+			state = State.NEW;
+		}
+		else if (healthPoint >= 85) {
+			state = State.EXCELLENT;
+		}
+		else if (healthPoint >= 50) {
+			state = State.GOOD;
+		}
+		else if (healthPoint >= 10) {
+			state = State.BAD;
+		}
+		else {
+			state = State.DESTROYED;
+		}
+	}
+	
+	public void sendInRepair(Date now) {
+		inRepair = true;
+		// Add 3 days of repair
+		Calendar c = Calendar.getInstance();
+		c.setTime(now);
+		c.add(Calendar.DATE, 3);
+		repairEnd = c.getTime();
+	}
+	
+	/**
+	 * Returns true if the material is in repair.
+	 * @return
+	 */
+	public Boolean isInRepair() {
+		return inRepair;
+	}
+	
+	public void takeBackFromRepair() {
+		inRepair = false;
+	}
+	
+	/**
+	 * Get the date at which the repair ends.
+	 * @return
+	 */
+	public Date getRepairEnd() {
+		return repairEnd;
+	}
+	
 	/**
 	 * Gets the serial number.
 	 *
@@ -95,6 +155,10 @@ public class Material {
 		materialDescription.put("serialNumber", serial_number);
 		
 		return materialDescription;
+	}
+	
+	public Boolean isAvailable() {
+		return !inRepair && state != State.DESTROYED;
 	}
 	
 	/**
@@ -140,9 +204,10 @@ public class Material {
 	public JsonElement toJSON() {
 		JsonObject json = new JsonObject();
 		json.addProperty("id", id);
-		//json.addProperty("materialTypeId", material_type.getId());
 		json.addProperty("stateName", state.name());
 		json.addProperty("serial_number", serial_number);
+		json.addProperty("isInRepair", inRepair);
+		json.addProperty("repairEnd", repairEnd.getTime());
 		return json;
 	}
 	
@@ -150,5 +215,9 @@ public class Material {
 		id = json.get("id").getAsInt();
 		state = State.valueOf(json.get("stateName").getAsString());
 		serial_number = json.get("serial_number").getAsString();
+		inRepair = json.get("isInRepair").getAsBoolean();
+		
+		JsonElement repairEndJson = json.get("repairEnd");
+		repairEnd = (repairEndJson != null) ? new Date(json.get("repairEnd").getAsLong()) : null;
 	}
 }

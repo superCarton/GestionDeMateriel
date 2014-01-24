@@ -4,6 +4,8 @@ import java.util.List;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
+import borrowmanager.model.element.State;
+import borrowmanager.model.material.Material;
 import borrowmanager.model.user.Borrower;
 import borrowmanager.view.BookingPicker;
 import borrowmanager.view.TextInterfacePage;
@@ -29,7 +31,7 @@ public class GiveBackListMenu extends TextInterfacePage {
 			return null;
 		}
 		
-		System.out.println("Choose one of the item to give back");
+		System.out.println("Choose one of the booking to give back");
 		BookingPicker picker = new BookingPicker(userBookings);
 		picker.display();
 		Integer bookingID = picker.getPickedItemId();
@@ -40,7 +42,19 @@ public class GiveBackListMenu extends TextInterfacePage {
 		}
 		
 		Booking booking = userBookings.get(bookingID);
-
+		
+		for (Material m : booking.getMaterials()) {
+			if (m.getState() == State.BAD) {
+				if (question("The item "+m.getMaterialType().getFullName()+" with serial number "+m.getSerialNumber()+" was already in bad condition when you borrowed it.\n"
+						+"Was it destroyed or did it broke during your borrow ?")) {
+					m.setDestroyed(true);
+				}
+			}
+			else {
+				m.naturalDegradation();
+			}
+		}
+		
 		returnItem(booking);
 		
 		//new BorrowerHomeMenu(manager);

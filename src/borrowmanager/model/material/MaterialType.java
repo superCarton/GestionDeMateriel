@@ -111,6 +111,14 @@ public class MaterialType {
 	public String getBrand() {
 		return brand;
 	}
+	
+	/**
+	 * Returns the full name of the material.
+	 * @return
+	 */
+	public String getFullName() {
+		return brand + ' ' + name;
+	}
 
 	/**
 	 * Gets the description.
