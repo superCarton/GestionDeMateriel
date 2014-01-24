@@ -26,7 +26,7 @@
           {
             "borrowerId": 1,
             "startDate": 1389740400000,
-            "endDate": 1390603591234,
+            "endDate": 1390604232641,
             "materials": [
               {
                 "id": 0
@@ -144,6 +144,14 @@
         "firstname": "LE",
         "login": "manager",
         "password": "hello2"
+      },
+      {
+        "className": "Student",
+        "id": 3,
+        "lastname": "tom",
+        "firstname": "qsdf",
+        "login": "lol",
+        "password": "lol"
       }
     ]
   }

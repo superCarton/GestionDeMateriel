@@ -23,6 +23,12 @@ public abstract class Picker<ID, T> extends TextInterfacePage {
 
 	@Override
 	public TextInterfacePage display() {
+		if (itemList.size() == 0) {
+			System.out.println("Nothing to display");
+			enterToContinue();
+			return null;
+		}
+		
 		String input = null;
 		Boolean valid = false;
 		

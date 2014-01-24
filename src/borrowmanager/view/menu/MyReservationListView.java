@@ -19,19 +19,16 @@ public class MyReservationListView extends TextInterfacePage {
 	public TextInterfacePage display() {
 		List<Booking> list = manager.getUserReservations(manager.getActiveUser().getId());
 		
-		if (list.size() > 0) {
-			System.out.println("Here is the list of your reservations.");
-			System.out.println("Select one to have more info :");
-		
+		System.out.println("Here is the list of your reservations.");
+		System.out.println("Select one to have more info :");
 			BookingPicker picker = new BookingPicker(list);
-			picker.display();
-			Integer picked = picker.getPickedItemId();
-			if (picked == null) {
-				return null;
-			}
-			openChildPage(new BookingDetails(manager, list.get(picked)));
+		picker.display();
+		Integer picked = picker.getPickedItemId();
+		if (picked == null) {
+			return null;
 		}
-		
+		openChildPage(new BookingDetails(manager, list.get(picked)));
+				
 		return this;
 	}
 

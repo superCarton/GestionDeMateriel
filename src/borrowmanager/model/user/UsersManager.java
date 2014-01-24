@@ -3,14 +3,10 @@
  */
 package borrowmanager.model.user;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import borrowmanager.model.Manager;
-import borrowmanager.util.DataXML;
-import java.util.*;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,12 +21,6 @@ public class UsersManager {
 	private Manager manager;
 	/** The users. */
 	private List<User> users;
-	
-	/** The save file path. */
-	private final String SAVE_FILE_PATH = "users";
-	
-	/** The save file version. */
-	private final String SAVE_FILE_VERSION = "1.0.0";
 	
 	/**
 	 * Instantiates a new users.
@@ -179,7 +169,6 @@ public class UsersManager {
 	
 	public void fromJSON(JsonObject json) {
 		for (JsonElement j : json.get("list").getAsJsonArray()) {
-			// TODO
 			User u;
 			JsonObject jo = j.getAsJsonObject();
 			String className = jo.get("className").getAsString();

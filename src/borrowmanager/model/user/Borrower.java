@@ -3,8 +3,6 @@
  */
 package borrowmanager.model.user;
 
-import java.util.*;
-
 import com.google.gson.JsonObject;
 
 /**
@@ -15,7 +13,7 @@ import com.google.gson.JsonObject;
 public abstract class Borrower extends User{
 
 	/** The loan duration. */
-	protected static int loanDuration;
+	protected static int maxBorrowingDuration;
 	
 	protected static int maxReservationLength;
 	
@@ -26,11 +24,10 @@ public abstract class Borrower extends User{
 	 * @param firstname the firstname
 	 * @param login the login
 	 * @param password the password
-	 * @param loanDuration the loan duration
+	 * @param maxBorrowingDuration the loan duration
 	 */
 	public Borrower(Integer id, String name, String firstname, String login, String password){
 		super(id, name, firstname, login, password);
-		setLoanDuration(loanDuration);
 	}
 
 	/**
@@ -57,7 +54,7 @@ public abstract class Borrower extends User{
 	 * @param loanDuration the new loan duration
 	 */
 	public static void setLoanDuration(int loanDuration) {
-		Borrower.loanDuration = loanDuration;
+		Borrower.maxBorrowingDuration = loanDuration;
 	}
 	
 	public abstract Integer getMaxReservationLength() ;

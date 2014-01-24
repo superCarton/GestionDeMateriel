@@ -3,12 +3,10 @@
  */
 package borrowmanager.model.user;
 
-import java.util.*;
+import java.util.HashMap;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import borrowmanager.UNUSED_user.UNUSED_User;
 
 
 /**

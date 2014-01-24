@@ -3,8 +3,6 @@
  */
 package borrowmanager.model.user;
 
-import java.util.*;
-
 import com.google.gson.JsonObject;
 
 /**
