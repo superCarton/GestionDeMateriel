@@ -35,7 +35,7 @@ import borrowmanager.model.user.UsersManager;
 import borrowmanager.util.FileUtils;
 
 public class Manager {
-	private final static String filePath = "data.json";
+	private String filePath;
 	public static final boolean DEBUG = true;
 	public static Date now = new Date();
 	private User activeUser;
@@ -47,7 +47,12 @@ public class Manager {
 	private UsersManager usersManager;
 
 	public Manager() {
-		this.usersManager = new UsersManager();
+		this("data.json");
+	}
+	
+	public Manager(String path) {
+		this.filePath = path;
+		this.usersManager = new UsersManager(this);
 		this.activeUser = null;
 		this.stock = new HashMap<Integer, BorrowableStock>();
 		
@@ -121,7 +126,12 @@ public class Manager {
 			throw new RuntimeException("Object is not available in desired quantity");
 			//return false;
 		}
-		return stock.book(borrowerId, quantity, bookingInterval, reason);
+		
+		Booking result = stock.book(borrowerId, quantity, bookingInterval, reason); 
+		if (result != null) {
+			save();
+		}
+		return result;
 		//return stock.getCalendar().book(borrowerId, quantity, bookingInterval, reason);
 	}
 
@@ -448,6 +458,6 @@ public class Manager {
 			BorrowableStock s = new BorrowableStock(j.getAsJsonObject());
 			stock.put(s.getId(), s);
 		}
-		usersManager = new UsersManager(json.get("users").getAsJsonObject());
+		usersManager = new UsersManager(this, json.get("users").getAsJsonObject());
 	}
 }

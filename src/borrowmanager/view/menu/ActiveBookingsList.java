@@ -1,10 +1,6 @@
 package borrowmanager.view.menu;
 
-import java.util.List;
-
 import borrowmanager.model.Manager;
-import borrowmanager.model.booking.Booking;
-import borrowmanager.view.TextInterfacePage;
 
 public class ActiveBookingsList extends BookingsList {
 

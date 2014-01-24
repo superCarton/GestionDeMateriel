@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import borrowmanager.model.Manager;
 import borrowmanager.util.DataXML;
 import java.util.*;
 
@@ -21,6 +22,7 @@ import com.google.gson.JsonObject;
  */
 public class UsersManager {
 
+	private Manager manager;
 	/** The users. */
 	private List<User> users;
 	
@@ -33,12 +35,12 @@ public class UsersManager {
 	/**
 	 * Instantiates a new users.
 	 */
-	public UsersManager(){
+	public UsersManager(Manager manager){
 		users = new LinkedList<User>();
 	}
 	
-	public UsersManager(JsonObject json) {
-		this();
+	public UsersManager(Manager manager, JsonObject json) {
+		this(manager);
 		fromJSON(json);
 	}
 
@@ -85,6 +87,7 @@ public class UsersManager {
 	 */
 	public void add(User user){
 		users.add(user);
+		manager.save();
 	}
 	
 	/**
@@ -94,6 +97,7 @@ public class UsersManager {
 	 */
 	public void remove(User user){
 		users.remove(user);
+		manager.save();
 	}
 	
 	/**
