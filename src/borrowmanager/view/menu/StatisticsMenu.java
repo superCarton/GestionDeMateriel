@@ -1,10 +1,14 @@
 package borrowmanager.view.menu;
 
+import java.util.Map;
+
 import borrowmanager.model.Manager;
+import borrowmanager.model.material.MaterialCategory;
 import borrowmanager.model.material.MaterialType;
 import borrowmanager.model.stats.BiggestBorrower;
 import borrowmanager.model.stats.MostBorrowedMaterial;
 import borrowmanager.model.stats.MostBrokenMaterial;
+import borrowmanager.model.stats.NumberByCategory;
 import borrowmanager.model.stats.StatValue;
 import borrowmanager.model.stats.WorstBorrower;
 import borrowmanager.model.user.User;
@@ -22,10 +26,12 @@ public class StatisticsMenu extends TextInterfaceOptionPage {
 	@Override
 	protected void build() {
 		setHasGoBackOption(true);
+		addOption("numberByCategory", "Number of material by category");
 		addOption("biggestBorrower","Biggest borrower");
 		addOption("worstBorrower","Worst borrower");
 		addOption("mostBorrowed","Most borrowed");
 		addOption("mostBrokenMaterial","Most broken material");
+		
 	}
 
 	@Override
@@ -57,6 +63,14 @@ public class StatisticsMenu extends TextInterfaceOptionPage {
 			}
 			else {
 				System.out.println("The most broken material is "+result.getKey().getFullName()+" with "+result.getValue()+" borrows.");
+			}
+		}
+		else if (c.equals("numberByCategory")) {
+			NumberByCategory stat = new NumberByCategory(manager);
+			Map<MaterialCategory, StatValue<Integer, Double>> result = stat.calculate();
+			System.out.println(stat.getDescription());
+			for (MaterialCategory cat : result.keySet()) {
+				System.out.println(cat.name()+" : "+ result.get(cat).getKey()+" ("+result.get(cat).getValue()*100+"%)");
 			}
 		}
 		else {

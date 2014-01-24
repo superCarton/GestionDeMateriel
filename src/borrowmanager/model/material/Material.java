@@ -207,7 +207,8 @@ public class Material {
 		json.addProperty("stateName", state.name());
 		json.addProperty("serial_number", serial_number);
 		json.addProperty("isInRepair", inRepair);
-		json.addProperty("repairEnd", repairEnd.getTime());
+		json.addProperty("repairEnd", repairEnd != null ? repairEnd.getTime() : null);
+
 		return json;
 	}
 	

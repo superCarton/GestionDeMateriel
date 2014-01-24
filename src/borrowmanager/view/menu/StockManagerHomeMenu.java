@@ -19,6 +19,7 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		addOption("seeAll", "View all bookings");
 		addOption("seeActive", "View all active bookings");
 		addOption("seeLate", "View all late bookings");
+		addOption("needRepairList", "View material that needs to be repaired");
 		addOption("stats","View statistics");
 		addOption("logout", "Logout");
 	}
@@ -39,6 +40,9 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		}
 		else if (c.equals("stats")) {
 			openChildPage(new StatisticsMenu(manager));
+		}
+		else if (c.equals("needRepairList")) {
+			openChildPage(new NeedRepairList(manager));
 		}
 		else if (c.equals("logout")) {
 			return null;

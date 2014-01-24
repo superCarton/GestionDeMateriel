@@ -37,6 +37,7 @@ public class UsersManager {
 	 */
 	public UsersManager(Manager manager){
 		users = new LinkedList<User>();
+		this.manager = manager;
 	}
 	
 	public UsersManager(Manager manager, JsonObject json) {

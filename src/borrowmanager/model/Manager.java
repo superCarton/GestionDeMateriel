@@ -21,6 +21,7 @@ import com.google.gson.JsonParser;
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.DateInterval;
 import borrowmanager.model.element.BorrowableStock;
+import borrowmanager.model.element.State;
 import borrowmanager.model.material.Material;
 import borrowmanager.model.material.OS;
 import borrowmanager.model.material.SmartPhone;
@@ -55,7 +56,7 @@ public class Manager {
 		
 		File f = new File(filePath);
 		if (f.exists()) {
-			load();
+			//load();
 		}
 	}
 	
@@ -301,6 +302,26 @@ public class Manager {
 		List<Material> list = new LinkedList<Material>();
 		for (BorrowableStock s : stock.values()) {
 			list.addAll(s.getStock());
+		}
+		return list;
+	}
+	
+	public List<Material> getMaterialWithState(State s) {
+		List<Material> list = new LinkedList<Material>();
+		for (Material m : getMaterials()) {
+			if (m.getState() == s) {
+				list.add(m);
+			}
+		}
+		return list;
+	}
+	
+	public List<Material> getMaterialsInRepair() {
+		List<Material> list = new LinkedList<Material>();
+		for (Material m : getMaterials()) {
+			if (m.isInRepair()) {
+				list.add(m);
+			}
 		}
 		return list;
 	}

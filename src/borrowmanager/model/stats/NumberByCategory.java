@@ -23,17 +23,17 @@ public class NumberByCategory extends Stats<Map<MaterialCategory, StatValue<Inte
 	public Map<MaterialCategory, StatValue<Integer, Double>> calculate() {
 		List<Material> materialList = manager.getMaterials();
 		Map<MaterialCategory, Integer> map = new HashMap<MaterialCategory, Integer>();
+		for (MaterialCategory cat : MaterialCategory.values()) {
+			map.put(cat, 0);
+		}
+		
 		for (Material m : materialList) {
 			MaterialCategory category = m.getMaterialType().getCategory();
-			if (map.containsKey(category)) {
-				int number = map.get(m);
-				number++;
-				map.put(category, number);
-			}
-			else {
-				map.put(category, 1);
-			}
+			int number = map.get(category);
+			number++;
+			map.put(category, number);
 		}
+		
 		int sizeStock = materialList.size();
 		MaterialCategory[] listCategory = MaterialCategory.values();
 		Map<MaterialCategory, StatValue<Integer, Double>> numberAndPourcent = new HashMap<MaterialCategory, StatValue<Integer, Double>>();
