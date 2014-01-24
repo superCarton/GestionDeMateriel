@@ -51,7 +51,7 @@ public class Booking implements Comparable<Booking> {
 	private List<Reminder> reminders;
 
 	private boolean returnedLate;
-	private Integer daysLate;
+	private Integer daysLate = 0;
 	private Date returnDate = null;
 	
 	private Booking() {
@@ -137,18 +137,27 @@ public class Booking implements Comparable<Booking> {
 	}
 	
 	/**
-	 * Returns the number of days that  the booking is late.
-	 * @return Number of days late
+	 *  Returns the number of days that the booking is late.
 	 */
 	public Integer getDaysLate() {
+		return daysLate;
+	}
+	
+	/**
+	 * Calculate the number of days that the booking is late.
+	 * @return Number of days late
+	 */
+	private Integer calculateDaysLate() {
 		Date lastDate;
-		if (isReturned()) {
-			lastDate = returnDate;
+		lastDate = Manager.now;
+		/*if (isReturned()) {
+			lastDate = interval.getEnd();
 		}
 		else {
 			lastDate = Manager.now;
-		}
+		}*/
 		Date end = interval.getEnd();
+		System.out.println("LastDate = "+lastDate);
 		if (lastDate.after(end)) {
 			DateInterval interval = new DateInterval(end, lastDate);
 			return interval.getLength();
@@ -171,7 +180,7 @@ public class Booking implements Comparable<Booking> {
 	 */
 	public void end(){
 		this.returnedLate = isLate();
-		this.daysLate = getDaysLate();
+		this.daysLate = calculateDaysLate();
 		this.interval.end();
 		this.isReturned = true;
 		
@@ -321,8 +330,13 @@ public class Booking implements Comparable<Booking> {
 		String startString = format.format(getInterval().getStart());
 		String endString = format.format(getInterval().getEnd());
 		String notValidatedStr = !isValidated ? "[NOT VALIDATED] " : "";
-		String late = isLate() ? "[LATE !] ":"";
-		return notValidatedStr+late+materials.get(0).getMaterialType().getName()+" x"+getQuantity()+" ["+startString+" - "+endString+"] | Details: "+getReason();
+		String state = "";
+		if (isLate()) state = "[LATE !] ";
+		if (wasReturnedLate()) state = "[Returned "+getDaysLate()+" days late] ";
+		else if (isReturned()) state = "[Returned]";
+		
+		//String late = isLate() ? "[LATE !] ":"";
+		return notValidatedStr+state+materials.get(0).getMaterialType().getName()+" x"+getQuantity()+" ["+startString+" - "+endString+"] | Details: "+getReason();
 	}
 
 	@Override

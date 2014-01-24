@@ -274,7 +274,8 @@ public class Manager {
 			f = new Date("01/28/2014");
 		
 		book(0, 1, 1, a, b, "MYCOURSE");
-		Booking debugB = book(0, 1, 1, d, c, "MYCOURSE");
+		Booking debugB = book(0, 1, 1, d, c, "MYCOURSE1");
+		debugB.validate();
 		debugB.end();
 		book(0, 1, 1, e, f, "MYCOURSE"); 
 		if (debugB == null) {

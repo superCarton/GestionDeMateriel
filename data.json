@@ -26,7 +26,7 @@
           {
             "borrowerId": 1,
             "startDate": 1389740400000,
-            "endDate": 1390553274212,
+            "endDate": 1390556461360,
             "materials": [
               {
                 "id": 0
@@ -35,8 +35,8 @@
                 "id": 1
               }
             ],
-            "reason": "MYCOURSE",
-            "isValidated": false,
+            "reason": "MYCOURSE1",
+            "isValidated": true,
             "isReturned": true,
             "reminders": [],
             "returnedLate": true,
