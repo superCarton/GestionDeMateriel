@@ -1,10 +1,11 @@
 package borrowmanager.view;
 
 import java.util.Collection;
+import java.util.List;
 
 import borrowmanager.model.material.Material;
 
-public class MaterialPicker extends Picker<Material, Material>{
+public class MaterialPicker extends Picker<Integer, Material>{
 
 	public MaterialPicker(Collection<Material> l) {
 		super(l);
@@ -16,8 +17,8 @@ public class MaterialPicker extends Picker<Material, Material>{
 	}
 
 	@Override
-	protected Material getUniqueIdentifier(Material element) {
-		return element;
+	protected Integer getUniqueIdentifier(Material element) {
+		return ((List<Material>) getList()).indexOf(element);
 	}
 
 }

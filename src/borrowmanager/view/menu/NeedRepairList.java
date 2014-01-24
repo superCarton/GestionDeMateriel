@@ -6,7 +6,6 @@ import java.util.List;
 import borrowmanager.model.Manager;
 import borrowmanager.model.element.State;
 import borrowmanager.model.material.Material;
-import borrowmanager.view.ItemPicker;
 import borrowmanager.view.MaterialPicker;
 import borrowmanager.view.TextInterfacePage;
 
@@ -30,20 +29,30 @@ public class NeedRepairList extends TextInterfacePage {
 				repairableMaterials.add(m);
 			}
 		}
-		MaterialPicker picker = new MaterialPicker(repairableMaterials);
-		picker.display();
-		Material m = picker.getPickedItemId();
 		
-		if (m != null) {
-			if (question("Repair duration is "+m.getRepairDuration()+" days. Do you want to send "+m.getFullName()+" to repair ?")) {
-				m.sendInRepair(Manager.now);
-				System.out.println("The material was sent to repair");
+		if (repairableMaterials.size() > 0) {
+			MaterialPicker picker = new MaterialPicker(repairableMaterials);
+			picker.display();
+			Integer picked = picker.getPickedItemId();
+			Material m = repairableMaterials.get(picked);
+			
+			if (m != null) {
+				if (question("Repair duration is "+m.getRepairDuration()+" days.\n"+
+						"Do you want to send "+m.getFullName()+" to repair ?")) {
+					m.sendInRepair(Manager.now);
+					System.out.println("The material was sent to repair !");
+					enterToContinue();
+				}
+			}
+			else {
+				return null;
 			}
 		}
 		else {
+			System.out.println("Nothing to display");
+			enterToContinue();
 			return null;
 		}
-		
 		return this;
 	}
 
