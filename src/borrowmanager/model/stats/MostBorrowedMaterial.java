@@ -9,15 +9,16 @@ import borrowmanager.model.material.MaterialType;
 /**
  * The MostBorrowingMaterial is a class extends of Stats which gives the most borrowing material
  * @author Jonathan Pujol
+ * 
  */
-public class MostBorrowingMaterial extends Stats<String>{
+public class MostBorrowedMaterial extends Stats<MaterialType> {
 
-	public MostBorrowingMaterial(Manager manager) {
+	public MostBorrowedMaterial(Manager manager) {
 		super(manager, "Most borrowing Material" , "The material which is the most borrow");
 	}
 
 	@Override
-	public String calculate() {
+	public MaterialType calculate() {
 		MaterialType  mostBorrow = null;
 		int numberOfBorrow = 0;
 		Collection<BorrowableStock> object = manager.getStockList();
@@ -28,7 +29,7 @@ public class MostBorrowingMaterial extends Stats<String>{
 				numberOfBorrow = number;
 			}
 		}
-		return mostBorrow.getName();
+		return mostBorrow;
 	}
 
 }

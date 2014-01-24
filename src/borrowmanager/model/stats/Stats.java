@@ -5,6 +5,7 @@ import borrowmanager.model.Manager;
 /**
  * The Stats class
  * @author Jonathan Pujol & Tom Guillermin
+ * 
  */
 public abstract class Stats<T> {
 	protected Manager manager;

@@ -12,15 +12,16 @@ import borrowmanager.model.user.User;
 /**
  * The MostBorrowingMaterial is a class extends of Stats which gives the borrower who doesn't respect the less the delay
  * @author Jonathan Pujol
+ * 
  */
-public class WorstBorrower extends Stats<String> {
+public class WorstBorrower extends Stats<StatValue<User, Integer>> {
 
 	public WorstBorrower(Manager manager) {
 		super(manager, "Worst borrower", "The borrower that returns things late the most frequently.");
 	}
 
 	@Override
-	public String calculate() {
+	public StatValue<User, Integer> calculate() {
 		User worst = null;
 		int numberOfLate = 0;
 		List<User> users = manager.getUsersManager().getAllUsers();
@@ -38,7 +39,7 @@ public class WorstBorrower extends Stats<String> {
 				numberOfLate = numberLate;
 			}
 		}
-		return worst.toString();
+		return new StatValue<User, Integer>(worst, numberOfLate);
 	}
 
 }
