@@ -39,7 +39,7 @@ public class NumberByCategory extends Stats<Map<MaterialCategory, StatValue<Inte
 		Map<MaterialCategory, StatValue<Integer, Double>> numberAndPourcent = new HashMap<MaterialCategory, StatValue<Integer, Double>>();
 		for (MaterialCategory mc : listCategory) {
 			int numberCat = map.get(mc);
-			double pourcent = numberCat/sizeStock;
+			double pourcent = numberCat*(1.0)/sizeStock;
 			numberAndPourcent.put(mc, new StatValue<Integer, Double>(numberCat, pourcent));
 		}
 		return numberAndPourcent;
