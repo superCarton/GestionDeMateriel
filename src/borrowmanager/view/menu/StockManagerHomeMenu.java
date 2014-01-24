@@ -19,6 +19,7 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		addOption("seeAll", "View all bookings");
 		addOption("seeActive", "View all active bookings");
 		addOption("seeLate", "View all late bookings");
+		addOption("seeCancelled", "View all cancelled bookings");
 		addOption("needRepairList", "View material that needs to be repaired");
 		addOption("stats","View statistics");
 		addOption("logout", "Logout");
@@ -37,6 +38,9 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		}
 		else if (c.equals("seeLate")) {
 			openChildPage(new LateBookingsList(manager));
+		}
+		else if (c.equals("seeCancelled")) {
+			openChildPage(new CancelledBookingsList(manager));
 		}
 		else if (c.equals("stats")) {
 			openChildPage(new StatisticsMenu(manager));

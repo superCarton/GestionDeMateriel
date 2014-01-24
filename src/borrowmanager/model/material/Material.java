@@ -18,12 +18,12 @@ import borrowmanager.model.element.State;
 public class Material {
 
 	/** The material_type. */
-	private MaterialType material_type;
+	private MaterialType materialType;
 	
 	private State state;
 	
 	/** The serial_number. */
-	private String serial_number;
+	private String serialNumber;
 
 	private Integer id;
 	
@@ -31,6 +31,8 @@ public class Material {
 	private Date repairEnd = null;
 
 	private int healthPoint;
+	
+	private Integer repairDuration = 3; // in days
 	
 	/**
 	 * Instantiates a new material.
@@ -51,14 +53,14 @@ public class Material {
 	public Material(MaterialType type, Integer id, String serial, Integer health) {
 		this.healthPoint = 100;
 		updateState();
-		this.material_type = type;
+		this.materialType = type;
 		this.id = id;
-		this.serial_number = serial;
+		this.serialNumber = serial;
 		this.inRepair = false;
 	}
 	
 	public Material(JsonObject json, MaterialType type) {
-		material_type = type;
+		materialType = type;
 		fromJSON(json);
 	}
 
@@ -68,7 +70,7 @@ public class Material {
 	 * @return the material type
 	 */
 	public MaterialType getMaterialType(){
-		return material_type;
+		return materialType;
 	}
 	
 	/**
@@ -110,7 +112,7 @@ public class Material {
 		// Add 3 days of repair
 		Calendar c = Calendar.getInstance();
 		c.setTime(now);
-		c.add(Calendar.DATE, 3);
+		c.add(Calendar.DATE, getRepairDuration());
 		repairEnd = c.getTime();
 	}
 	
@@ -140,7 +142,7 @@ public class Material {
 	 * @return the serial number
 	 */
 	public String getSerialNumber(){
-		return serial_number;
+		return serialNumber;
 	}
 	
 	/**
@@ -151,8 +153,8 @@ public class Material {
 	public HashMap<String, Object> getSerializableDescription(){
 
 		HashMap<String, Object> materialDescription = new HashMap<String, Object>();
-		materialDescription.put("materialType", material_type.getSerializableDescription());
-		materialDescription.put("serialNumber", serial_number);
+		materialDescription.put("materialType", materialType.getSerializableDescription());
+		materialDescription.put("serialNumber", serialNumber);
 		
 		return materialDescription;
 	}
@@ -187,8 +189,8 @@ public class Material {
 	public boolean equals(Object o){
 		if (!(o instanceof Material)) return false;
 		Material m = (Material)o;
-		if (m.serial_number != this.serial_number) return false;
-		if (!m.material_type.equals(material_type)) return false;
+		if (m.serialNumber != this.serialNumber) return false;
+		if (!m.materialType.equals(materialType)) return false;
 		return true;
 	}
 	
@@ -205,7 +207,7 @@ public class Material {
 		JsonObject json = new JsonObject();
 		json.addProperty("id", id);
 		json.addProperty("stateName", state.name());
-		json.addProperty("serial_number", serial_number);
+		json.addProperty("serial_number", serialNumber);
 		json.addProperty("isInRepair", inRepair);
 		json.addProperty("repairEnd", repairEnd != null ? repairEnd.getTime() : null);
 
@@ -215,10 +217,22 @@ public class Material {
 	public void fromJSON(JsonObject json) {
 		id = json.get("id").getAsInt();
 		state = State.valueOf(json.get("stateName").getAsString());
-		serial_number = json.get("serial_number").getAsString();
+		serialNumber = json.get("serial_number").getAsString();
 		inRepair = json.get("isInRepair").getAsBoolean();
 		
 		JsonElement repairEndJson = json.get("repairEnd");
 		repairEnd = (repairEndJson != null) ? new Date(json.get("repairEnd").getAsLong()) : null;
+	}
+
+	public Integer getRepairDuration() {
+		return repairDuration;
+	}
+
+	/**
+	 * Returns the full name of the material : brand model serial#
+	 * @return
+	 */
+	public String getFullName() {
+		return this.materialType.getFullName()+" with serial number "+serialNumber;
 	}
 }

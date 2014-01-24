@@ -4,6 +4,7 @@ import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.element.BorrowableStack;
 import borrowmanager.model.element.BorrowableStock;
+import borrowmanager.model.material.Material;
 import borrowmanager.model.material.MaterialType;
 import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.User;
@@ -28,9 +29,22 @@ public class BookingDetails extends TextInterfaceOptionPage {
 		System.out.println("Booking Information:");
 		MaterialType item = booking.getMaterialType();
 		//BorrowableStack item = booking.getBorrowableStack();
-		System.out.println("Item borrowed :\t"+item.getName());
+		// Item
+		System.out.println("Item borrowed :\t"+item.getFullName());
+		// Tags
+		for (String tag : booking.getTags(true)) {
+			System.out.println("\t# "+tag);
+		}
+		// Quantity
 		System.out.println("Quantity :\t"+booking.getQuantity());
-		System.out.println("Date :\t"+booking.getInterval().toString());
+		// Serial number
+		String serialNumbersAndState = "";
+		for (Material m : booking.getMaterials()) {
+			serialNumbersAndState += "\n\t"+m.getState().getName()+"\t (serial: "+m.getSerialNumber()+")";
+		}
+		System.out.println("State and serial numbers and state:"+serialNumbersAndState);
+		System.out.println("Start :\t"+booking.getInterval().getStart().toString());
+		System.out.println("End :\t"+booking.getInterval().getEnd().toString());
 		
 		
 		if (booking.isLate()) {
@@ -54,29 +68,38 @@ public class BookingDetails extends TextInterfaceOptionPage {
 		//
 		// Actions for stock manager
 		if (isViewedByStockManager) {
-			// Not validated
-			if (! booking.isValidated()) {
-				System.out.println();
-				if (question("This booking has not been validated, would you like to validate it now ?")) {
-					booking.validate();
-					System.out.println("The booking has been validated !");
-					System.out.println("Press enter to continue");
-					input();
+			// Stays at true if nothing is asked to the user (to have the time to read).
+			boolean pressEnter = true;
+			if (!booking.isCancelled()) {
+				// Not validated
+				if ((booking.isReservation() || booking.isActive()) && ! booking.isValidated()) {
+					pressEnter = false;
+					System.out.println();
+					if (question("This booking has not been validated, would you like to validate it now ?")) {
+						booking.validate();
+						System.out.println("The booking has been validated !");
+						System.out.println("Press enter to continue");
+						input();
+					}
+				}
+				// Late booking
+				if (booking.isLate()) {
+					if (question("Would you like to send a reminder to the borrower ?")) {
+						pressEnter = false;
+						if (booking.wasAReminderSendToday()) {
+							System.out.println("Sorry, but a reminder has already been sent today.");
+						}
+						else {
+							booking.addReminder();
+							System.out.println("Reminder sent successfully !");
+						}
+						System.out.println("Press enter to continue");
+						input();
+					}
 				}
 			}
-			// Late booking
-			if (booking.isLate()) {
-				if (question("Would you like to send a reminder to the borrower ?")) {
-					if (booking.wasAReminderSendToday()) {
-						System.out.println("Sorry, but a reminder has already been sent today.");
-					}
-					else {
-						booking.addReminder();
-						System.out.println("Reminder sent successfully !");
-					}
-					System.out.println("Press enter to continue");
-					input();
-				}
+			if (pressEnter) {
+				enterToContinue();
 			}
 		}
 			

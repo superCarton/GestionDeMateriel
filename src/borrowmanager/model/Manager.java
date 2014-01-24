@@ -49,14 +49,19 @@ public class Manager {
 	}
 	
 	public Manager(String path) {
+		boolean DEBUG_LoadFile = false;
 		this.filePath = path;
 		this.usersManager = new UsersManager(this);
 		this.activeUser = null;
 		this.stock = new HashMap<Integer, BorrowableStock>();
 		
 		File f = new File(filePath);
-		if (f.exists()) {
-			//load();
+		if (DEBUG_LoadFile && f.exists()) {
+			load();
+		}
+		else {
+			fillTemporaryStock();
+			save();
 		}
 	}
 	
@@ -286,16 +291,7 @@ public class Manager {
 		debugB.validate();
 		debugB.end();
 		book(0, 1, 1, e, f, "MYCOURSE"); 
-		if (debugB == null) {
-			System.out.println("[DEBUG] Late debug booking is null");
-		}
-		else {
-			System.out.println("[DEBUG] Last booking = "+debugB);
-		}
 		activeUser = null;
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String jsonOutput = gson.toJson(u.toJSON());
-		System.out.println(jsonOutput);
 	}
 	
 	public List<Material> getMaterials() {
@@ -354,15 +350,21 @@ public class Manager {
 	// TODO : factorize this with predicat class
 	public List<Booking> getLateBookings() {
 		List<Booking> list = new LinkedList<Booking>();
-		// Browse the stock
-		for (Integer borrowableID : this.stock.keySet()) {
-			BorrowableStock stock = this.stock.get(borrowableID);
-			// Browse the item calendar
-			for (Booking b : stock.getCalendar().getBookings()) {
+			for (Booking b : getBookings()) {
 				// Add only late bookings
 				if (b.isLate()) {
 					list.add(b);
 				}
+			}
+		return list;
+	}
+	
+	public List<Booking> getCancelledBookings() {
+		List<Booking> list = new LinkedList<Booking>();
+		for (Booking b : getBookings()) {
+			// Add only late bookings
+			if (b.isCancelled()) {
+				list.add(b);
 			}
 		}
 		return list;
@@ -409,7 +411,11 @@ public class Manager {
 		// Filter only the reservation (booking in the future)
 		for (Booking b : base) {
 			if (b.isReservation()) {
+				//System.out.println(b+" IS a reservation");
 				list.add(b);
+			}
+			else {
+				//System.out.println(b+" is not a reservation");
 			}
 		}
 		return list;
