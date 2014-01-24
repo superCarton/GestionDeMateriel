@@ -31,6 +31,12 @@ public abstract class TextInterfacePage {
 		//System.out.println("Exiting loop from : "+this);
 	}
 	
+	protected void enterToContinue() {
+		System.out.println();
+		System.out.println("Press enter to continue");
+		input();
+	}
+	
 	protected String input() {
 		String s = null;
 	    try {

@@ -1,7 +1,6 @@
 package borrowmanager.view.menu;
 
 import borrowmanager.model.Manager;
-import borrowmanager.model.material.MaterialType;
 import borrowmanager.model.stats.BiggestBorrower;
 import borrowmanager.model.stats.StatValue;
 import borrowmanager.model.stats.WorstBorrower;
@@ -14,6 +13,7 @@ public class StatisticsMenu extends TextInterfaceOptionPage {
 	private Manager manager ;
 	public StatisticsMenu(Manager m) {
 		manager = m;
+		ready();
 	}
 
 	@Override
@@ -39,11 +39,13 @@ public class StatisticsMenu extends TextInterfaceOptionPage {
 			System.out.println("The worst borrower is "+result.getKey().getName()+" with "+result.getValue()+" borrowings returned late.");
 		}
 		else if (c.equals("mostBorrowed")) {
-			MostBorrowedMaterial stat = new MostBorrowed(manager);
+			/*MostBorrowedMaterial stat = new MostBorrowed(manager);
 			StatValue<MaterialType, Integer> result = stat.calculate();
 			System.out.println(stat.getDescription());
 			System.out.println("The most borrowed material is "+result.getKey().getName()+" with "+result.getValue()+" borrows.");
+			*/
 		}
+		enterToContinue();
 		return null;
 	}
 
