@@ -1,5 +1,10 @@
 package borrowmanager.model.stats;
 
+/**
+ * The Stats Value class for return two parameters 
+ * @author Jonathan Pujol & Tom Guillermin
+ * 
+ */
 public class StatValue<A, B> {
 	private A a;
 	private B b;

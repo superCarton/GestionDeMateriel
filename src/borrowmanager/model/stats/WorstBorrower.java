@@ -1,12 +1,9 @@
 package borrowmanager.model.stats;
 
-import java.util.Collection;
 import java.util.List;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
-import borrowmanager.model.element.BorrowableStock;
-import borrowmanager.model.user.Borrower;
 import borrowmanager.model.user.User;
 
 /**
