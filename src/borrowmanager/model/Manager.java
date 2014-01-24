@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.DateInterval;
 import borrowmanager.model.element.BorrowableModel;
@@ -226,12 +229,12 @@ public class Manager {
 		SmartPhone s4 = new SmartPhone(0, "S4", "samsungs", "fassst", 42, OS.ANDROID, 7);
 		SmartPhone lolPhone = new SmartPhone(1, "iPhone", "Applz", "pouerk", 1, OS.IOS, 6);
 		
-		Material m1 = new Material(s4, "serial####1253QSF}"),
-				m2 = new Material(s4, "serial####QDSF");
+		Material m1 = new Material(s4, 0, "serial####1253QSF}"),
+				m2 = new Material(s4, 1, "serial####QDSF");
 		List<Material> s4Stock = new LinkedList<Material>();
 		s4Stock.add(m1);
 		s4Stock.add(m2);
-		Material i1 = new Material(lolPhone, "serial####lolll}");
+		Material i1 = new Material(lolPhone, 2, "serial####lolll}");
 		List<Material> iStock = new LinkedList<Material>();
 		iStock.add(i1);
 		
@@ -261,6 +264,7 @@ public class Manager {
 		
 		book(0, 1, 1, a, b, "MYCOURSE");
 		Booking debugB = book(0, 1, 1, d, c, "MYCOURSE");
+		debugB.end();
 		book(0, 1, 1, e, f, "MYCOURSE"); 
 		if (debugB == null) {
 			System.out.println("[DEBUG] Late debug booking is null");
@@ -269,6 +273,9 @@ public class Manager {
 			System.out.println("[DEBUG] Last booking = "+debugB);
 		}
 		activeUser = null;
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String jsonOutput = gson.toJson(stockS4.toJSON());
+		System.out.println(jsonOutput);
 	}
 	
 	public List<Booking> getBookings() {

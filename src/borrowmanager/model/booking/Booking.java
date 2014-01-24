@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStack;
@@ -50,7 +54,7 @@ public class Booking implements Comparable<Booking> {
 
 	private boolean returnedLate;
 	private Integer daysLate;
-	private Date returnDate;
+	private Date returnDate = null;
 	
 	/**
 	 * Constructs a booking
@@ -336,5 +340,36 @@ public class Booking implements Comparable<Booking> {
 	public MaterialType getMaterialType() {
 		// TODO : better...
 		return this.materials.get(0).getMaterialType();
+	}
+
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		json.addProperty("borrowerId", borrowerId);
+		json.addProperty("startDate", interval.getStart().getTime());
+		json.addProperty("endDate", interval.getEnd().getTime());
+		
+		// Materials list
+		JsonArray materialsJson = new JsonArray();
+		for (Material m : materials) {
+			JsonObject matJson = new JsonObject();
+			matJson.addProperty("id", m.getId());
+			materialsJson.add(matJson);
+		}
+		
+		json.addProperty("reason", reason);
+		json.addProperty("isValidated", isValidated);
+		json.addProperty("isReturned", isReturned);
+		
+		JsonArray remindersJson = new JsonArray();
+		json.add("reminders", remindersJson);
+		for (Reminder r : reminders) {
+			remindersJson.add(r.toJSON());
+		}
+		
+		json.addProperty("returnedLate", returnedLate);
+		json.addProperty("daysLate", daysLate);
+		json.addProperty("returnDate", returnDate != null ? returnDate.getTime() : null);
+		
+		return json;
 	}
 }

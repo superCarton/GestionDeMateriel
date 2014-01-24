@@ -1,5 +1,6 @@
 package borrowmanager.model.element;
 
+import java.lang.reflect.Type;
 import java.util.AbstractSet;
 import java.util.Date;
 import java.util.HashSet;
@@ -7,6 +8,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.booking.Booking;
@@ -188,5 +198,24 @@ public class BorrowableStock {
 	public Booking book(Integer borrowerId, Integer quantity, DateInterval bookingInterval, String reason) {
 		List<Material> list = getAvailableMaterials(bookingInterval.getStart(), bookingInterval.getEnd());
 		return getCalendar().book(borrowerId, list, bookingInterval, reason);
+	}
+
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		json.addProperty("materialType", materialType.getId());
+		json.add("calendar", calendar.toJSON());
+		JsonArray stockJson = new JsonArray();
+		for (Material m : stock) {
+			stockJson.add(m.toJSON());
+		}
+		json.add("stock", stockJson);
+		// TODO Auto-generated method stub
+		return json;
+	}
+	
+	public BorrowableStock deserialize(JsonElement arg0, Type arg1,
+			JsonDeserializationContext arg2) throws JsonParseException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

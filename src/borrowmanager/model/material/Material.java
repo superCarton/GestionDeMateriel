@@ -5,11 +5,14 @@ package borrowmanager.model.material;
 
 import java.util.*;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import borrowmanager.model.element.State;
 
 /**
  * The Class Material.
- * @author Marina Delerce & Romain Guillot 
+ * @author Marina Delerce & Romain Guillot & Tom Guillermin
  * @version 1.0.0
  */
 public class Material {
@@ -21,6 +24,8 @@ public class Material {
 	
 	/** The serial_number. */
 	private String serial_number;
+
+	private Integer id;
 	
 	/**
 	 * Instantiates a new material.
@@ -28,10 +33,11 @@ public class Material {
 	 * @param type the type
 	 * @param serial the serial
 	 */
-	public Material(MaterialType type, String serial) {
-		state = State.NEW;
-		material_type = type;
-		serial_number = serial;
+	public Material(MaterialType type, Integer id, String serial) {
+		this.state = State.NEW;
+		this.material_type = type;
+		this.id = id;
+		this.serial_number = serial;
 	}
 	
 	/**
@@ -120,5 +126,18 @@ public class Material {
 	@Override
 	public String toString(){
 		return this.getSerialNumber() + " ( " + this.getMaterialType().getName() + ") ";
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		json.addProperty("id", id);
+		json.addProperty("materialTypeId", material_type.getId());
+		json.addProperty("stateLevel", state.getLevel());
+		json.addProperty("serial_number", serial_number);
+		return json;
 	}
 }

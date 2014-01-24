@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import borrowmanager.model.Manager;
 import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStack;
@@ -160,5 +164,16 @@ public class BookingCalendar {
 			s += b.toString();
 		}
 		return s;
+	}
+
+	public JsonElement toJSON() {
+		JsonObject json = new JsonObject();
+		json.addProperty("materialTypeId", materialType.getId());
+		JsonArray bookingsJson = new JsonArray();
+		json.add("bookings",bookingsJson);
+		for (Booking b : bookings) {
+			bookingsJson.add(b.toJSON());
+		}
+		return json;
 	}
 }

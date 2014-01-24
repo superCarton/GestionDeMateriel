@@ -3,15 +3,25 @@
  */
 package borrowmanager.model.material;
 
-import java.util.HashMap;
+import java.lang.reflect.Type;
 import java.util.*;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 /**
  * The Class MaterialType.
- * @author Marina Delerce & Romain Guillot 
+ * @author Marina Delerce & Romain Guillot & Tom Guillermin 
  * @version 1.0.0
  */
-public class MaterialType{
+public class MaterialType implements JsonSerializer<MaterialType>, JsonDeserializer<MaterialType> {
 
 	private Integer id;
 	/** The name. */
@@ -146,6 +156,30 @@ public class MaterialType{
 		MaterialType m = (MaterialType)o;
 		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan) return false; 
 		return true;
+	}
+	
+	public String toJSON() {
+		Gson json = new Gson();
+		return json.toJson(this);
+	}
+
+	@Override
+	public JsonElement serialize(MaterialType arg0, Type arg1, JsonSerializationContext arg2) {
+		final JsonObject json = new JsonObject();
+		json.addProperty("id", id);
+		json.addProperty("name", name);
+		json.addProperty("brand", brand);
+		json.addProperty("maxBorrowDuration", maxTimeLoan);
+		json.addProperty("description", description);
+		json.addProperty("reference", reference);
+		return json;
+	}
+
+	@Override
+	public MaterialType deserialize(JsonElement arg0, Type arg1,
+			JsonDeserializationContext arg2) throws JsonParseException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
