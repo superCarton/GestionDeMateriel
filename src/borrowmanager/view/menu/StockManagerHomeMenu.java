@@ -1,6 +1,9 @@
 package borrowmanager.view.menu;
 
+import java.util.List;
+
 import borrowmanager.model.Manager;
+import borrowmanager.model.material.Material;
 import borrowmanager.view.TextInterfaceOptionPage;
 import borrowmanager.view.TextInterfacePage;
 
@@ -22,6 +25,7 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		addOption("seeLate", "View all late bookings");
 		addOption("seeCancelled", "View all cancelled bookings");
 		addOption("needRepairList", "View material that needs to be repaired");
+		addOption("takeBackFromRepair", "Put all the repaired material back in stock");
 		addOption("stats","View statistics");
 		addOption("logout", "Logout");
 	}
@@ -51,6 +55,16 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 		}
 		else if (c.equals("needRepairList")) {
 			openChildPage(new NeedRepairList(manager));
+		}
+		else if (c.equals("takeBackFromRepair")) {
+			List<Material> repaired = manager.getMaterialsBackFromRepair();
+			System.out.println("Materials repaired : "+repaired.size());
+			if (repaired.size() > 0) {
+				for (Material m : repaired) {
+					System.out.println("\t- "+m.getFullName());
+				}
+			}
+			enterToContinue();
 		}
 		else if (c.equals("logout")) {
 			return null;
