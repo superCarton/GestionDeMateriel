@@ -71,19 +71,4 @@ public abstract class Borrower extends User{
 	public String toString(){
 		return "User: " + this.getFirstname() + " " + this.getName() + "id: " + this.getLogin();
 	}
-	
-	/* (non-Javadoc)
-	 * @see model.user.User#getSerializableDescription()
-	 */
-	@Override
-	public HashMap<String, Object> getSerializableDescription(){
-		return null;
-	}
-	
-	/* (non-Javadoc)
-	 * @see model.user.User#setObject(java.util.HashMap)
-	 */
-	@Override
-	public void setObject(HashMap<String, Object> description){
-	}
 }

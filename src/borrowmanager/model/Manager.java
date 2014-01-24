@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,10 +20,8 @@ import com.google.gson.JsonParser;
 
 import borrowmanager.model.booking.Booking;
 import borrowmanager.model.booking.DateInterval;
-import borrowmanager.model.element.BorrowableModel;
 import borrowmanager.model.element.BorrowableStock;
 import borrowmanager.model.material.Material;
-import borrowmanager.model.material.MaterialType;
 import borrowmanager.model.material.OS;
 import borrowmanager.model.material.SmartPhone;
 import borrowmanager.model.user.Borrower;

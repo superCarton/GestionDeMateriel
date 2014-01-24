@@ -24,7 +24,7 @@ public class HeadPhone extends MaterialType {
 	 */
 	public HeadPhone(Integer id, String name, String brand, String description,
 			int reference, int maxTimeLoan) {
-		super(id, name, brand, description, reference, maxTimeLoan);
+		super(MaterialCategory.HeadPhone, id, name, brand, description, reference, maxTimeLoan);
 	}
 	
 	/**

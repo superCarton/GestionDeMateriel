@@ -4,7 +4,6 @@
 package borrowmanager.model.material;
 
 import java.util.HashMap;
-import java.util.*;
 
 /**
  * The Class VideoCamera.
@@ -22,9 +21,9 @@ public class VideoCamera extends MaterialType {
 	 * @param reference the reference
 	 * @param maxTimeLoan the max time loan
 	 */
-	public VideoCamera(String name, String brand, String description,
+	public VideoCamera(Integer id, String name, String brand, String description,
 			int reference, int maxTimeLoan) {
-		super(0, name, brand, description, reference, maxTimeLoan);
+		super(MaterialCategory.VideoCamera, id, name, brand, description, reference, maxTimeLoan);
 	}
 	
 	/**
@@ -45,7 +44,7 @@ public class VideoCamera extends MaterialType {
 	 */
 	@Override
 	public Object clone(){
-		return new VideoCamera(this.getName(), this.getBrand(), this.getDescription(), this.getReference(), this.getMaxTimeLoan());
+		return new VideoCamera(this.getId(), this.getName(), this.getBrand(), this.getDescription(), this.getReference(), this.getMaxTimeLoan());
 	}
 	
 	/* (non-Javadoc)

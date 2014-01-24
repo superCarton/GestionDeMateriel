@@ -4,7 +4,6 @@
 package borrowmanager.model.material;
 
 import java.util.HashMap;
-import java.util.*;
 
 /**
  * The Class Device.
@@ -26,9 +25,9 @@ public abstract class Device extends MaterialType {
 	 * @param type the type
 	 * @param maxTimeLoan the max time loan
 	 */
-	public Device(Integer id, String name, String brand, String description, int reference,
+	public Device(MaterialCategory category, Integer id, String name, String brand, String description, int reference,
 			OS type, int maxTimeLoan) {
-		super(id, name, brand, description, reference, maxTimeLoan);
+		super(category, id, name, brand, description, reference, maxTimeLoan);
 		typeOs = type;
 	}
 

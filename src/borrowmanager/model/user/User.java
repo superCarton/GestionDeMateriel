@@ -128,15 +128,6 @@ public abstract class User implements Comparable<User> {
 		return lastname + " " + firstname;
 	}
 	
-	/**
-	 * Gets the serializable description.
-	 *
-	 * @return the serializable description
-	 */
-	public HashMap<String, Object> getSerializableDescription(){
-		return null;
-	}
-	
 	public boolean canValidateBookings() {
 		return false; // to be overriden by child classes
 	}

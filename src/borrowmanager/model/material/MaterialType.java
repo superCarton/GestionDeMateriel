@@ -24,6 +24,8 @@ import com.google.gson.JsonSerializer;
 public class MaterialType {
 
 	private Integer id;
+	
+	private MaterialCategory category;
 	/** The name. */
 	protected String name;
 	
@@ -49,8 +51,9 @@ public class MaterialType {
 	 * @param maxTimeLoan the max time loan
 	 * @param id the unique id
 	 */
-	public MaterialType(int id, String name, String brand,
+	public MaterialType(MaterialCategory category, int id, String name, String brand,
 			String description, int reference, int maxTimeLoan) {
+		this.category = category;
 		this.id = id;
 		this.name = name;
 		this.brand = brand;
@@ -78,6 +81,10 @@ public class MaterialType {
 	 */
 	public Integer getId() {
 		return id;
+	}
+	
+	public MaterialCategory getCategory() {
+		return category;
 	}
 
 	/**

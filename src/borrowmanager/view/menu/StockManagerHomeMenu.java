@@ -38,7 +38,7 @@ public class StockManagerHomeMenu extends TextInterfaceOptionPage {
 			openChildPage(new LateBookingsList(manager));
 		}
 		else if (c.equals("stats")) {
-			// open stats page
+			openChildPage(new StatisticsMenu(manager));
 		}
 		else if (c.equals("logout")) {
 			return null;

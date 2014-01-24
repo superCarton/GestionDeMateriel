@@ -85,7 +85,7 @@ public class UsersManager {
 	 *
 	 * @param user the user
 	 */
-	public void add(User user){
+	public void add(User user) {
 		users.add(user);
 		manager.save();
 	}
@@ -95,7 +95,7 @@ public class UsersManager {
 	 *
 	 * @param user the user
 	 */
-	public void remove(User user){
+	public void remove(User user) {
 		users.remove(user);
 		manager.save();
 	}
@@ -154,66 +154,6 @@ public class UsersManager {
 		return isDeleted;
 	}
 	
-	/**
-	 * Load.
-	 */
-	public void load(){
-		List<HashMap<String, Object>> listUsers = (List<HashMap<String, Object>>) DataXML.load(SAVE_FILE_PATH, SAVE_FILE_VERSION);
-		for (HashMap<String, Object> descriptionUser : listUsers){
-			User user = (User) createObject((String) descriptionUser.get("className"));
-			user.setObject(descriptionUser);
-			users.add(user);
-		}
-		System.out.println("users loaded");
-	}
-	
-	/**
-	 * Save.
-	 */
-	public void save(){
-		
-		// save users in the save file
-		DataXML.store(getSerializableDescription(), SAVE_FILE_PATH, SAVE_FILE_VERSION);
-	}
-	
-	/**
-	 * Gets the serializable description.
-	 *
-	 * @return the serializable description
-	 */
-	public List<HashMap<String, Object>> getSerializableDescription(){
-		
-		List<HashMap<String, Object>> usersDescription = new LinkedList<HashMap<String, Object>>();
-		
-		for (User user : users){
-			usersDescription.add(user.getSerializableDescription());
-		}
-		
-		return usersDescription;
-	}
-	
-	/**
-	 * Creates the object.
-	 *
-	 * @param className the class name
-	 * @return the object
-	 */
-	static Object createObject(String className) {
-		 
-		Object object = null;
-		try {
-		    Class<?> classDefinition = Class.forName(className);
-		    object = classDefinition.newInstance();
-	    } catch (InstantiationException e) {
-		          System.out.println(e);
-		} catch (IllegalAccessException e) {
-		          System.out.println(e);
-		} catch (ClassNotFoundException e) {
-		          System.out.println(e);
-		}
-		return object;
-	}
-
 	/**
 	 * Returns a unused auto incremented user ID
 	 * @return

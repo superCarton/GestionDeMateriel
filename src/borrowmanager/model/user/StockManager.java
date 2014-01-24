@@ -43,34 +43,6 @@ public class StockManager extends User {
 		return "Admin: " + this.getFirstname() + " " + this.getName() + "id: " + this.getLogin();
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see model.user.User#getSerializableDescription()
-	 */
-	@Override
-	public HashMap<String, Object> getSerializableDescription(){
-		
-		HashMap<String, Object> userDescription = new HashMap<String, Object>();
-		userDescription.put("name", getName());
-		userDescription.put("firstname", getFirstname());
-		userDescription.put("login", getLogin());
-		userDescription.put("password", getPassword());
-		userDescription.put("className", this.getClass().getName());
-		
-		return userDescription;
-	}
-
-	/* (non-Javadoc)
-	 * @see model.user.User#setObject(java.util.HashMap)
-	 */
-	@Override
-	public void setObject(HashMap<String, Object> description){
-		this.lastname = (String) description.get("name");
-		this.firstname = (String) description.get("firstname");
-		this.login = (String) description.get("login");
-		this.password = (String) description.get("password");
-	}
-	
 	@Override
 	public boolean canValidateBookings() {
 		return true;

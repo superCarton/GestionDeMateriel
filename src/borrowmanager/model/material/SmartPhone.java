@@ -4,7 +4,6 @@
 package borrowmanager.model.material;
 
 import java.util.HashMap;
-import java.util.*;
 
 /**
  * The Class SmartPhone.
@@ -25,7 +24,7 @@ public class SmartPhone extends Device {
 	 */
 	public SmartPhone(Integer id, String name, String brand, String description,
 			int reference, OS type, int maxTimeLoan) {
-		super(id, name, brand, description, reference, type, maxTimeLoan);
+		super(MaterialCategory.SmartPhone, id, name, brand, description, reference, type, maxTimeLoan);
 	}
 	
 	/**
