@@ -244,8 +244,8 @@ public class Manager {
 		return stock;
 	}
 	
-	public Collection<BorrowableStock> getStockList() {
-		return stock.values();
+	public List<BorrowableStock> getStockList() {
+		return new LinkedList(stock.values());
 	}
 	
 	// method to fill the stock with dummy elements for testing

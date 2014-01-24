@@ -7,7 +7,7 @@ import borrowmanager.model.material.Material;
 
 public class MaterialPicker extends Picker<Integer, Material>{
 
-	public MaterialPicker(Collection<Material> l) {
+	public MaterialPicker(List<Material> l) {
 		super(l);
 	}
 

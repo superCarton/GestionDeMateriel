@@ -29,13 +29,14 @@ public class NeedRepairList extends TextInterfacePage {
 				repairableMaterials.add(m);
 			}
 		}
-		
+		// Check that there is something to display
 		if (repairableMaterials.size() > 0) {
 			MaterialPicker picker = new MaterialPicker(repairableMaterials);
 			picker.display();
 			Integer picked = picker.getPickedItemId();
 			Material m = repairableMaterials.get(picked);
 			
+			// Not the "Back" option from the picker
 			if (m != null) {
 				if (question("Repair duration is "+m.getRepairDuration()+" days.\n"+
 						"Do you want to send "+m.getFullName()+" to repair ?")) {

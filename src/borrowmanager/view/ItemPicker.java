@@ -1,12 +1,13 @@
 package borrowmanager.view;
 
-import java.util.Collection;
+import java.util.List;
 
 import borrowmanager.model.element.BorrowableStock;
 
+// TODO : rename to StockPicker
 public class ItemPicker extends Picker<Integer, BorrowableStock> {
 	
-	public ItemPicker(Collection<BorrowableStock> l) {
+	public ItemPicker(List<BorrowableStock> l) {
 		super(l);
 	}
 
@@ -17,6 +18,6 @@ public class ItemPicker extends Picker<Integer, BorrowableStock> {
 
 	@Override
 	protected Integer getUniqueIdentifier(BorrowableStock element) {
-		return element.getId();
+		return getList().indexOf(element);
 	}
 }

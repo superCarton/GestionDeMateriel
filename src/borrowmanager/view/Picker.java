@@ -1,18 +1,19 @@
 package borrowmanager.view;
 
 import java.util.Collection;
+import java.util.List;
 
 import borrowmanager.model.element.BorrowableStock;
 
 public abstract class Picker<ID, T> extends TextInterfacePage {
-	private Collection<T> itemList;
+	private List<T> itemList;
 	private ID pickedItemId = null;
 	
-	public Picker(Collection<T> l) {
+	public Picker(List<T> l) {
 		itemList = l;
 	}
 	
-	protected Collection<T> getList() {
+	protected List<T> getList() {
 		return itemList;
 	}
 	
