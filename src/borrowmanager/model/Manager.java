@@ -398,6 +398,21 @@ public class Manager {
 	public Integer getIDAutoIncrement() {
 		return usersManager.getIDAutoIncrement();
 	}
+	
+	/**
+	 * Make the material that have finished repairing available in the stock.
+	 * @return
+	 */
+	public List<Material> getMaterialsBackFromRepair() {
+		List<Material> list = new LinkedList<Material>();
+		for (Material m : getMaterials()) {
+			if (m.isInRepair() && Manager.now.after(m.getRepairEnd())) {
+				m.takeBackFromRepair();
+				list.add(m);
+			}
+		}
+		return list;
+	}
 
 	public void cancelBooking(Booking booking) {
 		//BorrowableStock theStock = stock.get(booking.getBorrowableStack().getModel().getId());
