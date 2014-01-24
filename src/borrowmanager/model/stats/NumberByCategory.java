@@ -44,5 +44,4 @@ public class NumberByCategory extends Stats<Map<MaterialCategory, StatValue<Inte
 		}
 		return numberAndPourcent;
 	}
-
 }

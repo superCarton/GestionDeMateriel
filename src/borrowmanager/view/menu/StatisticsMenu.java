@@ -62,7 +62,7 @@ public class StatisticsMenu extends TextInterfaceOptionPage {
 				System.out.println("Nothing is broken in the stock ! :)");
 			}
 			else {
-				System.out.println("The most broken material is "+result.getKey().getFullName()+" with "+result.getValue()+" borrows.");
+				System.out.println("The most broken material is "+result.getKey().getFullName()+" with "+result.getValue()+" currently broken.");
 			}
 		}
 		else if (c.equals("numberByCategory")) {

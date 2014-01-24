@@ -3,8 +3,8 @@
     {
       "materialType": {
         "id": 0,
-        "name": "S4",
-        "brand": "samsungs",
+        "name": "Galaxy S4",
+        "brand": "Samsung",
         "maxBorrowDuration": 7,
         "description": "fassst",
         "reference": 42
@@ -18,7 +18,7 @@
         },
         {
           "id": 1,
-          "stateName": "NEW",
+          "stateName": "DESTROYED",
           "serial_number": "serial####QDSF",
           "isInRepair": false
         }
@@ -28,7 +28,7 @@
           {
             "borrowerId": 1,
             "startDate": 1389740400000,
-            "endDate": 1390564412677,
+            "endDate": 1390602581060,
             "materials": [
               {
                 "id": 0
@@ -42,7 +42,8 @@
             "isReturned": true,
             "reminders": [],
             "returnedLate": true,
-            "daysLate": 8
+            "daysLate": 8,
+            "cancelled": false
           },
           {
             "borrowerId": 1,
@@ -61,7 +62,8 @@
             "isReturned": false,
             "reminders": [],
             "returnedLate": false,
-            "daysLate": 0
+            "daysLate": 0,
+            "cancelled": false
           },
           {
             "borrowerId": 1,
@@ -80,7 +82,8 @@
             "isReturned": false,
             "reminders": [],
             "returnedLate": false,
-            "daysLate": 0
+            "daysLate": 0,
+            "cancelled": false
           }
         ]
       }
@@ -89,7 +92,7 @@
       "materialType": {
         "id": 1,
         "name": "iPhone",
-        "brand": "Applz",
+        "brand": "Apple",
         "maxBorrowDuration": 6,
         "description": "pouerk",
         "reference": 1
@@ -99,6 +102,27 @@
           "id": 2,
           "stateName": "NEW",
           "serial_number": "serial####lolll}",
+          "isInRepair": false
+        }
+      ],
+      "calendar": {
+        "bookings": []
+      }
+    },
+    {
+      "materialType": {
+        "id": 2,
+        "name": "Galaxy Tab 10",
+        "brand": "Samsung",
+        "maxBorrowDuration": 7,
+        "description": "TAB",
+        "reference": 42
+      },
+      "stock": [
+        {
+          "id": 2,
+          "stateName": "NEW",
+          "serial_number": "tabSerial#1",
           "isInRepair": false
         }
       ],

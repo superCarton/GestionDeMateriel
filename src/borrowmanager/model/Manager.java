@@ -25,6 +25,7 @@ import borrowmanager.model.element.State;
 import borrowmanager.model.material.Material;
 import borrowmanager.model.material.OS;
 import borrowmanager.model.material.SmartPhone;
+import borrowmanager.model.material.Tablet;
 import borrowmanager.model.user.Borrower;
 import borrowmanager.model.user.StockManager;
 import borrowmanager.model.user.Student;
@@ -49,14 +50,19 @@ public class Manager {
 	}
 	
 	public Manager(String path) {
+		boolean DEBUG_LoadFile = false;
 		this.filePath = path;
 		this.usersManager = new UsersManager(this);
 		this.activeUser = null;
 		this.stock = new HashMap<Integer, BorrowableStock>();
 		
 		File f = new File(filePath);
-		if (f.exists()) {
-			//load();
+		if (DEBUG_LoadFile && f.exists()) {
+			load();
+		}
+		else {
+			fillTemporaryStock();
+			save();
 		}
 	}
 	
@@ -245,25 +251,30 @@ public class Manager {
 	// method to fill the stock with dummy elements for testing
 	public void fillTemporaryStock() {
 		//MaterialType typeA = new MaterialType(0, "Item0", "MyBrand", "Lol_descr", "reference, maxTimeLoan)
-		SmartPhone s4 = new SmartPhone(0, "S4", "samsungs", "fassst", 42, OS.ANDROID, 7);
-		SmartPhone lolPhone = new SmartPhone(1, "iPhone", "Applz", "pouerk", 1, OS.IOS, 6);
+		SmartPhone s4 = new SmartPhone(0, "Galaxy S4", "Samsung", "fassst", 42, OS.ANDROID, 7);
+		SmartPhone lolPhone = new SmartPhone(1, "iPhone", "Apple", "pouerk", 1, OS.IOS, 6);
+		Tablet galaxyTab = new Tablet(2, "Galaxy Tab 10", "Samsung", "TAB", 42, OS.ANDROID, 7);
 		
 		Material m1 = new Material(s4, 0, "serial####1253QSF}"),
-				m2 = new Material(s4, 1, "serial####QDSF");
+				m2 = new Material(s4, 1, "serial####QDSF"),
+				tab1 = new Material(galaxyTab, 2, "tabSerial#1");
+		m2.setDestroyed(true);
 		List<Material> s4Stock = new LinkedList<Material>();
 		s4Stock.add(m1);
 		s4Stock.add(m2);
 		Material i1 = new Material(lolPhone, 2, "serial####lolll}");
 		List<Material> iStock = new LinkedList<Material>();
 		iStock.add(i1);
+		List<Material> galaxyTabList = new LinkedList<Material>();
+		galaxyTabList.add(tab1);
 		
-		
-		BorrowableStock stockS4 = new BorrowableStock(s4, s4Stock);
-		//BorrowableStock stockA = new BorrowableStock(new BorrowableModel(0, "item0"), 1); 
+		BorrowableStock stockS4 = new BorrowableStock(s4, s4Stock); 
 		stock.put(stockS4.getId(), stockS4);
-		//BorrowableStock stockB = new BorrowableStock(new BorrowableModel(1, "item1"), 2);
 		BorrowableStock stockIphon = new BorrowableStock(lolPhone, iStock);
 		stock.put(stockIphon.getId(), stockIphon);
+		
+		BorrowableStock stockGalaxyTab = new BorrowableStock(galaxyTab, galaxyTabList);
+		stock.put(stockGalaxyTab.getId(), stockGalaxyTab);
 		
 		// Also create user
 		User u = new Student(1, "g", "tom", "tom", "hello");
@@ -286,16 +297,7 @@ public class Manager {
 		debugB.validate();
 		debugB.end();
 		book(0, 1, 1, e, f, "MYCOURSE"); 
-		if (debugB == null) {
-			System.out.println("[DEBUG] Late debug booking is null");
-		}
-		else {
-			System.out.println("[DEBUG] Last booking = "+debugB);
-		}
 		activeUser = null;
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String jsonOutput = gson.toJson(u.toJSON());
-		System.out.println(jsonOutput);
 	}
 	
 	public List<Material> getMaterials() {
@@ -354,15 +356,21 @@ public class Manager {
 	// TODO : factorize this with predicat class
 	public List<Booking> getLateBookings() {
 		List<Booking> list = new LinkedList<Booking>();
-		// Browse the stock
-		for (Integer borrowableID : this.stock.keySet()) {
-			BorrowableStock stock = this.stock.get(borrowableID);
-			// Browse the item calendar
-			for (Booking b : stock.getCalendar().getBookings()) {
+			for (Booking b : getBookings()) {
 				// Add only late bookings
 				if (b.isLate()) {
 					list.add(b);
 				}
+			}
+		return list;
+	}
+	
+	public List<Booking> getCancelledBookings() {
+		List<Booking> list = new LinkedList<Booking>();
+		for (Booking b : getBookings()) {
+			// Add only late bookings
+			if (b.isCancelled()) {
+				list.add(b);
 			}
 		}
 		return list;
@@ -409,7 +417,11 @@ public class Manager {
 		// Filter only the reservation (booking in the future)
 		for (Booking b : base) {
 			if (b.isReservation()) {
+				//System.out.println(b+" IS a reservation");
 				list.add(b);
+			}
+			else {
+				//System.out.println(b+" is not a reservation");
 			}
 		}
 		return list;

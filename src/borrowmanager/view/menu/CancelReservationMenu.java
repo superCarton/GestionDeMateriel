@@ -7,11 +7,10 @@ import borrowmanager.model.booking.Booking;
 import borrowmanager.view.BookingPicker;
 import borrowmanager.view.TextInterfacePage;
 
-public class MyReservationListView extends TextInterfacePage {
-	
+public class CancelReservationMenu extends TextInterfacePage {
 	private Manager manager;
 	
-	public MyReservationListView(Manager m) {
+	public CancelReservationMenu(Manager m) {
 		manager = m;
 	}
 	
@@ -21,7 +20,7 @@ public class MyReservationListView extends TextInterfacePage {
 		
 		if (list.size() > 0) {
 			System.out.println("Here is the list of your reservations.");
-			System.out.println("Select one to have more info :");
+			System.out.println("Select the one you want to cancel :");
 		
 			BookingPicker picker = new BookingPicker(list);
 			picker.display();
@@ -29,10 +28,14 @@ public class MyReservationListView extends TextInterfacePage {
 			if (picked == null) {
 				return null;
 			}
+			if (question("Are you sure ?")) {
+				list.get(picked).cancel();
+				System.out.println("Reservation cancelled.");
+				enterToContinue();
+			}
 			openChildPage(new BookingDetails(manager, list.get(picked)));
 		}
 		
 		return this;
 	}
-
 }

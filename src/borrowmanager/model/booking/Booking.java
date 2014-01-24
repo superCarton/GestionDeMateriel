@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 import borrowmanager.model.Manager;
 import borrowmanager.model.material.Material;
@@ -53,6 +54,8 @@ public class Booking implements Comparable<Booking> {
 	private boolean returnedLate;
 	private Integer daysLate = 0;
 	private Date returnDate = null;
+
+	private boolean cancelled;
 	
 	private Booking() {
 		this.materials = new LinkedList<Material>();
@@ -157,7 +160,6 @@ public class Booking implements Comparable<Booking> {
 			lastDate = Manager.now;
 		}*/
 		Date end = interval.getEnd();
-		System.out.println("LastDate = "+lastDate);
 		if (lastDate.after(end)) {
 			DateInterval interval = new DateInterval(end, lastDate);
 			return interval.getLength();
@@ -237,6 +239,10 @@ public class Booking implements Comparable<Booking> {
 	 * @return
 	 */
 	public boolean isActive() {
+		if (isCancelled()) {
+			return false;
+		}
+		
 		// In the date interval and not returned
 		if (isCurrent() && !isReturned()) {
 			return true;
@@ -326,17 +332,45 @@ public class Booking implements Comparable<Booking> {
 				+ "been validated by a manager\n" + interval.toString();
 	}
 	
+	/**
+	 * Returns the list of the information tags associated to the booking
+	 * @param extended If set to true, more (and less important) data will be available.
+	 * @return The tags list
+	 */
+	public List<String> getTags(boolean extended) {
+		List<String> tags = new LinkedList<String>();
+		if (isCancelled()) {
+			tags.add("Cancelled");
+		}
+		else {
+			if (!isValidated) tags.add("NOT VALIDATED");
+			// Add the "validated" tag only in extended view
+			else if (extended) tags.add("Validated");
+			if (isLate()) tags.add("LATE !");
+			if (wasReturnedLate()) tags.add("Returned "+getDaysLate()+" days late");
+			else if (isReturned()) tags.add("Returned on time");
+		}
+		return tags;
+	}
+	
+	/**
+	 * Returns the list of the information tags associated to the booking
+	 * @return The tags list
+	 */
+	public List<String> getTags() {
+		return getTags(false);
+	}
+	
 	public String toListString(SimpleDateFormat format) {
 		String startString = format.format(getInterval().getStart());
 		String endString = format.format(getInterval().getEnd());
-		String notValidatedStr = !isValidated ? "[NOT VALIDATED] " : "";
-		String state = "";
-		if (isLate()) state = "[LATE !] ";
-		if (wasReturnedLate()) state = "[Returned "+getDaysLate()+" days late] ";
-		else if (isReturned()) state = "[Returned]";
 		
+		String tags = "";
+		for (String t : getTags()) {
+			tags += "["+t+"] ";
+		}
 		//String late = isLate() ? "[LATE !] ":"";
-		return notValidatedStr+state+materials.get(0).getMaterialType().getName()+" x"+getQuantity()+" ["+startString+" - "+endString+"] | Details: "+getReason();
+		return tags+materials.get(0).getMaterialType().getName()+" x"+getQuantity()+" ["+startString+" - "+endString+"] | Details: "+getReason();
 	}
 
 	@Override
@@ -357,7 +391,18 @@ public class Booking implements Comparable<Booking> {
 	 * @return
 	 */
 	public boolean isReservation() {
-		return isFuture();
+		return !cancelled && isFuture();
+	}
+	
+	public boolean isCancelled() {
+		return cancelled;
+	}
+	
+	/**
+	 * Cancels the booking
+	 */
+	public void cancel() {
+		cancelled = true;
 	}
 
 	public MaterialType getMaterialType() {
@@ -393,7 +438,7 @@ public class Booking implements Comparable<Booking> {
 		json.addProperty("returnedLate", returnedLate);
 		json.addProperty("daysLate", daysLate);
 		json.addProperty("returnDate", returnDate != null ? returnDate.getTime() : null);
-		
+		json.addProperty("cancelled", cancelled);
 		return json;
 	}
 	
@@ -428,5 +473,6 @@ public class Booking implements Comparable<Booking> {
 		JsonElement jsonDate = json.get("returnDate");
 		if (jsonDate == null) returnDate = null;
 		else returnDate = new Date(jsonDate.getAsLong());
+		cancelled = json.get("cancelled").getAsBoolean();
 	}
 }

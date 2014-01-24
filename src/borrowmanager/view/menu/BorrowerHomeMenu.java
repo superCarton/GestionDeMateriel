@@ -40,6 +40,9 @@ public class BorrowerHomeMenu extends TextInterfaceOptionPage {
 		else if (c.equals("reservationList")) {
 			openChildPage(new MyReservationListView(manager));
 		}
+		else if (c.equals("cancelReservation")) {
+			openChildPage(new CancelReservationMenu(manager));
+		}
 		else if (c.equals("logout")) {
 			manager.setActiveUser(null);
 			return null;
