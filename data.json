@@ -13,14 +13,12 @@
         {
           "id": 0,
           "stateName": "NEW",
-          "serial_number": "serial####1253QSF}",
-          "isInRepair": false
+          "serial_number": "serial####1253QSF}"
         },
         {
           "id": 1,
           "stateName": "DESTROYED",
-          "serial_number": "serial####QDSF",
-          "isInRepair": false
+          "serial_number": "serial####QDSF"
         }
       ],
       "calendar": {
@@ -28,7 +26,7 @@
           {
             "borrowerId": 1,
             "startDate": 1389740400000,
-            "endDate": 1390602987747,
+            "endDate": 1390603591234,
             "materials": [
               {
                 "id": 0
@@ -101,8 +99,7 @@
         {
           "id": 2,
           "stateName": "NEW",
-          "serial_number": "serial####lolll}",
-          "isInRepair": false
+          "serial_number": "serial####lolll}"
         }
       ],
       "calendar": {
@@ -122,8 +119,7 @@
         {
           "id": 2,
           "stateName": "NEW",
-          "serial_number": "tabSerial#1",
-          "isInRepair": false
+          "serial_number": "tabSerial#1"
         }
       ],
       "calendar": {
